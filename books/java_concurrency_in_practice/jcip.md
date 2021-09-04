@@ -32,7 +32,7 @@ private static Map<String, MutablePoint> deepCopy(Map<String, MutablePoint> m) {
 ```
 @NotThreadSafe
 class BadListHelper <E> {
-    public List<E> list = Collections.synchronizedList(new ArrayList<E>());
+    **public** List<E> list = Collections.synchronizedList(new ArrayList<E>());
 
     public synchronized boolean putIfAbsent(E x) {
         boolean absent = !list.contains(x);
@@ -141,3 +141,40 @@ InterruptedException - if any thread interrupted the current thread before or wh
 
 - Init Safe
 > Initialization safety makes visibility guarantees only for the values that are reachable through final fields as of the time the constructor finishes. For values reachable through nonfinal fields, or values that may change after construction, you must use synchronization to ensure visibility.
+
+- Classes
+    1. Lock 
+    -> ReentrantLock
+    -> ReentrantReadWriteLock
+    -> StampedLock
+    2. ExecutorService、CompletionService
+    3. Synchronized HashMap = ConcurrentHashMap
+    Synchronized SortedMap -> Synchronized TreeMap = ConcurrentSkipListMap
+    Synchronized SortedSet -> Synchronized TreeSet = ConcurrentSkipListSet
+    Synchronized List -> Synchronized ArrayList = CopyOnWriteArrayList
+    Synchronized Set = CopyOnWriteArraySet nested by CopyOnWriteArrayList
+    4. CountDownLatch、CyclicBarrier、Exchanger、Semaphore
+    5. public class FutureTask<V> implements RunnableFuture<V>
+    ```
+     public <T> Future<T> submit(Runnable task, T result) {
+        if (task == null) throw new NullPointerException();
+        RunnableFuture<T> ftask = newTaskFor(task, result);
+        execute(ftask);
+        return ftask;
+    }
+
+    protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
+        return new FutureTask<T>(runnable, value);
+    }
+
+    public <T> Future<T> submit(Callable<T> task) {
+        if (task == null) throw new NullPointerException();
+        RunnableFuture<T> ftask = newTaskFor(task);
+        execute(ftask);
+        return ftask;
+    }
+
+    protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+        return new FutureTask<T>(callable);
+    }
+    ```
