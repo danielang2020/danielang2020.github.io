@@ -7,6 +7,8 @@
 
 ### 1.4 I/O Concepts
 
+[Java NIO vs. IO](http://tutorials.jenkov.com/java-nio/nio-vs-io.html)
+
 #### 1.4.1 Buffer Handling
 > Buffers, and how buffers are handled, are the basis of all I/O. The very term "input/output" means nothing more than moving data in and out of buffers.
 
@@ -129,3 +131,52 @@ public Buffer clear() {
 
 ### 2.4 Byte Buffers
 > When moving data between the JVM and the operating system, it's necessary to break down the other data types into their constituent bytes.
+
+#### 2.4.1 Byte Ordering
+> The way multibyte numeric values are stored in memory is commonly referred to as *endian-ness*. If the numerically most-significant byte of the number, the *big end*, is at the lower address, then the system is *big-endian*. If the least-significant byte come first, it's *little-endian*.
+
+> The IPs define a notion of network byte order, which is big-endian. All multibyte numeric values used within the protocol portions of IP packets must be converted between the local *host byte order* and the common network byte order.
+> ```
+> //java.nio.ByteBuffer
+> boolean nativeByteOrder = (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN);
+> ```
+
+> *Bytebuffer* objects posses a host of convenience mehods for getting and putting the buffer content as other primitive data types. The way these methods encode or decode the bytes is dependent on the *ByteBuffer*'s current byte-order setting.
+
+#### 2.4.2 Direct Buffers
+> The most significant way in which byte buffers are distinguished from other buffer types is that they can be the source and/or targets of I/O performed by *Channel*.
+
+> Direct buffers are optimal for I/O, but they may be more expensive to create than nondirect byte buffers. The memory used by direct buffers is allocated by calling through to native, operating system-specific code, bypassing the standard JVM heap. Setting up and tearing down direct buffers could be significantly more expensive than heap-resident buffers, depending on the host operating system and JVM implementation. The memory-storage areas of direct buffers are not subject to garbage collection because they are outside the standard JVM heap.
+
+> While *ByteBuffer* is the only type that can be allocated as direct, *isDirect()* could be true for nonbyte view buffers if the underlying buffer is a direct *ByteBuffer*.
+
+#### 2.4.3 View Buffers
+> View buffers are created by a factory method on an existing buffer object instance. The view object maintains its own attribute, capacity, position, limit, and mark, but shares data elements with the original buffer. 
+
+Endianess has no meaning for a byte[]. Endianess only matter for multi-byte data types like short, int, long, float, or double.
+[how-write-big-endian-bytebuffer-to-little-endian-in-java](https://stackoverflow.com/questions/14496893/how-write-big-endian-bytebuffer-to-little-endian-in-java)
+
+> Whenever a view buffer accesses the underlying bytes of a *Bytebuffer*, the bytes are packed to compose a data element according to the view buffer's byte-order setting. When a view buffer is created, it inherits the byte-order setting of the underlying *ByteBuffer* at the time the view is created. The byte-order setting of the view cannot be changed later.
+> A CharBuffer view of a ByteBuffer
+> ![](cvob.png)
+> ![](ByteBuffer.png)
+
+> ![](bcsd.png)
+> This code:
+> ```
+> int value = buffer.getInt();
+> ```
+> would return an int value composed of the byte values in locations 1-4 of the buffer. The actual value returned would depend on the current *ByteOrder* setting of the buffer. To be more specific:
+> ```
+> int value = buffer.order(ByteOrder.BIG_ENDIAN).getInt();
+> ```
+> returns the numeric value 0x3BC5315E, while:
+> ```
+> int value = buffer.order(ByteOrder.LITTLE_ENDIAN).getInt();
+> ```
+> returns the value 0x5E31C53B.
+
+> If the primitive data type you're trying to get requires more bytes than what remains in the buffer, a *BufferUnderflowException* will be thrown. 
+> The put methods perform the inverse operation of the gets. Primitive data values will be broken into bytes according to the byte order of the buffer and stored. If insufficient space is available to store all the bytes, a *BufferOverflowException* will be thrown.
+
+
