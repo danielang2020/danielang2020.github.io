@@ -154,7 +154,7 @@ InterruptedException - if any thread interrupted the current thread before or wh
     Synchronized *List* -> Synchronized *ArrayList* = *CopyOnWriteArrayList*  
     Synchronized *Set* = *CopyOnWriteArraySet* implemented by *CopyOnWriteArrayList*
     4. CountDownLatch、CyclicBarrier、Exchanger、Semaphore
-    5. public class FutureTask<V> implements RunnableFuture<V>
+    5. *public class FutureTask<V> implements RunnableFuture<V>*  
     ```
      public <T> Future<T> submit(Runnable task, T result) {
         if (task == null) throw new NullPointerException();
