@@ -244,3 +244,134 @@ Regular files are always readable and they are also always writable. This is cle
 #### 3.3.1 Accessing Files
 > For comparison, image below lists the correspondences of *FileChannel*, *RandomAccessFile*, and POSIX I/O system calls.
 > ![](fcc.png)
+
+> Doing a *write()* with the position set beyond the file size will cause the file to grow to accommodate the new bytes written. The behavior is identical to that for an absolute *write()* and may result in a file hole.
+
+> The *FileChannel* position is reflected from the underlying file descriptor, which is shared by the file object from which the channel reference was obtained. This means that updates made to the position by one object will be seen by the other:
+> ```
+> RandomAccessFile randomAccessFile = new RandomAccessFile ("filename", "r");
+> // Set the file position
+> randomAccessFile.seek (1000);
+> // Create a channel from the file
+> FileChannel fileChannel = randomAccessFile.getChannel();
+> // This will print "1000"
+> System.out.println ("file pos: " + fileChannel.position());
+> // Change the position using the RandomAccessFile object
+> randomAccessFile.seek (500);
+> // This will print "500"
+> System.out.println ("file pos: " + fileChannel.position());
+> // Change the position using the FileChannel object
+> fileChannel.position (200);
+> // This will print "200"
+> System.out.println ("file pos: " + randomAccessFile.getFilePointer());
+> ```
+
+> Attempting an absolute read beyond the end of the file, as returned by *size()*, will return end-of-file. Doing an absolute *write()* at a position beyond the file size will cause the file to grow to accommodate the new bytes being written.
+
+> When it's necessary to reduce the size of a file, *truncate()* chops off any data beyond the new size you specify. If the current size is greater than the new size,all bytes beyond the new size are discarded. If the new size provided is greater than or equal to the current file size, the file is not modified. A side effect of *truncate()* is either case is that it sets the file position to the new size provided.
+
+> *force()* tells the channel to force any pending modifications made to the file out to disk. All modern filesystems cache data and defer disk updates to boost performance. Calling the *force()* method requests that all pending modifications to the file be synchronized to disk immediately.
+
+#### 3.3.2 File Locking
+> Locks are associated with files, not channels. Use locks to coordinate with external processes, not between threads in the same JVM.
+
+> *FileLock* objects are thread-safe; multiple threads may access a lock object concurrently.
+
+> Although a *FileLock* object is associated with a speicify *FileChannel* instance, the lock it represents is associated with an underlying file, not the channel. This can cause conflicts, or possibly deadlock, if you don't release a lock when you're finished with it.
+> ```
+> FileLock lock = fileChannel.lock()
+> try {
+> <perform read/write/whatever on channel>
+> } catch (IOException) [
+> <handle unexpected exception>
+> } finally {
+> lock.release()
+> }
+> ```
+
+### 3.4 Memory-Mapped Files
+> The *MappedByteBuffer* object returned from *map()* behaves like a memory-based buffer in most respects, but its data elements are stored in a file on disk. Calling *get()* will fetch data from the disk file, and this data reflects the current content of the file, even if the file has been modified by an external process since the mapping was established. The data visible through a file mapping is exactly the same as you would see by reading the file conventionally.
+
+> Accessing a file through the memory-mapping mechanism can be far more efficient than reading or writing data by conventional means, even when using channel. No explicit system calls need to be made, which can be time-consuming. More importantly, the virtual memory system of the operating system automatically caches memory pages. These pages will be cached using system memory and will not consume space from the JVM's memory heap.
+
+> Large, structured files that contain indexes or other sections that are referenced or updated frequently can benefit tremendously from memory mapping.
+
+> Unlike ranges for file locks, mapped file ranges should not extend beyond the actual size of the file.
+
+> The requested mapping mode will be constrained by the access permissions of the *FileChannel* object on which *map()* is called. If the channel was opened as read-only, *map()* will throw a *NonWritableChannelException* if you ask for MapMode.READ_WRITE mode. *NonReadableChannelException* will be thrown if you request MapMode.READ_ONLY on a channel without read permission.
+
+> MapMode.PRIVATE indicates that you want a copy-on-write mapping. This means that any modifications you make via *put()* will result in a private copy of the data that only the *MappedByteBuffer* instance can see. No changes will be made to the underlying file, and any changes made will be lost when the buffer is garbage collected.
+
+> Once established, a mapping remains in effect until the *MappedByteBuffer* object is garbage collected. Unlike locks, mapped buffers are not tied to the channel that created them. Closing the associated *FileChannel* does not destroy the mapping; only disposal of the buffer object itself breaks the mappings.
+
+> When updating a file through a *MappedByteBuffer* object, you should always use *MappedByteBuffer.force()* rather than *FileChannel.force()*. The channel object may not be aware of all file updates made through the mapped buffer.
+
+> If the mapping was established with MapMode.READ_ONLY or MapMode.PRIVATE, then calling *force()* has no effect, since there will never be any changes to flush to disk.
+
+#### 3.4.1 Channel-to-Channel Transfers
+> The *transferTo()* and *transferFrom()* methods allow you to cross-connect one channel to another, eliminating the need to pass data through an intermediate buffer. These methods exist only on the *FileChannel* class, so one of the channels involved in a channel-to-channel transfer must be a *FileChannel*. You can't do direct transfer between socket channels, but socket channels implement *WritableByteChannel* and *ReadableByteChannel*, so the content of a file can be transferred to a socket with *transferTo()*, or data can be read from a socket directly into a file with *transferFrom()*.
+
+### 3.5 Socket Channels
+> The new socket channels can operate in nonblocking mode and are selectable. These two capabilities enable tremendous scalablity and flexibility in large application, such as web servers and middleware components.
+
+> Notice that *DatagramChannel* and *SocketChannel* implement the interfaces that define read and write capabilities, but *ServerSocketChannel* does not. *ServerSocketChannel* listens for incoming connects and creates new *SocketChannel* objects. It never transfers any data itself.
+
+java.nio.channels.SocketChannel = java.net.Socket  
+socketChannel.socket() = Socket  
+socketChannel.socket().getChannel() = SocketChannel 
+socket.getChannel() = null   
+java.nio.channels.ServerSocketChannel = java.net.ServerSocket  
+serverSocketChannel.socket() = ServerSocket  
+serverSocketChannel.socket().getChannel() = ServerSocketChannel  
+serverSocket.getChannel() = null  
+java.nio.channels.DatagramChannel = java.net.DatagramSocket  
+datagramChannel.socket() = DatagramSocket  
+datagramChannel.socket().getChannel() = DatagramChannel  
+datagramSocket.getChannel() = null  
+
+#### 3.5.2 ServerSocketChannel
+> *ServerSocketChannel* doesn't have a *bind()* method, it's necessary to fetch the peer socket and use it to bind to a port to begin listening for connections. Also use the peer *ServerSocket* API to set other socket options as needed.
+> ```
+> ServerSocketChannel ssc = ServerSocketChannel.open();
+> ServerSocket serverSocket = ssc.socket();
+> // Listen on port 1234
+> serverSocket.bind (new InetSocketAddress (1234));
+> ```
+
+> The *ServerSocketChannel* has an *accept()* method, as does its peer *java.net.ServerSocket* object. Once you're created a *ServerSocketChannel* and used the peer socket to bind it, you can then invoke *accept()* on either. If you choose to invoke *accept()* on the *ServerSocket*, it will behave the same as any other *ServerSocket*: always blocking and returning a *java.net.Socket* object. On the other hand, the *accept()* method of *ServerSocketChannel* returns objects of type *SocketChannel* and is capable of operating in nonblocking mode. If a security manager is in place, both methods perform the same security checks.
+
+> ```
+> SocketChannel socketChannel =
+> SocketChannel.open (new InetSocketAddress ("somehost", somePort));
+> ```
+> is equivalent to this:
+> ```
+> SocketChannel socketChannel = SocketChannel.open();
+> socketChannel.connect (new InetSocketAddress ("somehost", somePort));
+> ```
+
+> Stream-oriented sockets take time to set up because a packet dialog must take place between the two connecting systems to establish the state information needed to maintain the stream socket. Connecting to remote systems across the open Internet can be especially time-consuming. If a concurrent connection is underway on a *SocketChannel*, the *isConnectPending()* method returns true.
+
+> Call *finishConnect()* to complete the connection process. This method can be called safely at any time. One of the following will happen when invoking *finishConnect()* on *SocketChannel* object in nonblocking mode:
+>- The *connect()* method has not yet been called. A *NoConnectionPendingException* is thrown.
+>- Connection establishment is underway but not yet complete. Nothing happends, and *finishConnect()* immediately returns false.
+>- The *SocketChannel* has been switched back to blocking mode since calling *connect()* in nonblocking mode. If necessary, the invoking thread blocks util connection establishment is complete. *finishConnect()* then returns true.
+>- Connection establishment has completed since the initial invocation of *connect()* or the last call to *finishConnect()*. Internal state is updated in the *SocketChannel* object to complete the transition to connected state, and *finishConnect()* returns true. The *SocketChannel* object can then be used to transfer data.
+>- The connection is already established. Nothing happends, and *finishConnect()* returns true.
+
+> While in this intermediate connection-pending state, you should invoke only *finishConnect()*, *isConnectPending()*, or *isConnected()* on the channel. Once connection establishment has been successfully completed, *isConnected()* returns true.
+>```
+>InetSocketAddress addr = new InetSocketAddress (host, port);
+>SocketChannel sc = SocketChannel.open();
+>sc.configureBlocking (false);
+>sc.connect (addr);
+>while ( ! sc.finishConnect()) {
+>   doSomethingElse();
+>}
+>doSomethingWithChannel (sc);
+>sc.close();
+>```
+
+> Socket channels are thread-safe. Mutilple threads do not need to take special steps to protect against concurrent access, but only one read and one write operation will be in progress at any given time. Keep in mind that sockets are stream-oriented, not packet-oriented. They guarantee that the bytes sent will arrive in the same order but make no promises about maintaining groupings. A sender may write 20 bytes to a socket, and the receiver gets only 3 of those bytes when invoking *read()*. The remaining 17 bytes may still be in transit. For this reason, it's rarely a good design choice to have multiple, noncooperating threads share the same side of a stream socket.
+
+> The *connect()* and *finishConnect()* methods are mutually synchronized, and any read or write calls will block while one of these operations is in progress, even in nonblocking mode. Test the connection state with *isConnected()* if there's any doubt or if you can't afford to let a read or write block on a channel in this circumstance.
