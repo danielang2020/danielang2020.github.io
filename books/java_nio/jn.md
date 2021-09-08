@@ -375,3 +375,61 @@ datagramSocket.getChannel() = null
 > Socket channels are thread-safe. Mutilple threads do not need to take special steps to protect against concurrent access, but only one read and one write operation will be in progress at any given time. Keep in mind that sockets are stream-oriented, not packet-oriented. They guarantee that the bytes sent will arrive in the same order but make no promises about maintaining groupings. A sender may write 20 bytes to a socket, and the receiver gets only 3 of those bytes when invoking *read()*. The remaining 17 bytes may still be in transit. For this reason, it's rarely a good design choice to have multiple, noncooperating threads share the same side of a stream socket.
 
 > The *connect()* and *finishConnect()* methods are mutually synchronized, and any read or write calls will block while one of these operations is in progress, even in nonblocking mode. Test the connection state with *isConnected()* if there's any doubt or if you can't afford to let a read or write block on a channel in this circumstance.
+
+#### 3.5.4 DatagramChannel
+> Just as *SocketChannel* models connection-oriented stream protocols such as TCP/IP, *DatagramChannel* models connectionless packet-oriented protocols such as UDP.
+
+> *DatagramChannel* object can act both as server(listener) and client(sender).
+
+> If the *ByteBuffer* you provide does not have sufficient remaining space to hold the packet you're receiving, any bytes that don't fit will be sliently discard.
+
+> Here are some reasons to choose datagram sockets over stream sockets:
+>- Your application can tolerate lost or out-of-order data.
+>- You want to fire and forget and don't need to know if the packets you sent were received.
+>- Throughput is more important than reliability.
+>- You need to send to multiple receivers(multicast or broadcast) simultaneously.
+>- The packet metaphor fits the task at hand better than the stream metaphor.
+
+### 3.6 Pipes
+> A pipe is a conduit through which data can be passed in a single direction between two entities. The *Pipe* class implements a pipe paradigm, but the pipes it creates are intraprocess(within the JVM process) rather than interprocess(between processes).
+> A pipe is a pair of looped channels
+> ![](plc.png)
+
+[pipes](http://tutorials.jenkov.com/java-nio/pipe.html)
+
+### 3.7 The Channels Utility Class
+> Summary of java.nio.channels.Channels utility methods
+> ![](scum.png)
+> The wrapper *Channel* objects returned by these methods may or may not implement the *InterruptibleChannel* interface. Also, they might not extend from *SelectableChannel*. Therefore, it may not be possible to use these wrapper channels interchangeable with the other channel types defined in the java.nio.channels package. The specifics are implementation-dependent. If your application relies on these semantics, test the returned channel object with the *instanceof* operator.
+
+## Chapter 4. Selectors
+> Selectors provide the ability to do *readiness selection*, which enables *multiplexed* I/O.
+
+> True readiness selection must be done by the operating system. One of the most important functions performed by an operating system is to handle I/O requests and notify processes when their data is ready.
+
+### 4.1 Selector Basic
+
+#### 4.1.1 The Selector, SelectableChannel, and SelectionKey Classes
+> A channel must first be placed in nonblocking mode(by calling *configureBlocking(false)*) before it can be registered with a selector.
+
+#### 4.1.2 Setting Up Selectors
+> Selectors contain sets of channels currently registered with them. Only one registeration of a given channel with a given selector can be in effect at any given time.
+
+> An exceptional situation is when you attempt to reregister a channel with a selector for which the associated key has been cancelled, but the channel is still registered. Channels are not immediately deregistered when the associated key is cancelled. They remain registered until the next selection operation occurs.
+
+> SelectionKey Objects represent a specific registeration relationship. When it's time to terminate that relationship, call the *cancel()* method on the *SelectionKey* object.
+
+> When a channel is closed, all keys associated with it are automatically cancelled. When a selector is closed, all channels registered with that selector are deregister, and the associated keys are invalidated(cancelled). Once a key has been invalidated, calling any of its methods related to selection will throw a *CancelledKeyException*.
+
+> Changes made to the interest set of a key while a *select()* is in progress on the associated *Selector* will not affect that selection operation. Any changes will be seen on the next invocation of *select()*.
+
+> The ready set is a subset of the interest set and represents those operations from the interest set which were determineed to be ready on the channel by the last invocation of *select()*.
+>```
+> if(key.isWritable())
+> is equivalent to :
+> if((key.readyOps() & SelectionKey.OP_WRITE) != 0)
+>```
+
+> If the selection key is long-lived, but the object you attach should not be, remember to clear the attachment when you're done. Otherwise, your attached object will not be garbage collected, and you may have a memory leak.
+
+> One last thing to note about the *SelectionKey* class relates to concurrency. Generally, *SelectionKey* objects are thread-safe, but it's important to know that operations that modify the interest set are synchronized by *Selector* objects. This could cause calls to the *interestOps()* method to block for an indeterminate amount of time. The specific locking policy used by a selector, such as whether the locks are held throughout the selection process, is implementation-dependent. Luckily, this multiplexing capability is specifically designed to enable a single thread to manage many channels. Using selectors by multiple threads should be an issue in only the most complex of applications. Frankly, if you're sharing selectors among many threads and encountering synchronization issues, your design probably needs a rethink.
