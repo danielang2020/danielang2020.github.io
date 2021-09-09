@@ -417,6 +417,7 @@ datagramSocket.getChannel() = null
 
 > An exceptional situation is when you attempt to reregister a channel with a selector for which the associated key has been cancelled, but the channel is still registered. Channels are not immediately deregistered when the associated key is cancelled. They remain registered until the next selection operation occurs.
 
+### 4.2 Using Selection Keys
 > SelectionKey Objects represent a specific registeration relationship. When it's time to terminate that relationship, call the *cancel()* method on the *SelectionKey* object.
 
 > When a channel is closed, all keys associated with it are automatically cancelled. When a selector is closed, all channels registered with that selector are deregister, and the associated keys are invalidated(cancelled). Once a key has been invalidated, calling any of its methods related to selection will throw a *CancelledKeyException*.
@@ -433,3 +434,11 @@ datagramSocket.getChannel() = null
 > If the selection key is long-lived, but the object you attach should not be, remember to clear the attachment when you're done. Otherwise, your attached object will not be garbage collected, and you may have a memory leak.
 
 > One last thing to note about the *SelectionKey* class relates to concurrency. Generally, *SelectionKey* objects are thread-safe, but it's important to know that operations that modify the interest set are synchronized by *Selector* objects. This could cause calls to the *interestOps()* method to block for an indeterminate amount of time. The specific locking policy used by a selector, such as whether the locks are held throughout the selection process, is implementation-dependent. Luckily, this multiplexing capability is specifically designed to enable a single thread to manage many channels. Using selectors by multiple threads should be an issue in only the most complex of applications. Frankly, if you're sharing selectors among many threads and encountering synchronization issues, your design probably needs a rethink.
+
+### 4.3 Using Selectors
+
+#### 4.3.1 The Selection Process
+> Essentially, selectors are a wrapper for a native call to *select()*, *poll()*, or a similar operating system-specific system call(epoll, kqueue).
+
+#### 4.3.4 Concurrency
+> *Selector* objects are thread-safe, but the key sets they contain are not.
