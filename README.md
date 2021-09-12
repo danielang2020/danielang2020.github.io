@@ -10,7 +10,7 @@
 ## Java
 ### [Hazelcast](documents/hazelcast.md)
 
-### [JDK](docuements/jdk.md)
+### [JDK](documents/jdk.md)
 
 # Blogs
 - [Baeldung](https://www.baeldung.com/)
