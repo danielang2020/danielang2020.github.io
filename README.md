@@ -9,12 +9,13 @@
 
 ## Java
 ### [Hazelcast](documents/hazelcast.md)
-
 ### [JDK](documents/jdk.md)
 
 # Blogs
-- [Baeldung](https://www.baeldung.com/)
-- [Martin Fowler](https://martinfowler.com/)
+
+# Practice
+
+## [Netty](practices/netty.md)
 
 # Articles
 
