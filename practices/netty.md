@@ -56,3 +56,7 @@ ChannelPipeline.addLast(outbound_2);
 ChannelPipeline.addLast(outbound_3);
 ChannelPipeline.addLast(exception inbound);
 
+## ByteBuf
+- ByteBuf: pool and unpool; safe and unsafe; heap and direct.
+
+
