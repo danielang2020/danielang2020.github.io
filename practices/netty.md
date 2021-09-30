@@ -58,5 +58,5 @@ ChannelPipeline.addLast(exception inbound);
 
 ## ByteBuf
 - ByteBuf: pool and unpool; safe and unsafe; heap and direct.
-
+- ResourceLeakDetector: PooledByteBufAllocator.newHeapBuffer、PooledByteBufAllocator.newDirectBuffer、UnpooledByteBufAllocator、newDirectBuffer
 
