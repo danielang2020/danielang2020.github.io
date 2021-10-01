@@ -21,7 +21,101 @@
 
 > Unlike the abstraction provided by the OS for the CPU and memory, the OS does not create a private, virtualized disk for each application. Rather, it is assumed that often times, users will want to share information that is in files.
 
+## Virutalization
 
+### 4 Processes
+
+#### 4.3 Process Creation: A little More Detail
+> The first thing that the OS must do to run a program is to load its code and any static data into memory, into the address space of the proces.
+
+> A process can be in one of three status:
+> - Running: In the running state, a process is running on a processor. This means it is executing instructions.
+> - Ready: In the ready state, a process is ready to run but for some reason the OS has chosen not to run it at this given moment.
+> - Blocked: In the blocked state, a process has performed some kind of operation that makes it not ready to run until some other event take place. A common example: when a process initiates an I/O request to a disk, it becomes blocked and thus some other process can use the processor.
+
+> Being moved from ready to running means the process has been scheduled; being moved from running to ready means the process has been descheduled. Once a process has become blocked(e.g., by initating an I/O operation), the OS will keep it as such util some event occurs(e.g., I/O completion); at that point, the process moves to the ready state again(and potentially immediately to running again, if the OS so decides).
+
+### 5 Process API
+
+#### 5.3 Finally, The exec() System call
+> ```
+> p3.c
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <unistd.h>
+> #include <string.h>
+> #include <sys/wait.h>
+> 
+> int
+> main(int argc, char *argv[])
+> {
+>     printf("hello world (pid:%d)\n", (int) getpid());
+>     int rc = fork();
+>     if (rc < 0) {
+>         // fork failed; exit
+>         fprintf(stderr, "fork failed\n");
+>         exit(1);
+>     } else if (rc == 0) {
+>         // child (new process)
+>         printf("hello, I am child (pid:%d)\n", (int) getpid());
+>         char *myargs[3];
+>         myargs[0] = strdup("wc");   // program: "wc" (word count)
+>         myargs[1] = strdup("p3.c"); // argument: file to count
+>         myargs[2] = NULL;           // marks end of array
+>         execvp(myargs[0], myargs);  // runs word count
+>         printf("this shouldn't print out");
+>     } else {
+>         // parent goes down this path (original process)
+>         int wc = wait(NULL);
+>         printf("hello, I am parent of %d (wc:%d) (pid:%d)\n",
+> 	       rc, wc, (int) getpid());
+>     }
+>     return 0;
+> }
+> ```
+> The code above is the same as "*ws p3.c*"
+
+#### 5.4 Why? Motivating The API
+> The Shell shows you a prompt and then waits for you to type something into it. You then type a command into it; in most cases, the shell then figures out where in the file system the executable resides, calls fork() to create a new child process to run the command, calls some variant of exec() to run the command, and then waits for the command to complete by calling wait(). When the child completes, the shell returns from wait() and prints out a prompt again, ready for your next command.
+
+> ```
+> p4.c
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <unistd.h>
+> #include <string.h>
+> #include <fcntl.h>
+> #include <assert.h>
+> #include <sys/wait.h>
+> 
+> int
+> main(int argc, char *argv[])
+> {
+>     int rc = fork();
+>     if (rc < 0) {
+>         // fork failed; exit
+>         fprintf(stderr, "fork failed\n");
+>         exit(1);
+>     } else if (rc == 0) {
+> 	// child: redirect standard output to a file
+> 	close(STDOUT_FILENO); 
+> 	open("./p4.output", O_CREAT|O_WRONLY|O_TRUNC, S_IRWXU);
+> 
+> 	// now exec "wc"...
+>         char *myargs[3];
+>         myargs[0] = strdup("wc");   // program: "wc" (word count)
+>         myargs[1] = strdup("p4.c"); // argument: file to count
+>         myargs[2] = NULL;           // marks end of array
+>         execvp(myargs[0], myargs);  // runs word count
+>     } else {
+>         // parent goes down this path (original process)
+>         int wc = wait(NULL);
+> 	assert(wc >= 0);
+>     }
+>     return 0;
+> }
+> ```
+> The code above is the same as '*wc p4.c > p4.output*'
 
 
 
