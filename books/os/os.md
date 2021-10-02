@@ -117,6 +117,18 @@
 > ```
 > The code above is the same as '*wc p4.c > p4.output*'
 
+### 6 Direct Execution
 
+#### 6.1 Basic Technique: Limited Direct Execution
+> Without limits on running programs, the OS wouldn't be in control of anything and thus would be "just a library" -- a very sad state of affairs for an aspiring operating system!
+
+#### 6.2 Problem #1: Restricted Operations
+> The hardware assists the OS by providing different modes of execution. In user mode, applications do not have full access to hardware resources. In kernel mode, the OS has access to the full resources of the machine. 
+
+[What is the difference between Trap and Interrupt?](https://stackoverflow.com/questions/3149175/what-is-the-difference-between-trap-and-interrupt)
+
+> To execute a system call, a program must execute a special trap instruction. This  instruction simultaneously jumps into the kernel and raises the privilege level to kernel mode; once in the kernel, the system can now perform whatever privileged operations are needed(if allowed), and thus do the required work for the calling process. When finished, the OS calls a special return-from-trap instruction, which,  as you might expect, returns into the calling user program while simultaneously reducing the privilege level back to user mode.
+
+![](img/ldep.png)
 
 
