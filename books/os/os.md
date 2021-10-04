@@ -186,3 +186,41 @@
 #### 7.8 Incorporating I/O
 > A common approach is to treat each 10-ms sub-job of A as an independent job. Thus, when the system starts, its choice is whether to schedule a 10-ms A or a 50-ms B. With STCF, the choice is clear: choose the shorter one, in this case A. Then, when the first sub-job of A is submitted, and it preempts B and runs for 10 ms. Doing so allows for overlap, with the CPU being used by one process while waiting for the I/O of another process to complete; the system is thus better utilize.
 > ![](img/overlap.png)
+
+### 8 Scheduling: The Multi-Level Feedback Queue
+
+#### 8.1 MLFQ: Basic Rules
+> The MLFQ(Multi-level Feedback Queue) has a number of distinct queues, each assigned a different priority level. At any given time, a job that is ready to run is on a single queue. MLFQ uses priorities to decide which job should run at a given time: a job with higher priority is chosen to run. More than one job may be on a given queue, and thus have the same priority. In this case, we will just use round-robin scheduling among thoes jobs.  
+>- Rule 1: If priority(A) > Priority(B), A runs(B doesn't).
+>- Rule 2: If priority(A) = Priority(B), A & B run in RR.
+> ![](img/mlfq.png)
+
+> The key to MLFQ scheduling therefore lies in how the scheduler sets priorities. Rather than giving a fixed priority to each job, MLFQ varies the priority of a job based on its observed behavior. If, for example, a job repeatedly relinquishes the CPU while waiting for input from the keyboard, MLFQ will keep its priority high, as this is how an interactive process might behave. If, instead, a job uses the CPU intensively for long periods of time, MLFQ will reduce its priority. In this way, MLFQ will try to learn about processes as they run, and thus use the history of the job to predict its future behavior.
+
+#### 8.2 Attempt #1: How To Change Priority
+>- Rule 3: When a job enters the system, it is placed at the hightest priority(the topmost queue).
+>- Rule 4a: If a job uses up an entire time slice while running, its priorityis reduced(i.e., it moves down one queue).
+>- Rule 4b: If a job gives up the CPU before the time slice is up, it stays at the same priority level.
+
+#### 8.3 Attempt #2: The Priority Boost
+>- Rule 5: After some time period S, move all the jobs in the system to the topmost queue.
+
+#### 8.4 Attempt #3: Better Accounting
+> Rewrite Rules 4a and 4b to the following single rule:
+>- Rule 4: Once a job uses up its time allotment at a given level(regardless of how many times it has given up the CPU), its priority is reduced(i.e., it moves down one queue).
+
+#### 8.5 Tuning MLFQ And Other Issues
+> The high-priority queues are usually given short time slices; they are comprised of interactive jobs, after all, and thus quickly alternating between them makes sense. The low-priority queues, in contrast, contain long-running jobs that are CPU-bound; hence, longer time slices work well. Figure 8.7 shows an example in which two jobs run for 20ms at the highest queue(with a 10-ms time slice), 40ms in the middle(20-ms time slice), and with a 40ms time slice at the lowest.
+> ![](img/lplq.png)
+
+#### 8.6 MLFQ: Summary
+> It has multiple levels of queues, and uses feeback to determine the priority of a given job.
+
+> The refined set of MLFQ rules:
+>- Rule 1: If Priority(A) > Priority(B), A runs(B doesn't).
+>- Rule 2: If Priority(A) = Priority(B), A & B run in round-robin fashion using the time slice(quantum length) of the given queue.
+>- Rule 3: When a job enters the system, it is placed at the highest priority(the topmost queue).
+>- Rule 4: Once a job uses up its time allotment at a given level(regardless of how many times it has given up the CPU), its priority is reduced(i.e., it moves down one queue).
+>- Rule 5: After some time period S, move all the jobs in the system to the topmost queue.
+
+> MLFQ is interesting for the following reason: instead of demanding a priori knowledge of the nature of a job, it observers the execution of a job and prioritizes it accordingly. In this way, it manages to achieve the best of both worlds: it can deliver excellent overall performance(similar to SJF/STCF) for short-running interactive jobs, and is fair and makes progress for long-running CPU-intensive workloads.
