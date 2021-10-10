@@ -17,6 +17,7 @@
 
 
 # Blogs
+## [How to Scale WebSockets](blogs/how_to_scale_websockets.md)
 
 # Practice
 
