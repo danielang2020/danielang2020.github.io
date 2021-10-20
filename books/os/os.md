@@ -538,4 +538,10 @@
 #### 18.2 Where Are Page Tables Stored?
 > Because page tables are so big, we don't keep any special on-chip hardware in the MMU to store the page table of the currently-running process. Instead, we store the page table for each process in memory somewhere.
 
-#### 18.3 What's Actually In The Page Table?
+### 19 Paging: Faster Translations(TLBs)
+> Upon each virtual memory reference, the hardware first checks the TLB(translation-lookaside buffer) to see if the desired translation is held therein; if so, the translation is performed(quickly) without having to consult the page table(which has all translations).
+
+#### 19.1 TLB Basic Algorithm
+> The TLB, like all cache, is built on the premise that in the common case, translations are found in the cache. If so, little overhead is added, as the TLB is found near the processing core and is designed to be quite fast. When a miss occurs, the high cost of paging is incurred; the page table must be accessed to find the translation, and an extra memory reference result. If this happen often, the program will likely run noticeably more slowly; memory accesses, relative to most CPU instructions, are quite costly, and TLB misses lead to more memory accesses. Thus, it is our hope to avoid TLB misses as much as we can.
+
+
