@@ -524,3 +524,18 @@
 
 > It is important to remember that this page table is a per-process data structure. If another process were to run in our example above, the OS would have to manage a different page table for it, as its virtual pages obviously map to different physical pages.
 
+> ```
+> mvol <virtual address>, %eax 
+> ```
+> To translate this virtual address that the process generated, we have to first split it into two components: the virtual page number(VPN), and the offset within the page. For this example, because the virtual address space of the process is 64 bytes, we need 6 bits total for our virtual address($2^{6}$ = 64). Thus, our virtual address can be conceptualized as follows:
+> ![](img/vpno.png)
+> In this diagram, Va5 is the highest-order bit of the virtual address, and Va0 the lowest-order bit. Because we know the page size(16 bytes), we can further divide the virtual address as follows:
+> ![](img/vpno1.png)
+> The page size is 16 bytes in a 64-byte address space; thus we need to be able to select 4 pages, and the top 2 bits of the address do just that. Thus, we have a 2-bit virtual page number(VPN). The remaining bits tell us which byte of the page we are interested in, 4 bits in this case; we call this the offset.
+> When a process generates a virtual address, the OS and hardware must combine to translate it into a meaningful physical address.
+> ![](img/vpno2.png)
+
+#### 18.2 Where Are Page Tables Stored?
+> Because page tables are so big, we don't keep any special on-chip hardware in the MMU to store the page table of the currently-running process. Instead, we store the page table for each process in memory somewhere.
+
+#### 18.3 What's Actually In The Page Table?
