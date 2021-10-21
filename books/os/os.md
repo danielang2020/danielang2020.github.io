@@ -544,4 +544,17 @@
 #### 19.1 TLB Basic Algorithm
 > The TLB, like all cache, is built on the premise that in the common case, translations are found in the cache. If so, little overhead is added, as the TLB is found near the processing core and is designed to be quite fast. When a miss occurs, the high cost of paging is incurred; the page table must be accessed to find the translation, and an extra memory reference result. If this happen often, the program will likely run noticeably more slowly; memory accesses, relative to most CPU instructions, are quite costly, and TLB misses lead to more memory accesses. Thus, it is our hope to avoid TLB misses as much as we can.
 
+#### 19.3 Who Handles The TLB Miss?
+> In the olden days, the hardware had complex instruction sets and would handle the TLB miss entirely. More modern architectures have what is  known as a software-managed TLB. On a TLB miss, the hardware simply raise an exception, which pauses the current instruction stream, raise the privilege level to kernel mode, and jumps to a trap handler.
+
+> The primary advantage of the software-managed approach is flexiblity: the OS can use any data structure it wants to implement the page table, without necessitating hardware change. Another advantage is simplicity, the hardware doesn't do much on a miss: just raise an exception and let the OS TLB miss handler do the rest.
+
+#### 19.4 TLB Contents: What's In There?
+> A typical TLB might have 32, 64, or 128 entries and be what is called fully associative. Basically, this just means that any given translation can be anywhere in the TLB, and that the hardware will search the entire TLB in parallel to find the desired translation. A TLB entry might look like this:
+>```
+> VPN | PFN | other bits
+>```
+
+#### 19.5 TLB Issue: Context Switches
+
 
