@@ -556,5 +556,11 @@
 >```
 
 #### 19.5 TLB Issue: Context Switches
+> The TLB contains virtual-to-physical translations that are only valid for the currently running process. As a result, when switching from one process to another, the hardware or OS(or both) must be careful to ensure that the about-to-be-run process does not accidentally use translations from some previously run process.
 
+> Some systems add hardware support to enable sharing of the TLB across context switches. In particular, some hardware systems provide an address space identifier(ASID) field in the TLB. You can think of the ASID as a process identifier(PID), but usually it has fewer bits.
+> ![](img/asid.png)
+
+> When two processes share a page(a code page). In the example above, Process 1 is sharing physical page 101 with process 2; P1 maps this page into the 10th page of its address space, whereas P2 maps it to the 50th page of its address space. Sharing of code pages(in binary, or shared libraries) is useful as it reduces the number of physical pages in use, thus reducing memory overheads.
+> ![](img/asid1.png)
 
