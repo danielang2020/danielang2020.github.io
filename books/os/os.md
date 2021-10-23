@@ -564,3 +564,22 @@
 > When two processes share a page(a code page). In the example above, Process 1 is sharing physical page 101 with process 2; P1 maps this page into the 10th page of its address space, whereas P2 maps it to the 50th page of its address space. Sharing of code pages(in binary, or shared libraries) is useful as it reduces the number of physical pages in use, thus reducing memory overheads.
 > ![](img/asid1.png)
 
+### 20 Paging: Smaller Tables
+#### 20.1 Simple Solution: Bigger Pages
+> We could reduce the size of the page table in one simple way: use bigger pages. The major problem with this approach, however, is that big pages lead to waste within each page, a problem known as internal fragmentaion. Applications thus end up allocating pages but only using little bits and pieces of each, and memory quickly fills up with these overly-large pages.
+
+#### 20.2 Hybrid Approach: Paging and Segments
+> Instead of having a single page table for the entire address space of the process, why not have one per logical segment?
+
+> Remember with segmentation, we had a base register that told  us where each segment lived in physical memory, and a bound or limit register that told us the size of said segment. In our hybrid, we still have those structures in the MMU; here, we use the base not to point to the segment itself but rather to hold the physical address of the page table of that segment. The bounds register is used to indicate the end of the page table(i.e., how many valid pages it has).
+> Let's do a simple example of clarify. Assume a 32-bit virtual address space with 4HK pages, and an address space split into four segments. We'll only use three segments for this example: one for code, one for heap, one for stack. To determine which segment an address refers to, we'll use the top two bits of the address space. Let's assume 00 is the unused segment, with 01 for code, 10 for the heap, and 11 for the stack. Thus, a virtual address looks like this:
+> ![](img/hva.png)
+> In the hardware, assume that there are thus three base/bounds pairs, one each for code,heap, and stack. When a process is running, the base register for each of these segments contains the pyhsical address of a linear page table for the segment; thus, each process in the system now has three page tables associated with it. On a context switch, there registers must be changed to reflect the location of the page tables of the newly-running process.
+
+> The critical difference in our hybrid scheme is the presence of a bounds register per segment; each bounds register holds the value of the maximum valid page in the segment. For example, if the code segment is using its first three pages(0,1 and 2), the code segment page table will only have three entries allocated to it and the bounds register will be set to 3; memory accesses beyond the end of the segment will generate an exception and likely lead to the termination of the process.
+
+#### 20.3 Multi-level Page Tables
+> The basic idea behind a multi-level page table is simple. First, chop up the page table into page-sized unit; then, if an entire page of page-table entries(PTFs) is invalid, don't allocate that page of the page table at all. To track whether a page of the page table is valid(and if valid, where it is in memory), use a new structure, called the page directory. The page directory thus either can be used to tell you where a page of the page table is, or that the entire page of the page table contains on valid pages.
+
+> Figure 20.3 shows an example. On the left of the figure is the classic linear page table; even though most of the middle regions of the address space are not valid, we still require page-table space allocated for those regions(i.e., the middle two pages of the page table). On the right is a multi-level page table. The page directory marks just two pages of the page table as valid(the first and last); thus, just those two pages of the page table reside in memory. And thus you can see one way to visualize what a multi-level table is doing: it just makes parts of the linear page table disappear(freeing those frames for other uses), and tracks which pages of the page table are allocated with the page directory.
+> ![](img/lmlpt.png)
