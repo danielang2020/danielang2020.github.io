@@ -611,4 +611,41 @@
 #### 21.6 When Replacements Really Occur
 > There are many reasons for the OS to keep a small portion of memory free more proactively. To keep a small amount of memory free, most operating systems thus have some kind of **high watermark(HW)** and **low watermark(LW)** to help decide when to start evicting pages from memory. How this works is as follows: when the OS notices that there are fewer than LW pages available, a background thread that is responsible for freeing memory runs. The thread evicts pages until there are HW pages available. The background thread, sometimes called the swap daemon or page daemon, then goes to sleep, happy that it has freed some memory for running processes and the OS to use.
 
+### 22 Beyond Physical Memory: Policies
+> Knowing the number of cache hits and misses let us calculate the average memory access time(AMAT) for a program. Specifically, given these values, we can compute the AMAT of a program as follows:
+AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
+> where $T_{M}$ represents the cost of accessing memory, $T_{D}$ the cost of accessing disk, and $P_{Miss}$ the probability of not finding the data in the cache(a miss); $P_{Miss}$ varies from 0.0 to 1.0, and sometimes we refer to a percent miss rate instead of a probability. Note you always pay the cost of accessing  the data in memory; when you miss, however, you must additionally pay the cost of fetching the data from disk.
+
+#### 22.2 The Optimal Replacement Policy
+> The optimal replacement policy leads to the fewest number of misses overall. Replacing the page that will be accessed furthest in the future is the optimal policy, resulting in the fewest-possible cache misses.
+
+> If you have to throw out some page, why not throw out the one that is needed the furthest from now? By doing so, you are essentially saying that all the other pages in the cache are more important than the one furthest out. The reason this is true is simple: you will refer to the other pages before you refer to the one furthest out.
+> ![](img/221.png)
+> Unfortunately, as we saw before in the development of scheduling policies, the future is not generally known; you can't build the optimal policy for a general-purpose operating system. Thus, in developing a real, deployable policy, we will focus on approaches that find some other way to decide which page to evict. The optimal policy will thus serve only as a comparision point, to know how close we are to "perfect".
+
+#### 22.3 A Simple Policy: FIFO
+> Some system used FIFO replacement, where pages were simply placed in a queue when they enter the system; when a replacement occurs, the page on the tail of the queue(the "first-in" page) is evicted. FIFO has one great strength: it is quite simple to implement.
+> ![](img/222.png)
+
+> Comparing FIFO to optimal, FIFO does notably worse: a 36.4% hit rate(or 57.1% excluding compulsory misses). FIFO simply can't determine the importance of blocks: even though page 0 had been accessed a number of times, FIFO still kicks it out, simply because it was the first one brought into memory.
+
+#### 22.4 Another Simple Policy: Random
+> Random policy simply picks a random page to replace under memory pressure. Random has properties similar to FIFO; it is simple to implement, but it doesn't really try to be too intelligent in picking which blocks to evict. Of course, how Random does depends entirely upon how lucky(or unlucky) Random gets in its choices.
+> ![](img/223.png)
+
+#### 22.5 Using History: LRU
+> Unfortunately, any policy as simple as FIFO or Random is likely to have a common problem: it might kick out an important page, one that is about to be referenced again.
+
+> As we did with scheduling policy, to improve our guess at the future, we once again lean on the past and use **history** as our guide.
+
+> One type of historical information a page-replacement policy could use is frequency; if a page has been accessed many times, perhaps it should not be replaced as it clearly has some value. A more commonly-used property of a page is its recency of access; the more recently a page has been accessed, perhaps the more likely it will be accessed again.
+
+> This family of policies is based on what people refer to as the principle of locality, which basically is just an observation about programs and their behavior. What this principle says, quite simply, is that programs tend to access certain code sequences(e.g., in a loop) and data structures(e.g., an array accessed by the loop) quite frequently; we should thus try to use history to figure out which pages are important, and keep those pages in memory when it comes to eviction time.
+> And thus, a family of simple historically-based algorithms are born. The **Least-Frequently-Used(LFU)** policy replaces the least-frequently-used page when an eviction must take place. Similarly, the **Least-Recently-Used(LRU)** policy replaces the least-recently-used page.
+
+> From the figure, you can see how LRU can use history to do better than stateless polices such as Random or FIFO. Thus, LRU does as well as possible , matching optimal in its performance.
+> ![](img/225.png)
+
+
+
 
