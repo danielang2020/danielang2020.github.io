@@ -646,6 +646,13 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > From the figure, you can see how LRU can use history to do better than stateless polices such as Random or FIFO. Thus, LRU does as well as possible , matching optimal in its performance.
 > ![](img/225.png)
 
+#### 22.6 Workload Example
+> We can draw a number of conclusions from the Figure 22.6. First, when there is no locality in the workload, it doesn't matter much which realistic policy you are using; LRU, FIFO, and Random all perform the same, with the hit rate exactly determined by the size of the cache, Second, when the cache is large enough to fit the entire workload, it also doesn't matter which policy you use; all policies(even Random) converge to a 100% hit rate when all the referenced blocks fit in cache. Finally, you can see that optimal performs noticeably better than the realistic policies; peeking into the future, if it were possible, does a much better job of replacement.
+> ![](img/226.png)
 
+> "80-20" workload exhibits locality: 80% of the references are made to 20% of the pages(the "hot" pages); the remaining 20% of the references are made to the remaining 80% of the pages(the "cold" pages). As you can see from the figure, which both random and FIFO do reasonably well, LRU does better, as it is more likely to hold onto the hot pages; as those pages have been referred to frequently in the past, they are likely to be referred to again in the near future. Optimal once again does better, showing that LRU's historical information is not perfect.
+> ![](img/227.png)
+> You might now be wondering: is LRU's improvement over Random and FIFO really that big of a deal? The answer, as usual, is "it depends." If each miss is very costly(not uncommon), then even a small increase in hit rate(reduction in miss rate) can make a huge difference on performance. If misses are not so costly, then of course the benifits possible with LRU are not nearly as important.
 
-
+> We refer to "looping sequential" workload as 50 pages in sequence, starting at 0, then 1,..., up to page 49, and then we loop, repeating those accesses, for a total of 10,000 accesses to 50 unique pages. This workload, common in many applications(including important commercial applications such as databases), represents a worst-case for both LRU and FIFO. These algorithms, under a looping-sequential workload, kick out older pages; unfortunately, due to the looping nature of the workload, these older pages are going to be accessed sooner than the pages that the policies prefer to keep in cache. Indeed, even with a cache of size 49, a looping-sequential workload of 50 pages results in a 0% hit rate. Interestingly, Random fares notably better, not quite approaching optimal, but at least achieving a non-zero hit rate. Turns out that random has some nice properties; one such property is not having weird corner-case behaviors.
+> ![](img/228.png)
