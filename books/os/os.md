@@ -572,7 +572,7 @@
 > Instead of having a single page table for the entire address space of the process, why not have one per logical segment?
 
 > Remember with segmentation, we had a base register that told  us where each segment lived in physical memory, and a bound or limit register that told us the size of said segment. In our hybrid, we still have those structures in the MMU; here, we use the base not to point to the segment itself but rather to hold the physical address of the page table of that segment. The bounds register is used to indicate the end of the page table(i.e., how many valid pages it has).
-> Let's do a simple example of clarify. Assume a 32-bit virtual address space with 4HK pages, and an address space split into four segments. We'll only use three segments for this example: one for code, one for heap, one for stack. To determine which segment an address refers to, we'll use the top two bits of the address space. Let's assume 00 is the unused segment, with 01 for code, 10 for the heap, and 11 for the stack. Thus, a virtual address looks like this:
+> Let's do a simple example of clarify. Assume a 32-bit virtual address space with 4KB pages, and an address space split into four segments. We'll only use three segments for this example: one for code, one for heap, one for stack. To determine which segment an address refers to, we'll use the top two bits of the address space. Let's assume 00 is the unused segment, with 01 for code, 10 for the heap, and 11 for the stack. Thus, a virtual address looks like this:
 > ![](img/hva.png)
 > In the hardware, assume that there are thus three base/bounds pairs, one each for code,heap, and stack. When a process is running, the base register for each of these segments contains the pyhsical address of a linear page table for the segment; thus, each process in the system now has three page tables associated with it. On a context switch, there registers must be changed to reflect the location of the page tables of the newly-running process.
 
@@ -673,4 +673,15 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > For most pages, the OS simply uses demand paging, which means the OS brings the page into memory when it is accessed, "on demand" as it were. Of course, the OS could guess that a page is about to be used, and thus bring it in ahead of time; this behavior is known as prefetching and should only be done when where is reasonable chance of success.
 > Another policy determines how the OS writes pages out to disk. Of course, they could simply be written out one at a time; however, many systems instead collect a number of pending writes together in memory and write them to disk in one(more effcient) write. This behavior is usually called clustering or simply grouping of writes, and is effective because of the nature of disk drives, which perform a single large write more effciently than many small ones.
 
+### 23 Complete Virtual Memory Systems
+#### 23.1 VAX/VMS Virtual Memory
+> **WHY NULL POINTER ACCESSES CAUSE SEG FAULTS**
+> You shold now have a good understanding of exactly what happens on a null-pointer dereference. A process generates a virtual address of 0, by doing something like this:
+>```
+> int *p = NULL; //set p = 0
+> *p = 10;       // try to store 10 to virtual addr 0
+>```
+> The hardware tries to look up the VPN(also 0 here) in the TLB, and suffers a TLB miss. The page table is consulted, and the entry for VPN 0 is found to be marked invalid. Thus, we have an invalid access, which transfers control to the OS, which likely terminates the process(on UNIX system, processes are sent a signal which allows them to react to such a fault; if uncaught, however, the process is killed).
+> ![](img/231.png)
 
+#### 23.2 The Linux Virtual Memeory System
