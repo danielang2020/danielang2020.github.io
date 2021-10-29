@@ -699,3 +699,21 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > As it turns out, there are at least two major reasons you should use threads. The first is simple: **parallelism**. Imagine you are writing a program that performs operations on very large arrays, for example, adding two large arrays together, or incrementing the value of each element in the array by some amount. If you are running on just a single processor, the task is straightforward: just perform each operation and be done. However, if you are executing the program on a system with mulitple processors, you have the potential of speeding up this process considerably by using the processors to each perform a portion of the work. The task of transforming your standard single-threaded program into a program that does this sort of work on multiple CPUs is called **parallelization**, and using a thread per CPU to do this work is a natural and typical way to make programs run faster on modern hardware.
 > The second reason is a bit more subtle: to avoid blocking program progress due to slow I/O. Imagine that you are writing a program that performs different types of I/O: either waiting to send or receive a message, for an explicit disk I/O to complete, or even(implicitly) for a page fault to finish. Instead of waiting, your program may wish to do something else, inluding utilizing the CPU to perform computation, or even issuing further I/O requests. Using threads is a natural way to avoid getting stuck; while one thread in your program waits(i.e., is blocked waiting for I/O), the CPU sheduler can switch to other threads, which are ready to run and do something useful. Threading enables overlap of I/O with other activities within a single program, much like multiprogramming did for processes across programs; as a result, many modern server-based applications(web servers, database management systems, and the like) make use of threads in their implementations.
 > Of course, in either of the cases mentioned above, you could use multiple processes instead of threads. However, threads share an address space and thus make it easy to share data, and hence are a natural choice when constructing these types of programs. Processes are a more sound choice for logically seperate tasks where little sharing of data structures in memory is needed.
+
+### 27 Interlude: Thread API
+
+### 28 Locks
+#### 28.1 Locks: The Basic Idea
+> A lock is just a variable, and thus to use one, you must declare a lock variable of some kind(such as mutex above). This lock variable(or just "lock" for short) holds the state of the lock at any instant in time. It is either available(or unlocked or free) and thus no thread holds the lock, or acquired(or locked or held), and thus exactly one thread holds the lock and presumably is in a critical section.
+
+> The semantics of the lock() and unlock() rontines are simple. Calling the routine lock() tries to acquire the lock; if no other thread holds the lock(i.e., it is free), the thread will acquire the lock and enter the critical section; this thread is sometimes said to be the owner of the lock. If another thread then call lock() on that same lock variable(mutex in this example), it will not return while the lock is held by another thread; in this way, other threads are prevented from entering the critical section while the first thread that holds the lock is in there.
+> Once the owner of the lock calls unlock(), the lock is now available(free) again. If no other threads are waiting for the lock(i.e., no other thread has called lock() and is stuck therein), the state of the lock is simply changed to free. If there are waiting threads(stuck in lock()), one of them will(eventually) notice(or be informed of) this change of the lock's state, acquire the lock, and enter the critical section.
+
+> In general, we view threads as entities created by the programmer but scheduled by the OS, in any fashion that the OS chooses.
+
+#### 28.2 Pthread Locks
+> The name that the POSIX library uses for a lock is a **mutex**, as it is used to provide **mutual exclusion** between threads, i.e., if one thread is in the critical section, it excludes the others from entering until it has completed the section.
+
+#### 28.4 Evaluating Locks
+
+
