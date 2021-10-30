@@ -859,3 +859,32 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 >   lock->turn = lock->turn + 1;
 > }
 >```
+
+> TIP: LESS CODE IS BETTER CODE(LAUER'S LAW)
+> Programmers tend to brag about how much code they wrote to do something. Doing so is fundamentally broken. What one should brag about, rather, is how little code one wrote to accomplish a given task. Short, concise code is always preferred; it is likely easier to understand and has fewer bugs. 
+
+#### 28.13 A simple Approach: Just Yield, Baby
+> Our first try is a simple and friendly approach: when you are going to spin, instead give up the CPU to another thread.
+> In this approach, we assume an operating system primitive yield() which a thread can call when it wants to give up the CPU and let another thread run. A thread can be in one of three state(running, ready, or blocked); yield is simply a system call that moves the caller from the running state to the ready state, and thus promotes another thread to running. Thus, the yielding thread essentially deschedules itself.
+>```
+> void init() {
+>   flag = 0;
+> }
+> 
+> void lock(){
+>   while(TestAndSet(&flag,1) == 1)
+>       yield(); // give up the CPU
+> }
+>
+> void unlock(){
+>   flag = 0;
+> }
+>```
+
+> This approach is still costly; the cost of a context switch can be substantial, and there is thus plenty of waste.
+> Worse, we have not tackled the starvation problem at all. A thread may get caught in an endless yield loop while other threads repeatedly enter and exit the critical section. 
+
+#### 28.14 Using Queues: Sleeping Instead Of Spinning
+
+
+
