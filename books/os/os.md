@@ -794,3 +794,68 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 >   return original;
 > }
 >```
+
+#### 28.10 Load-Linked and Store-Conditional
+> The load-linked operates much like a typical load instruction, and simply fetches a value from memory and places it in a register. The key difference comes with the store-conditional, which only succeeds(and updates the value stored at the address just load-linked from) if no intervening store to the address has taken place. In the case of success, the store-conditional returns 1 and updates the value at ptr to value; if it fails, the value at ptr is not updated and 0 is returned.
+
+> The lock() code is the only interesting piece. First, a thread spins waiting for the flag to be set to 0(and thus indicate the lock is not held). Once so, the thread tries to acquire the lock via the store-conditional; if it succeeds, the thread has atomically changed the flag's value to 1 and thus can proceed into the critical section.
+> Note how failure of the store-conditional might arise. One thread calls lock() and executes the load-linked, returning 0 as the lock is not held. Before it can attempt the store-conditional, it is interrupted and another thread enters the lock code, also executing the load-linked instruction, and also getting a 0 and continuing. At this point, two threads have each executed the load-linked and each are about to attempt the store-conditional. The key feature of these instructions is that only one of these threads will succeed in updating the flag to 1 and thus acquire the lock; the second thread to attempt the store-conditional will fail(because the other thread updated the value of flag between its load-linked and store-conditional) and thus have to try to acquire the lock again.
+>```
+> int LoadLinked(int *ptr) {
+>   return *ptr;
+> }
+>
+> int StoreConditional(int *ptr, int value) {
+>   if(no update to *ptr since LoadLinked to this address) {
+>       *ptr = value;
+>       return 1; // success!
+>   } else {
+>       return 0; // failed to update
+>   }
+> }
+>
+> void lock(lock_t *lock) {
+>   while(1) {
+>       while(LoadLinked(&lock->flag) == 1)
+>           ; //spin util it's zero
+>       if (StoreConditional(&lock->flag,1) == 1)
+>           return ; // if set-it-to-1 was a success: all done
+>                    // otherwise: try it all over again
+>   }
+> }
+>
+> void unlock(lock_t *lock) {
+>   lock->flag = 0;
+> }
+>```
+
+#### 28.11 Fetch-And-Add
+> Instead of a single value, this solution uses a ticket and turn variable in combination to build a lock. The basic operation is pretty simple: when a thread wishes to acquire a lock, it first does an atomic fetch-and-add on the ticket value; that value is now considered this thread's "turn"(myturn). The globally shared lock->turn is then used to determine which thread's turn it is; when (myturn == turn) for a given thread, it is that thread's turn to enter the critical section. Unlock is accomplished simple by incrementing the turn such that the next waiting thread(if there is one) can now enter the critical section.
+> Note one important difference with this solution versus our previous attempts: it ensures progress for all threads. Once a thread is assigned its ticket value, it will be scheduled at some point in the future(once those in front of it have passed through the critical section and released the lock). In our previous attempts, no such guarantee existed; a thread spinning on test-and-set(for example) could spin forever even as other threads acquire and release the lock.
+>```
+> int FetchAndAdd(int *ptr) {
+>   int old = *ptr;
+>   *ptr = old + 1;
+>   return old;
+> }
+>
+> typeof struct __lock_t {
+>   int ticket;
+>   int turn;
+> } lock_t;
+>
+> void lock_init(lock_t *lock) {
+>   lock->ticket = 0;
+>   lock->turn = 0;
+> }
+>
+> void lock(lock_t *lock) {
+>   int myturn = FetchAndAdd(&lock->ticket);
+>   while(lock->turn != myturn)
+>       ;// spin
+> }
+>
+> void unlock(lock_t *lock) {
+>   lock->turn = lock->turn + 1;
+> }
+>```
