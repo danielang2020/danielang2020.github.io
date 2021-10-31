@@ -884,7 +884,61 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > This approach is still costly; the cost of a context switch can be substantial, and there is thus plenty of waste.
 > Worse, we have not tackled the starvation problem at all. A thread may get caught in an endless yield loop while other threads repeatedly enter and exit the critical section. 
 
-#### 28.14 Using Queues: Sleeping Instead Of Spinning
+### 29 Lock-based Concurrent Data Structures
+> Adding locks to a data structure to make it usable by threads makes the structure thread safe. Of course, exactly how such locks are added determines both the correctness and performance of the data structure.
 
+#### 29.1 Concurrent Counters
+> This concurrent counter is simple and works correctly. In fact, it follows a design pattern common to the simplest and most basic concurrent data structures: it simply adds a single lock, which is acquired when calling a routine that manipulates the data structure, and is released when returning from the call. In this manner, it is similar to a data structure built with monitors, where locks are acquired and released automatically as you call and return from object methods.
+> At this point, you have a working concurrent data structure. The problem you might have is performance. If your data structure is too slow, you'll have to do more than just add a single lock; such optimizations, if needed. Note that if the data strucutre is not too slow, you are done! No need to do something fancy if something simple will work.
+>```
+>typedef struct __counter_t {
+>    int value;
+>    pthread_mutex_t lock;
+>} counter_t;
+>
+>void init(counter_t *c) {
+>    c->value = 0;
+>    Pthread_mutex_init(&c->lock, NULL);
+>}
+>
+>void increment(counter_t *c) {
+>    Pthread_mutex_lock(&c->lock);
+>    c->value++;
+>    Pthread_mutex_unlock(&c->lock);
+>}
+>
+>void decrement(counter_t *c) {
+>    Pthread_mutex_lock(&c->lock);
+>    c->value--;
+>    Pthread_mutex_unlock(&c->lock);
+>}
+>
+>int get(counter_t *c) {
+>    Pthread_mutex_lock(&c->lock);
+>    int rc = c->value;
+>    Pthread_mutex_unlock(&c->lock);
+>    return rc;
+>}
+>```
 
+##### Scalable Counting
+> The approximate counter works by representing a single logical counter via numerous local physical counters, one per CPU core, as well as a single global counter. Specifically, on a machine with four CPUs, there are four local counters and one global one. In addition to these counters, there are also locks: one for each local counter, and one for the global counter.
+> The basic idea of approximate counting is as follows. When a thread running on a given core wishes to increment the counter, it increments its local counter; access to this local counter is synchronized via the corresponding local lock. Because each CPU has its own local counter, threads accross CPUs can update local counters without contention, and thus updates to the counter are scalable.
+> However, to keep the global counter up to date(in case a thread wishes to read its value), the local values are periodically transferred to the global counter, by acquiring the global lock and incrementing it by the local counter's value; the local counter is then reset to zero.
 
+> Figure 29.6 shows the importance of the threshold value S, with four threads each incrementing the counter 1 million times on four CPUs. If S is low, performance is poor(but the global count is always quite accurate); if S is high, performance is excellent, but the global count lags(by at most the number of CPUs multiplied by S). This accuracy/performance trade-off is what approximate counters enable.
+> ![](img/296.png)
+
+#### 29.2 Concurrent Linked Lists
+##### Scaling Linked Lists
+> Though we again have a basic concurrent linked list, once again we are in a situation where it does not scale particularly well. One technique that researchers have explored to enable more concurrency within a list is something called hand-over-hand locking(a.k.a. lock coupling).
+> The idea is pretty simple. Instead of having a single lock for the entire list, you instead add a lock per node of the list. When traversing the list, the code first grabs the next node's lock and then releases the current node's lock(which inspires the name hand-over-hand).
+> Conceptually, a hand-over-hand linked list makes some sense; it enable a high degree of concurrency in list operations. However, in practice, it is hard to make such a structure faster than the simple single lock approach, as the overheads of acquiring and releasing locks for each node of a list traversal is prohibitive. Even with very large lists, and a large number of threads, the concurrency enable by allowing mutiple ongoing traversals is unlikely to be faster than simply grabbing a single lock, performancing an operation, and releasing it. Perhaps some kind of hybrid(where you grab a new lock every so many nodes) would be worth investigating.
+
+#### 29.3 Concurrent Queues
+> If you study the code carefully, you'll notice that there are two locks, one for the head of the queue, and one for the tail. The goal of these two locks is to enable concurrency of enqueue and dequeue operations. In the common case, the enqueue routine will only access the tail lock, and dequeue only the head lock.
+
+#### 29.5 Summary
+> To be careful with acquisition and release of locks around control flow changes; that enabling more concurrency does not necessarily increase performance; that performance problems should only be remedied once they exist.
+
+> The last point, of avoiding premature optimization, is central to any performance-minded developer; there is no value in making something faster if doing so will not improve the overall performance of the application.
