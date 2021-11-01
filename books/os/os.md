@@ -952,5 +952,10 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 #### 30.2 The Producer/Consumer(Bounded Buffer) Problem
 > Imagine one or more producer threads and one or more consumer threads. Producers generate data items and place them in a buffer; consumers grab said items from the buffer and consume them in the some way.
 
-##### A Broken Solution
+##### The single Buffer Producer/Consumer Solution
+> Using two condition variables, instead of one, in order to properly signal which type of thread should wake up when the state of the system changes.
+
+> TIP: USE WHILE(NOT IF) FOR CONDITION
+> When checking for a condition in a multi-threaded program, using a while loop is always correct; using an if statement only might be, depending on the semantics of signaling. Thus, always using while and your code will behave as expected.
+> Using while loops around conditional checks also handles the case where spurious wakeup occur.
 
