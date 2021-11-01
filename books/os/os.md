@@ -942,3 +942,15 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > To be careful with acquisition and release of locks around control flow changes; that enabling more concurrency does not necessarily increase performance; that performance problems should only be remedied once they exist.
 
 > The last point, of avoiding premature optimization, is central to any performance-minded developer; there is no value in making something faster if doing so will not improve the overall performance of the application.
+
+### 30 Condition Variables
+#### 30.1 Definition and Routines
+> To wait for a condition to become true, a thread can make use of what is known as a **condition variable**. A condition variable is an explicit queue that threads can put themeselves on when some state of execution(i.e., some condition) is not as desired(by waiting on the condition); some other thread, when it changes said state, can then wake one(or more) of those waiting threads and thus allow them to continue(by signaling on the condition).
+
+> One thing you might notice about the wait() call is that it also takes a mutex as a parameter; it assumes that this mutex is locked when wait() is called. The responsibilities of wait() is to release the lock and put the calling thread to sleep(atomically); when the thread wakes up(after some other thread has signaled it), it must re-acquire the lock before returning to the caller.
+
+#### 30.2 The Producer/Consumer(Bounded Buffer) Problem
+> Imagine one or more producer threads and one or more consumer threads. Producers generate data items and place them in a buffer; consumers grab said items from the buffer and consume them in the some way.
+
+##### A Broken Solution
+
