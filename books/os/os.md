@@ -959,3 +959,21 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > When checking for a condition in a multi-threaded program, using a while loop is always correct; using an if statement only might be, depending on the semantics of signaling. Thus, always using while and your code will behave as expected.
 > Using while loops around conditional checks also handles the case where spurious wakeup occur.
 
+### 31 Semaphores
+#### 31.1 Semaphores: A Definition
+> A semaphore is an object with an integer value that we can manipulate with two routines.
+
+#### 31.2 Binary Semaphores(Locks)
+> Because locks only have two states(held and not held), we sometimes call a semaphore used as a lock a binary semaphore.
+> ![](img/315.png)
+
+#### 31.3 Semaphores For Ordering
+> In this pattern of usage, we often find one thread waiting for something to happen, and another thread making that something happen and then signaling that it has happened, thus waking the waiting thread. We are thus using the semaphore as an ordering primitive(similar to our use of condition variables eariler).
+> ![](img/318.png)
+
+> With the lock, it was 1, because you are willing to have the lock locked(given away) immediately after initialization. With the ordering case, it was 0, because there is nothing to give away at the start.
+
+#### 31.4 The Producer/Consumer(Bounded Buffer) Problem
+#### 31.5 Reader-Writer Locks
+
+
