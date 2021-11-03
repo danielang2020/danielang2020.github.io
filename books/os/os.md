@@ -973,7 +973,23 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 
 > With the lock, it was 1, because you are willing to have the lock locked(given away) immediately after initialization. With the ordering case, it was 0, because there is nothing to give away at the start.
 
-#### 31.4 The Producer/Consumer(Bounded Buffer) Problem
-#### 31.5 Reader-Writer Locks
+#### 31.6 The Dining Philosophers
+> The basic setup for the problem is this(as shown in Figure 31.14): assume there are five "philosophers" sitting around a table. Between each pair of philosophers is a single fork(and thus, five total). The pholosphers each have times where they think, and don't need any forks, and times where they eat. In order to eat, a philosopher needs two forks, both the one on their left and the one on the right.
+> ![](img/3114.png)
 
+##### Broken Solution
+> To acquire the forks, we simply grab a "lock" on each one: first the one on the left, and then the one on the right. When we are done eating, we release them. There is a deadlock problem. If each philosopher happens to grab the fork on their left before any pholospher can grab the fork on their right, each will be stuck holding one fork and waiting for another, forever.
+> ![](img/3115.png)
 
+##### A solution: Breaking The Dependency
+> Let's assume that philosopher 4(the highest numbered one) gets the forks in a different order than the others; the put_forks() code remains the same. Because the last philosopher tries to grab right before left, there is no situation where each philosopher grabs one fork and is stuck waiting for another; the cycle of waiting is broken.
+> ![](img/3116.png)
+
+#### 31.7 Thread Throttling
+> The specific problem is this: how can a programmer prevent "too many" threads from doing something at once and bogging the system down? Answer:  decide upon a threshold for "too many", and then use a semaphore to limit the number of threads concurrently executing the piece of code in question. We call this approach throttling, and consider it a form of admission control.
+
+> Imagine that you create hundreds of threads to work on some problem in parallel. However, in a certain part of the code, each thread acquires a large amount of memory to perform part of the computation; let's call this part of the code the memory-intensive region. If all of the threads enter the memory-intensive region at the same time, the sum of all the memory allocation requests will exceed the amount of physical memory on the machine. As a result, the machine will start thrashing(i.e., swapping pages to and from the disk), and the entire computation will slow to a crawl.
+
+> A simple semaphore can solve this problem. By initializing the value of the semaphore to the maximum number of threads you wish to enter the memory-intensive region at once, and then putting a sem_wait() and sem_post() around the region, a semaphore can naturally throttle the number of threads that are ever concurrently in the dangerous region of the code.
+ 
+ 
