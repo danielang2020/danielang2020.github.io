@@ -992,4 +992,33 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 
 > A simple semaphore can solve this problem. By initializing the value of the semaphore to the maximum number of threads you wish to enter the memory-intensive region at once, and then putting a sem_wait() and sem_post() around the region, a semaphore can naturally throttle the number of threads that are ever concurrently in the dangerous region of the code.
  
- 
+### 32 Common Concurrency Problems
+#### 32.2 Non-Deadlock Bugs
+##### Atomicity-Violation Bugs
+> The desired serializability among multiple memory accesses is violated(i.e. a code region is intended to be atomic, but the atomicity is not enforced during execution).
+
+##### Order-Violation Bugs
+> The disired order between two(groups of) memory accesses if flipped(i.e., A should always be executed before B, but the order is not enforced during execution)
+
+#### 32.3 Deadlock Bugs
+> Deadlock occurs, for example, when a thread(say Thread 1) is holding a lock(L1) and waiting for another one(L2); unfortunately, the thread(Thread 2)that holds lock L2 is waiting for L1 to be released.
+> ![](img/362.png)
+> Note that if this code runs, deadlock does not necessarily occur; rather, it may occur, if, for example, Thread 1 grabs lock L1 and then a context switch occurs to Thread 2. At that point, Thread 2 grabs L2, and tries to acquire L1. Thus we have a deadlock, as each thread is waiting for the other and neither can run.
+
+##### Conditions for Deadlock
+> Four conditions need to hold for a deadlock to occur:
+> - Mutual exclusion: Threads claim exclusive control of resources that they require(e.g., a thread grabs a lock) 
+> - Hold-and-wait: Threads hold resources allocated to them(e.g., locks that they have already acquired) while waiting for additional resources(e.g., locks that they wish to acquire).
+> - No preemption: Resources(e.g., locks) cannot be forcibly removed from threads that are holding them.
+> - Circular wait: There exists a circular chain of threads such that each thread holds one or more resources(e.g., locks) that are being requested by the next thread in the chain.
+> If any of these four conditions are not met, deadlock cannot occur.
+
+##### Prevention
+###### Circular Wait
+> The most straightforward way to do that is to provide a total ordering on lock acquisition. For example, if there are only two locks in the system(L1 and L2), you can prevent deadlock by always acquiring L1 before L2. Such strict ordering ensures that no cyclical wait arises; hence, no deadlock.
+> Of course, in more complex systems, more than two locks will exist, and thus total lock ordering may be difficult to achieve. Thus, a partial ordering can be a useful way to structure lock acquisition so as to avoid deadlock.
+
+###### Hold-and-wait
+> The hold-and-wait requirement for deadlock can be avoided by acquiring all locks at once, atomically.
+
+###### No Preemption
