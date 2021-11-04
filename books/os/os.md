@@ -1022,3 +1022,62 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > The hold-and-wait requirement for deadlock can be avoided by acquiring all locks at once, atomically.
 
 ###### No Preemption
+> Because we generally view locks as held until unlock is called, multiple lock acquisition often gets us into trouble because when waiting for one lock we are holding another. Many thread libraries provide a more flexible set of interfaces to help avoid this situaion. Specifically, the routine pthread_mutex_trylock() either grabs the lock(if it is available) and returns success or returns an error code indicating the lock is held; in the latter case, you can try again later if you want to grab that lock.
+>```
+> top:
+>   pthread_mutex_lock(L1);
+>   if(pthread_mutex_trylock(L2) != 0){
+>        pthread_mutex_unlock(L1);
+>        goto top;
+>} 
+>```
+> Note that another thread could follow the same protocol but grab the locks in the other order(L2 then L1) and the program would still be deadlock free. One new problem does arise, however: livelock. It is possible (though perhaps unlikely) that two threads could both be repeatedly attempting this sequence and repeatedly failing to acquire both locks. In this case, both systems are running through this code sequence over and over again(and thus it is not a deadlock), but progress is not being made, hence the name livelock. There are solutions to the livelock problem, too: for example, one could add a random delay before looping back and trying the entire thing over again, thus decreasing the odds of repeated interference among competing threads.
+
+> You might also notice that this approach doesn't really add preemption(the forcible action of taking a lock away from a thread that owns it), but rather uses the trylock approach to allow a developer to back out of lock ownership in a graceful way. However, it is a practical approach, and thus we include it here, despite its imperfection in this regard.
+
+###### Mutual Excluion
+> The final prevention technique would be to avoid the need for mutual exclusion at all.
+> The idea behind these lock-free(and related wait-free) approaches here is simple: using powerful hardware instructions, you can build data structures in a manner that does not require explicit locking.
+
+> Let's consider a slightly more complex exampel: list insertion. Here is code that inserts at the head of a list:
+>```
+>void insert(int value){
+>    node_t *n = malloc(sizeof(node_t));
+>    assert(n != NULL);
+>    n->value = value;
+>    n->next = head;
+>    head = n;
+>}
+>```
+> This code performs a simple insertion, but if called by multiple threads at the "same time", has a race condition. We could solve this by surrounding this code with a lock acquire and release:
+>```
+>void insert(int value){
+>    node_t *n = malloc(sizeof(node_t));
+>    assert(n != NULL);
+>    n->value = value;
+>    pthread_mutex_lock(list_lock);  // begin critical section
+>    n->next = head;
+>    head = n;
+>    pthread_mutex_unlock(listlock); // end critical section
+>}
+>```
+> In this solution, we are using locks in the traditional manner. Instead, let us try to perform this insertion in a lock-free manner simply using the compare-and-swap instruction. Here is one possible approach:
+>```
+>void insert(int value){
+>    node_t *n = malloc(sizeof(node_t));
+>    assert(n != NULL);
+>    n->value = value;
+>    do{
+>        n->next = head;
+>    }while(CompareAndSwap(&head,n->next,n) == 0);
+>}
+>```
+> The code here updates the next pointer to point to the current head, and then tries to swap the newly-created node into position as the new head of the list. However, this will fail if some other thread successfully swapped in a new head in the meanwhile, causing this thread to retry again with the new thread.
+
+##### Deadlock Avoiding via Scheduling
+> Instead of deadlock prevention, in some scenarios deadlock avoidance is preferable. Avoidance requires some global knowledge of which locks various threads might grab during their execution, and subsequently schedules said threads in a way as to guarantee no deadlock can occur.
+
+> Though it may have been possible to run these tasks concurrently, the fear of deadlock prevents us from doing so, and the cost is performance.
+> Unfortunately, they are only useful in very limited environments, for example, in an embedded system where one has full knowledge of the entire set of tasks that must be run and the locks that they need. Further, such approaches can limit concurrency. Thus, avoidance of deadlock via scheduling is not a widely-used general-purpose solution.
+
+##### Detect And Recover
