@@ -1080,4 +1080,18 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > Though it may have been possible to run these tasks concurrently, the fear of deadlock prevents us from doing so, and the cost is performance.
 > Unfortunately, they are only useful in very limited environments, for example, in an embedded system where one has full knowledge of the entire set of tasks that must be run and the locks that they need. Further, such approaches can limit concurrency. Thus, avoidance of deadlock via scheduling is not a widely-used general-purpose solution.
 
-##### Detect And Recover
+### 33 Event-based Concurrency(Advanced)
+#### 33.1 The Basic Idea: An Event Loop
+> The approach is quite simple: you simply wait for something(i.e., an "event") to occur; when it does, you check what type of event it is and do the small amount of work it requires(which may include issuing I/O requests, or scheduling other events for future handling, etc.).
+
+#### 33.4 Why Simpler? No Locks Needed
+> With a single CPU and an event-based application, the problems found in concurrent programs are no longer present. Specifically, because only one event is being handled at a time, there is no need to acquire or release locks; the event-based server cannot be interrupted by another thread because it is decidedly single threaded.
+
+#### 33.5 A Problem: Blocking System Calls
+> With an event-based approach, however, there are no other threads to run: just the main event loop. And this implies that if an event handler issues a call that blocks, the entire server will do just that: block until the call completes. When the event loop blocks, the system sits idle, and thus is a huge potential waste of resources. We thus have a rule that must be obeyed in event-based systems: no blocking calls are allowed.
+
+#### 33.7 Another Problem: State Management
+> Another issue with the event-based application is that such code is generally more complicated to write than traditional thread-based code. The reason is as follows: when an event handler issues an asynchronous I/O, it must package up some program state for the next event handler to use when the I/O finally completes; this additional work is not needed in thread-based program, as the state the program needs is on the stack of the thread.
+
+> The solution would be to record the socket descriptor(sd) in some kind of data structure(e.g., a hash table), indexed by the file descriptor(fd). When the disk I/O completes, the event handler would use the file descriptor to look up the continuation, which will return the value of the socket descriptor to the caller. At this point, the server can then do the last bit of work to write the data to the socket.
+
