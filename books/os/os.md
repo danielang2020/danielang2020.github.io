@@ -1131,4 +1131,13 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 #### 36.6 Methods Of Device Interaction
 > The first, oldest method is to have explicit I/O instructions. These instructions specify a way for the OS to send data to specify device registers and thus allow the construction of the protocols described above.
 > The second method to interact with devices is known as **memory-mapped I/O**. With this approach, the hardware makes device registers available as if they were memory locations. To access a particular register, the OS issues a load(to read) or store(to write) the address; the hardware then routes the load/store to the device instead of main memory.
- 
+
+#### 36.7 Fitting Into The OS: The Device Driver
+> How to fit devices, each of which have very specific interfaces, into the OS, which we would like to keep as general as possible. The problem is solved through the age-old technique of abstraction. At the lowest level, a piece of software in the OS must know in detail how a device works. We call this piece of software a **device driver**, and any specifics of device interaction are encapsulated within.
+> ![](img/364.png)
+
+> Note that the encapsulation seen above can have its downside as well. If there is a device that has many special capabilities, but has to present a generic interface to the rest of the kernel, those special capabilities will go unused.
+
+> Interestingly, because device drivers are needed for any device you might plug into your system, over time they have come to represent a huge percentage of kernel code. Studies of the Linux kernel reveal that over 70% of OS code is found in device drivers; for Windows-based systems; it is likely quite high as well.
+
+
