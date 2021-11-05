@@ -1095,3 +1095,40 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 
 > The solution would be to record the socket descriptor(sd) in some kind of data structure(e.g., a hash table), indexed by the file descriptor(fd). When the disk I/O completes, the event handler would use the file descriptor to look up the continuation, which will return the value of the socket descriptor to the caller. At this point, the server can then do the last bit of work to write the data to the socket.
 
+### 36 I/O Device
+#### 36.1 System Architecture
+> The faster a bus is, the shorter is must be; thus, a high-performance memory bus doesn't have much room to plug devices and such into it. In addition, engineering a bus for high performance is quite costly. Thus, system designers have adopted this hierarchical approach, where components that demand high performance(such as the graphics card) are nearer the CPU. Lower performance components are further away. The benefits of placing disks and other slow devices on a peripheral bus are manifold; in particular, you can place a large number of devices on it.
+> ![](img/361.png)
+
+#### 36.2 A Canonical Device
+> There are two important components. The first is the hardware interface it presents to the rest of the system. Just like a piece of software, hardware must also present some kind of interface that allows the system software to control its operation. Thus, all devices have some specified interface and protocol for typical interaction.
+> The second part of any device is its internal structure. This part of the device is implementation specific and is responsible for implementing the abstraction the device presents to the system.
+> ![](img/363.png)
+
+#### 36.3 The Canonical Protocol
+> In the picture above, the device interface is comprised of three registers: a status register, which can be read to see the current status of the device; a command register, to tell the device to perform a certain task; and a data register to pass data to the device, or get data from the device. By reading and writing these registers, the operating system can control device behavior.
+
+> The protocol has four steps. In the first, the OS waits until the device is ready to receive a command by repeatedly reading the status register; we call this **polling** the device(basically, just asking it what is going on). Second, the OS sends some data down to the data register; one can imagine that if this were a disk, for example, that multiple writes would need to take place to transfer a disk block to the device. When the main CPU is involved with the data movement, we refer to it as programmed I/O(PIO). Third, the OS writes a command to the command register; doing so implicitly lets the device know that both the data is present and that it should begin working on the command. Finally, the OS waits for the device to finish by again polling it in a loop, waiting to see if it is finished(it may then get an error code to indicate success or failure).
+>```
+> while(STATUS == BUSY)
+>    ; // wait until device is not busy
+> write data to DATA register
+> write command to COMMAND register
+>    (starts the device and executes the command)
+> while(STATUS == BUSY)
+>    ; // wait until device is done with your request
+>```
+
+#### 36.4 Lowering CPU overhead With interrupts
+> Instead of polling the device repeatedly, the OS can issue a request, put the calling process to sleep, and context switch to another task. When the device if finally finished with the operation, it will raise a hardware interrupt, causing the CPU to jump into the OS at a predetermined interrupt service routine(ISR) or more simply an interrupt handler. The handler is just a piece of operating system code that will finish the request and wake the process waiting for the I/O, which can then proceed as desired.
+
+> Note that using interrupts is not always the best solution. For example, imagine a device that performs its tasks very quickly: the first poll usually finds the device to be done with task. Using an interrupt in this case will actually slow down the system: switching to another process, handling the interrupt, and switching back to the issuing process is expensive. Thus, if a device is fast, it may be best to poll; if it is slow, interrupts, which allow overlap, are best. If the speed of the device is not known, or sometimes fast and sometimes slow, it may be best to use a hybrid that polls for a little while and then, if the device is not yet finished, uses interrupts. This two-phased approach may achieve the best of both worlds.
+
+##### 36.5 More Efficient Data Movement With DMA
+> When using programmed I/O(PIO) to transfer a large chunk of data to a device, the CPU is once again overburdened with a rather trivial task, and thus wastes a lot of time and effort that could better be spent running other processes.
+> The solution to this problem is something we refer to as **Direct Memorg Access(DMA)**. A DMA engine is essentially a very specific device within a system that can orchestrate transfers between devices and main memory without much CPU intervention.
+
+#### 36.6 Methods Of Device Interaction
+> The first, oldest method is to have explicit I/O instructions. These instructions specify a way for the OS to send data to specify device registers and thus allow the construction of the protocols described above.
+> The second method to interact with devices is known as **memory-mapped I/O**. With this approach, the hardware makes device registers available as if they were memory locations. To access a particular register, the OS issues a load(to read) or store(to write) the address; the hardware then routes the load/store to the device instead of main memory.
+ 
