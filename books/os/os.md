@@ -1140,4 +1140,12 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 
 > Interestingly, because device drivers are needed for any device you might plug into your system, over time they have come to represent a huge percentage of kernel code. Studies of the Linux kernel reveal that over 70% of OS code is found in device drivers; for Windows-based systems; it is likely quite high as well.
 
+### 37 Hard Disk Drives
+#### 37.1 The Interface
+> The drive consists of a large number of sectors(512-byte blocks), each of which can be read or written. The sectors are numbered from 0 to n-1 on a disk with n sectors. Thus, we can view the disk as an array of sectors; 0 to n-1 is thus the address space of the drive.
 
+> Multi-sector operations are possible; indeed, many file systems will read or write 4KB at a time(or more). However, when updating the disk, the only guarantee drive manufacturers make is that a single 512-byte write is atomic; thus, if an untimely power loss occurs, only a portion of a larger write may complete(sometimes called a torn write).
+
+#### 37.2 Basic Geometry
+> We start with a platter, a circular hard surface on which data is stored persistently by inducing magnetic changes to it. A disk may have one or more platter; each platter has 2 sides, each of which is called a surface. These platters are usually made of some hard material(such as aluminum), and then coated with a thin magnetic layer that enables the drive to persistently store bits even when the drive is powered off.
+> The platters are all bound together around the spindle, which is connected to a motor that spins the platters around at a constant rate.
