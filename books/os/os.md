@@ -1148,4 +1148,22 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 
 #### 37.2 Basic Geometry
 > We start with a platter, a circular hard surface on which data is stored persistently by inducing magnetic changes to it. A disk may have one or more platter; each platter has 2 sides, each of which is called a surface. These platters are usually made of some hard material(such as aluminum), and then coated with a thin magnetic layer that enables the drive to persistently store bits even when the drive is powered off.
+
 > The platters are all bound together around the spindle, which is connected to a motor that spins the platters around at a constant rate.
+
+> Data is encoded on each surface in concentric circule of sectors; we call one such concentric circle a track.
+
+> To read and write from the surface, we need a mechanism that allows us to either sense(i.e., read) the magnetic patterns on the disk or to induce a change in(i.e., write) them. This process of reading and writing is accomplished by the disk head; there is one such head per surface of the drive. The disk head is attached to a single disk arm, which moves across the surface to position the head over the desired track.
+
+#### 37.3 A Simple Disk Drive
+> ![](img/372.png)
+
+##### Single-track Latency: The Rotational Delay
+> Imagination we now receive a request to read block 0. The disk doesn't have to do much. In particular, it must just wait for the desired sector to rotate under the disk head. This wait happens often enough in modern drives, and is an important enough component of I/O service time, that it has a special name: rotational delay.
+
+##### Multiple Tracks: Seek Time
+> A read to sector 11. To service this read, the drive has to first move the disk arm to the correct track(in this case, the outermost one), in a process known as a seek. Seeks, along with roataions, are one of the most costly disk operations.
+> During the seek, the arm has been moved to the desired track, and the platter of course has rotated, in this case about 3 sectors. Thus, sector 9 is just about to pass under the disk head, and we must only endure a short rotational delay to complete the transfer. When sector 11 passes under the disk head, the final phase of I/O will take place, known as the transfer, where data is either read from or write to the surface. And thus, we have a complete picture of I/O time: first a seek, then waiting for the rotational delay, and finally the transfer.
+> ![](img/373.png)
+
+##### Some Other Details
