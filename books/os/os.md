@@ -1159,11 +1159,67 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > ![](img/372.png)
 
 ##### Single-track Latency: The Rotational Delay
-> Imagination we now receive a request to read block 0. The disk doesn't have to do much. In particular, it must just wait for the desired sector to rotate under the disk head. This wait happens often enough in modern drives, and is an important enough component of I/O service time, that it has a special name: rotational delay.
+> Imagine we now receive a request to read block 0. The disk doesn't have to do much. In particular, it must just wait for the desired sector to rotate under the disk head. This wait happens often enough in modern drives, and is an important enough component of I/O service time, that it has a special name: rotational delay.
 
 ##### Multiple Tracks: Seek Time
 > A read to sector 11. To service this read, the drive has to first move the disk arm to the correct track(in this case, the outermost one), in a process known as a seek. Seeks, along with roataions, are one of the most costly disk operations.
 > During the seek, the arm has been moved to the desired track, and the platter of course has rotated, in this case about 3 sectors. Thus, sector 9 is just about to pass under the disk head, and we must only endure a short rotational delay to complete the transfer. When sector 11 passes under the disk head, the final phase of I/O will take place, known as the transfer, where data is either read from or write to the surface. And thus, we have a complete picture of I/O time: first a seek, then waiting for the rotational delay, and finally the transfer.
 > ![](img/373.png)
 
-##### Some Other Details
+#### 37.4 I/O Time: Doing The Math
+> We can now represent I/O time as the sum of three major components:
+> $T_{I/O}$ = $T_{Seek}$ + $T_{Rotation}$ + $T_{Transfer}$
+> Note that the rate of I/O($R_{I/O}$) is easily computed from the time. Simply divide the size of the transfer by the time it took:
+> $R_{I/O}$ = $\frac{Size_{Transfer}}{T_{I/O}}$
+
+> The first is the "high performance" drive market, where drives are engineered to spin as fast as possible, deliver low seek times, and transfer data quickly. The second is the "capacity" market, where cost per byte is the most important aspect; thus the drives are slower but pack as many bits as possible into the space available.
+
+#### 37.5 Disk Scheduling
+> Given a set of I/O requests, the disk scheduler examines the requests and decides which one to schedule next.
+
+> Unlike job scheduling, we can make a good guess at how long a "job"(i.e., disk request) will take. By estimating the seek and possible rotational delay of a request, the disk scheduler can know how long each request will take, and thus(greedily) pick the one that will take the least time to service first.
+
+##### SSFT: Shortest Seek Time First
+> SSFT orders the queue of I/O requests by track, picking requests on the nearest track to complete first.
+
+> There is a starvation problem. Imagine that there were a steady stream of requests to the inner track, where the head currently is positioned. Requests to any other tracks would then be ignored completely by a pure SSTF approach.
+
+##### Elevator(a.k.a. SCAN or C-SCAN)
+> SCAN simply moves back and forth across the disk servicing requests in order across the tracks. Let's call a single pass across the disk a sweep. If a request comes for a block on a track that has already been serviced on this sweep of the disk, it is not handled immediately, but rather queued until the next sweep.
+
+> Unfortunately, SCAN and its cousins do not represent the best scheduling technology. In particular, SCAN does not actually adhere as closely to the principle of SJF as they could. In particular, they ignore rotation.
+
+### 38 Redundant Arrays of Inexpensive Disks(RAIDs)
+> Externally, a RAID looks like a disk: a group of blocks one can read or write. Internally, the RAID is a complex beast, consisting of multiple disks, memory, and one or more processors to manage the system. A hardware RAID is very much like a computer system, specialized for the task of managing a group of disks.
+
+> RAIDs offer number of advantages over a single disk. One advantage is performance. Using multiple disks in parallel can greatly speed up I/O times. Another benefit is capacity. Large data sets demand large disks. Finally, RAIDs can improve reliability; spreading data across multiple disks(without RAID techniques) makes the data vulnerable to the loss of a single disk; with some form of redundancy, RAIDs can tolerate the loss of a disk and keep operating as if nothing were wrong.
+
+#### 38.1 Interface And RAID Internals
+> To a file system above, a RAID looks like a big,(hopefully) fast, and (hopefully) reliable disk. Just as with a single disk, it presents itself as a linear array of blocks, each of which can be read or written by the file system(or other client).
+
+> When a file system issues a logical I/O request to the RAID, the RAID internally must calculate which disk(or disks) to access in order to complete the request, and then issue one or more physical I/Os to do so. The exact nature of these physical I/Os depends on the RAID level, as we will discuss in detail below. However, as a simple example, consider a RAID that keeps two copies of each block(each one on a seperate disk); when writing to such a mirrored RAID system, the RAID will have to perform two physical I/Os for every one logical I/O it is issued.
+
+> At a high level, a RAID is very much a specialized computer system: it has a processor, memory, and disks; however, instead of running applications, it runs specialized software designed to operate the RAID.
+
+#### 38.3 How To Evaluate A RAID
+>- The first axis is capacity;
+>- The second axis of evaluation is reliability.
+>- The third axis is performance.
+
+#### 38.4 RAID Level 0: Striping
+> The first RAID level is actually not a RAID level at all, in that there is no redundancy.
+
+> From Figure 38.1, you get the basic idea: spread the blocks of the array across th disks in a round-robin fashion. This approach is designed to extract the most parallelism from the array when request are made for contiguous chunks of the array(as in a large, sequential read, for example). We call the blocks in the same row a stripe; thus, blocks 0,1,2, and 3 are in the same stripe.
+> ![](img/381.png)
+
+##### Chunk Sizes
+> Chunk size mostly affects performance of the array, For example, a small chunk size implies that many files will get striped across many disks, thus increasing the parallelism of reads and writes to a single file; however, the positioning time to access blocks across mutliple disks increases, because the positioning time for the entire request is determined by the maximum of the positioning times of the requests across all drives. A big chunk size, on the other hand, reduces such intra-file parallelism, and thus relies on mulitple concurrent requests to achieve high throughput. However, large chunk size reduce positioning time; if, for example, a single file fits within a chunk and thus is placed on a single disk, the positioning time incurred while accessing it will just be the positioning time of single disk.
+
+##### Back To RAID-0 Analysis
+> From the perspective of capacity, it is perfect: given N disks each of size B blocks, striping delievers N·B blocks of useful capacity. From the standpoint of reliability, striping is also perfect, but in the bad news: any disk failure will lead to data loss. Finally, performance is excellent: all disks are utilized, often in parallel, to service user I/O requests.
+
+##### Evaluating RAID Performance
+> The first is single-request latancy. Understanding the latency of a single I/O request to a RAID is useful as it reveals how much parallelism can exist during a single logical I/O operation. The second is steady-state throughput of the RAID, i.e., the bandwidth of many concurrent requests. Because RAIDs are often used in high-performance environments, the steady-state bandwidth is critical, and thus will be the main focus of our analyses.
+
+> With sequential access, a disk operates in its most efficient mode, spending little time seeking and waiting for rotation and most of its time transferring data. With random access, just the opposite is true: most time is spent seeking and waiting for rotation and relatively little time is spent transferring data.
+
