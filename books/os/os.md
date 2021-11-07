@@ -1223,3 +1223,35 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 
 > With sequential access, a disk operates in its most efficient mode, spending little time seeking and waiting for rotation and most of its time transferring data. With random access, just the opposite is true: most time is spent seeking and waiting for rotation and relatively little time is spent transferring data.
 
+#### 38.5 RAID Level 1: Mirroring
+> With a mirrored system, we simply make more than one copy of each block in the system; each copy should be placed on a separate disk, of course. By doing so, we can tolerate disk failures.
+> In a typical mirrored system, we will assume that for each logical block, the RAID keeps two physical copies of it.
+> ![](img/383.png)
+
+> When reading a block from a mirrored array, the RAID has a choice: it can read either copy. For example, if a read to logical block 5 is issued to the RAID, it is free to read it from either disk 2 or disk 3. When writing a block, though, no such choice exists: the RAID must update both copies of the data, in order to preserve reliability. Do note, though, that these writes can take place in parallel; for example, a write to logical block 5 could proceed to disks 2 and 3 at the same time.
+
+##### RAID-1 Analysis
+> From a capacity standpoint, RAID-1 is expensive; with the mirroring level = 2, we only obtain half of our peak useful capacity. From a reliability standpoint, RAID-1 does well. It can tolerate the failure of any one disk. From the perspective of the latency of a single read request, we can see it is the same as the latency on a single disk; all the RAID-1 does is direct the read to one of its copies. A write is a little different: it requires two physical writes to complete before it is done.
+
+> Using a write-ahead log of some kind to first record what the RAID is about to do before doing it. By taking this approach, we can ensure that in the presence of a crash, the right thing will happen; by running a recovery procedure that replays all pending transactions to the RAID, we can ensure that no two mirrored copies are out of sync.
+> Because logging to disk on every write is probhibitively expensive, most RAID hardware includes a small amount of non-volatile RAM(e.g., battery-backed) where it performs this type of logging.
+
+#### 38.6 RAID Level 4: Saving Space With Parity
+> Parity-based approaches attempt to use less capacity and thus overcome the huge space penalty paid by mirrored systems. They do so at a cost, however: performance.
+
+> For each stripe of data, we have added a single parity block that stores the redundant information for that stripe of blocks.
+> ![](img/384.png)
+
+##### RAID-4 Analysis
+> From a capacity standpoint, RAID-4 uses 1 disk for parity information for every group of disks it is protecting. RAID-4 tolerates 1 disk failure and no more. If more than one disk is lost, there is simply no way to reconstruct the lost data.
+
+#### 38.7 RAID Level 5: Rotating Parity
+> RAID-5 works almost identically to RAID-4, except that it rotates the parity block across drives.
+> As you can see, the parity block for each stripe is now rotated across the disks, in order to remove the parity-disk bottleneck for RAID-4.
+> ![](img/387.png)
+
+#### 38.8 RAID Comparison: A Summary
+> To conclude, if you strictly want performance and do not care about reliability, striping is obviously best. If, however, you want random I/O performance and reliability, mirroring is the best; the cost you pay is in lost capacity. If capacity and reliability are your main goals, then RAID-5 is the winner; the cost you pay is in small-write performance. Finally, if you always doing sequential I/O and want to maximum capacity, RAID-5 also makes the most sense.
+> ![](img/388.png)
+
+
