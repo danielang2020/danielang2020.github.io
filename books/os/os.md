@@ -1297,4 +1297,43 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > Each process maintains an array of file descriptors, each of which refers to an entry in the system-wide open file table. Each entry in this table tracks which underlying file the descriptor refer to, the current offset, and other relevant details such as whether the file is readable or writable.
 
 #### 39.5 Reading And Writing, But Not Sequentially
+> Let's track a process that opens a file(of size 300 bytes) and reads it by calling the read() system call repeatedly, each time reading 100 bytes. Here is a trace of the relevant system calls, along with the values returned by each system call, and the value of the current offset in the open file table for this file access:
+> ![](img/src.png)
+> There are a couple of items of interest to note from the trace. First, you can see how the current offset gets initialized to zero when the file is opened. Next, you can see how it is incremented with each read() by the process; this makes it easy for a process to just keep calling read() to get the next chunk of the file. Finally, you can see how at the end, an attempted read() past the end of the file returns zero, thus indicating to the process that it has read the file in its entirety.
+
+> Let's trace a process that opens the same file twice and issue a read to each of them.
+> ![](img/sroo.png)
+> In this example, two file descriptors are allocated(3 and 4), and each refers to a different entry in the open file table(in this example, entries 10 and 11, as shown in the table heading, OFT stands for open file table). 
+
+> A process uses lseek() to reposition the current offset before reading; in this case, only a single open file table entry is needed.
+> ![](img/srl.png)
+> Here, the lseek() call first sets the current offset to 200. The subsequent read() then reads the next 50 bytes, and updates the current offset accordingly.
+
+#### 39.6 Shared File Table Entries: fork() And dup()
+> If some other process reads the same file at the same time, each will have its own entry in the open file table. In this way, each logical reading or writing of a file is independent, and each has its own current offset while it accesses the given file.
+
+> Figure 39.3 shows the relationships that connect each process's private descriptor array, the shared open file table entry, and the reference from it to the underlying file-system inode. Note that we finally make use of the reference count here. When a file table entry is shared, its reference count is incremented; only when both processes close the file(or exit) will the entry be removed.
+> ![](img/393.png)
+
+> The dup() call allows a process to create a new file descriptor that refers to the same underlying open file as an existing descriptor.
+
+#### 39.7 Writing Immediately With fsync()
+> Most times when a program calls write(), it is just telling the file system: please write this data to persistent storage, at some point in the future. The file system, for performance reasons, will buffer such writes in memory for some time; at that later point in time, the write(s) will actually be issued to the storage device.
+> However, some applications require something more than this eventual guarantee. When a process calls fsync() for a particular file descriptor, the file system responds by forcing all dirty(i.e., not yet written) data to disk, for the file referred to by the specified file descriptor. The fsync() routine returns once all of those writes are complete.
+
+#### 39.8 Remaing Files
+> One interesting guarantee provided by the rename() call is that it is (usually) implemented as an atomic call with respect to system crashes; if the system crashes during the remaing, the file will either be named the old name or the new name, and no odd in-between state can arise.
+>```
+>int fd = open("foo.txt.tmp", O_WRONLY|O_CREAT|O_TRUNC,
+>S_IRUSR|S_IWUSR);
+>write(fd, buffer, size); // write out new version of file
+>fsync(fd);
+>close(fd);
+>rename("foo.txt.tmp", "foo.txt");
+>```
+
+#### 39.9 Getting Information About Files
+> Beyond file access, we expect the file system to keep a fair amount of information about each file it is storing. We generally call such data about metadata.
+
+#### 39.11 Making Directories
 
