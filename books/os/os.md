@@ -1254,4 +1254,47 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > To conclude, if you strictly want performance and do not care about reliability, striping is obviously best. If, however, you want random I/O performance and reliability, mirroring is the best; the cost you pay is in lost capacity. If capacity and reliability are your main goals, then RAID-5 is the winner; the cost you pay is in small-write performance. Finally, if you always doing sequential I/O and want to maximum capacity, RAID-5 also makes the most sense.
 > ![](img/388.png)
 
+### 39 Interlude: Files and Directories
+> Unlike memory, whose contents are lost when there is a power loss, a persistent-storage device keeps such data intact. Thus, the OS must take extra care with such a device: this is where users keep data that they really care about.
+
+#### 39.1 Files And Directories
+> Two key abstraction have developed over time in the virtualization of storage. The first is the file. A file is simply a linear array of bytes, each of which you can read or write.
+
+> In most system, the OS does not know much about the structure of the file(e.g., whether it is a picture, or a text file, or C code); rather, the responsibility of the file system is simply to store such data persistently on disk and make sure that when you request the data again, you get what you put there in the first place.
+
+> The second abstraction is that of a directory. A directory, like a file, also has a low-level name(i.e., an inode number), but its contents are quite specific: it contains a list of (user-readable name, low-level name) pairs.
+
+> In UNIX systems, the file system thus provides a unified way to access files on disk, USB stick, CD-ROM, many other devices, and in fact many other things, all located under the single directory tree.
+
+#### 39.3 Creating Files
+> One important aspect of open() is what it returns: a file descriptor. A file descriptor is just an integer, private per process, and is used in UNIX systems to access files; thus, once a file is opened, you use the file descriptor to read or write the file, assuming you have permission to do so. In this way, a file descriptor is a capability. Another way to think of a file descriptor is as a pointer to an object of type file; once you have such an object, you can call other "methods" to access the file, like read() and write().
+
+> File descriptors are managed by the operating system on a per-process basis. This means some kind of simple structure(e.g., an array) is kept in the proc structure on UNIX systems. Here is the relevant piece from the vx6 kernel:
+>```
+>struct proc{
+>   struct file *ofile[NOFILE]; // Open files
+>}
+>```
+> A simple array(with a maximum of NOFILE open files) tracks which files are opened on a per-process basis. Each entry of the array is actually just a pointer to a struct file, which will be used to track information about the file being read or written.
+
+#### 39.4 Reading And Writing Files
+> Here is an example of using strace to figure out what cat is doing:
+>```
+>prompt> strace cat foo
+>...
+>open("foo", O_RDONLY|O_LARGEFILE) = 3
+>read(3, "hello\n", 4096) = 6
+>write(1, "hello\n", 6) = 6
+>hello
+>read(3, "", 4096) = 0
+>close(3) = 0
+>...
+>prompt>
+>```
+> The first thing that cat does is open the file for reading. First, the file is only opened for reading(not writing), as indicated by the O_RDONLY flag; second, that the 64-bit offset be used(O_LARGEFILE); third, that the call to open() succeeds and returns a file descriptor, which has the value of 3.
+> Why does the first call to open() return 3, not 0 or perhaps 1 as you might expect? As it turns out, each running process already has three files open, standard input(which the process can read to receive input), standard output(which the process can write to in order to dump information to the screen), and standard error( which the process can write error message to). There are represented by file descriptors 0,1 and 2, respectively. Thus, when you first open another file(as cat does above), it will almost certainly be file descriptor 3.
+
+> Each process maintains an array of file descriptors, each of which refers to an entry in the system-wide open file table. Each entry in this table tracks which underlying file the descriptor refer to, the current offset, and other relevant details such as whether the file is readable or writable.
+
+#### 39.5 Reading And Writing, But Not Sequentially
 
