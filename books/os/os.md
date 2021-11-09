@@ -1336,4 +1336,56 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 > Beyond file access, we expect the file system to keep a fair amount of information about each file it is storing. We generally call such data about metadata.
 
 #### 39.11 Making Directories
+> Beyond files, a set of directory-related system calls enable you to make, read, and delete directories. Note you can never write to a directory directly. Because the format of the directory is considered file system metadata, the file system considers itself responsible for the integrity of directory data; thus you can only update a directory indirectly by, for example, creating files, directories, or other object types within it. In this way, the file system makes sure that directory contents are as expected.
+
+#### 39.14 Hard Links
+> We now come back to the mystery of why removing a file is performed via unlink(), by understanding a new way to make an entry in the file system tree, through a system call known as link().
+
+> When you create a file, you are really doing two things. First, you are making a structure(the inode) that will track virtually all relevant information about the file, including its size, where its block are on disk, and so forth. Second, you are linking a human-readable name to that file, and putting that link into a directory.
+> After creating a hard link to a file, to the file system, there is no difference between the original file name and the newly created file name;indeed, they are both just links to the underlying metadata about the file, which is found in the some inode number.
+>```
+>prompt> echo hello > file
+>prompt> cat file
+>hello
+>prompt> ln file file2
+>prompt> cat file2
+>hello
+>
+>prompt> ls -i file file2
+>67158084 file
+>67158084 file2
+>prompt>
+>
+>prompt> rm file
+>removed ‘file’
+>prompt> cat file2
+>hello
+>```
+> Thus, to remove a file from the file system, we call unlink(). In the example below, we could for example remove the file named file, and still access the file without difficulty.
+> The reason this works is because when the file system unlinks file, it checks a reference count within the inode number. This reference count(sometimes called the link count) allows the file system to track how many different file names have been linked to this particular inode. When unlink() is called, it removes the "link" between the human-readable name(the file that is being deleted) to the given inode number, and decrements are reference count; only when the reference count reaches zero does the file system also free the inode and related data blocks; and thus truly "delete" the file.
+
+#### 39.15 Symbolic Links
+> There is one other type of link that is really useful, and it is called a symbolic link or sometimes a soft link. Hard links are somewhat limited: you can't create one to a directory(for fear that you will create a cycle in the directory tree); you can't hard link to files in other disk partitions(because inode numbers are only unique within a particular file system, not across file systems).
+
+> Creating a soft link looks much the same, and the original file can now be accessed through the file name file as well as the symbolic link name file2.
+> However, beyond this surface similarity, symbolic links are actually quite different from hard links. The first difference is that a symbolic link is actually a file itself, of a different type. We've already talked about regular files and directories; symbolic links are a third type the file system knows about.
+
+> Finally, because of the way symbolic links are created, they leave the possibility for what is known as a dangling reference:
+>```
+>prompt> echo hello > file
+>prompt> ln -s file file2
+>prompt> cat file2
+>hello
+>prompt> rm file
+>prompt> cat file2
+>cat: file2: No such file or directory
+>```
+> As you can see in this example, quite unlink hard links, removing the original file named file causes the link to point to a pathname that no longer exists.
+
+#### 39.16 Permission Bits And Access Control Lists
+> The file system also presents a virtual view of a disk, transforming it from a bunch of raw blocks into much more user-friendly files and directories. However, the abstraction is notably different from that of the CPU and memory,in that files are commonly shared among different users and processes and are not(always) private.
+
+#### 39.17 Making And Mounting A File System
+
+
 
