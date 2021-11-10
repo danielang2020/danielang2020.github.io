@@ -22,6 +22,7 @@
 # Practice
 
 ## [Netty](practices/netty.md)
+## [English](practices/english.md)
 
 # Articles
 
