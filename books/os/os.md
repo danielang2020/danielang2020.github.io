@@ -1430,3 +1430,25 @@ More generally, the sector address sector of the inode block can be calculated a
 
 #### 40.4 Directory Organization
 > In vsfs, directories have a simple organization; a directory basically just contains a list of(entry name, inode number) pair. For each file or directory in a given directory, there is a string and a number in the data block(s) of the directory.
+
+> You might be wondering where exactly directories are stored. Often, file systems treat directories as a special type of file. Thus, a directory has an inode, somewhere in the inode table(with the type field of the inode marked as "directory instead of "regular file"). The directory has data blocks pointed to by the inode; these data blocks live in the data block region of our simply file system. Our on-disk structure thus remains unchanged.
+
+#### 40.5 Free Space Management
+> A file system must track which inodes and data blocks are free, and which are not, so that when a new file or directory is allocated, it can find space for it.
+
+#### 40.6 Access Paths: Reading and Writing
+##### Reading A File From Disk
+> A depiction of this entire process is found in Figure 40.3; time increases downward in the figure. In the figure, the open causes numerous reads to take place in order to finally locate the inode of the file. Afterwards, reading each block requires the file system to first consult the inode, then read the block, and then update the inode's last-accessed-time field with a write.
+> ![](img/403.png)
+
+##### Writing A File To Disk
+> When writing out a new file, each write out only has to write data to disk but has to first decide which block to allocate to the file and thus update other structures of the disk accordingly(e.g., the data bitmap and inode). Thus, each write to a file logically generates five I/Os: one to read the data bitmap(which is the updated to mark the newly-allocated block as used), one to write the bitmap(to reflect its new state to disk), two more to read and then write the inode(which is updated with the new block's location), and finally one to write the actual block itself.
+> ![](img/404.png)
+
+#### 40.7 Caching and Buffering
+> As the examples above show, reading and writing files can be expensive, incurring many I/Os to the (slow) disk. To remedy what would clearly be a huge performance problem, most file systems aggressively use system memory(DRAM) to cache important blocks.
+
+> The first open may generate a lot of I/O traffic to read in directory inode and data, but subsquent file opens of that same file(or files in the same directory) will mostly hit in the cache and thus no I/O is needed. Whereas read I/O can be avoided altogether with a sufficiently large cache, write traffic has to go to disk in order to become persistent. Thus, a cache does not serve as the same kind of filter on write traffic that it does for reads. That said, writing buffer certainly has a number of performance benefit. First, by delaying writes, the file system can batch some updates into a smaller set of I/Os; second, by buffering a number of writes in memory, the system can then schedule the subsequent I/Os and thus increase performance. Finally, some writes are avoided altogether by delaying them; for example, if an application creates a file and then deletes it, delaying the writes to reflect the file creation to disk avoids them entirely. In this case, laziness(in writing blocks to disk) is a virtue.
+
+> For the reasons above, most modern file systems buffer writes in memory for anywhere between five and thirty seconds, representing yet another trade-off: if the system crashes before the updates have been propagated to disk, the updates are lost; however, by keeping writes in memory longer, performance can be improved by batching, scheduling, and even avoiding writes.
+
