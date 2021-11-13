@@ -1452,3 +1452,37 @@ More generally, the sector address sector of the inode block can be calculated a
 
 > For the reasons above, most modern file systems buffer writes in memory for anywhere between five and thirty seconds, representing yet another trade-off: if the system crashes before the updates have been propagated to disk, the updates are lost; however, by keeping writes in memory longer, performance can be improved by batching, scheduling, and even avoiding writes.
 
+### 41 Locality and The Fast File System
+#### 41.1 The Problem: Poor Performance
+> The main issue was that the old UNIX file system treated the disk like it was a random-access memory; data was spread all over the place without regard to the fact that the medium holding the data was a disk, and thus had real and expensive positioning costs. For example, the data blocks of a file were often very far away from its inode, thus inducing an expensive seek whenever one first read the inode and then the data blocks of a file.
+
+#### 41.2 FFS:Disk Awareness Is The Solution
+#### 41.3 Organizing Structure: The Cylinder Group
+> FFS divides the disk into a number of cylinder groups. A single cylinder is a set of tracks on different surfaces of a hard drive that are the same distance from the center of the drive; it is called a cylinder because of its clear resemblance to the so-called geometrical shape. FFS aggregates N consecutive cylinders into a group, and thus the entire disk can thus be viewed as a collection of cylinder groups.
+> ![](img/c.png)
+
+> Whether you call them cylinder groups or block groups, these groups are the central mechanism that FFS uses to improve performance. Critically, by placing two files within the same group, FFS can ensure that accessing one after the other will not result in long seeks across the disk.
+
+> FFS keeps a copy of the super block(s) in each group for reliability reasons. The super block is needed to mount the file system; by keeping mulitple copies, if one copy becomes corrupt, you can still mount and access the file system by using a working replica.
+> Within each group, FFS needs to track whether the inodes and data blocks of the group are allocated. A per-group inode bitmap(ib) and data bitmap(db) serve this role for inodes and data blocks in each group. Bitmaps are an excellent way to manage free space in a file system because it is easy to find a large chunk of free space and allcate it to a file, perhaps avoiding some of the fragmentation problems of the free list in the old file system. Most of each cylinder group, as usual, is comprised of data blocks.
+> ![](img/ffs.png)
+
+#### 41.4 Policies: How To Allocate Files and Directories
+> The fist is the placement of directories. FFS employs a simple approach: find the cylinder group with a low number of allocated directories(to balance directories across groups) and a high number of free inodes(to subsequently be able to allocate a bunch of files), and put the directory data and inode in that group.
+
+> For files, FFS does two things. First, it makes sure to allocate the data blocks of a file in the same group as its inode, thus preventing long seeks between inode and data. Second, it places all files that are in the same directory in the cylinder group of the directory they are in.
+
+#### 41.6 The Large-File Exception
+> For large files, FFS does the following. After some number of blocks are allocated into the first block group, FFS places the next "large" chunk of the file in another block group. Then, the next chunk of the file is placed in yet another different block group, and so on.
+
+> Without the large-file exception, a single large file would place all of its blocks into one part of the disk. As you can see in the picture, /a fills up most of the data blocks in Group 0, whereas other groups remain empty. If some other files are now created in the root directory(/), there is not much room for their data in the group.
+> ![](img/gid1.png)
+>With the large-file exception,FFS instead spreads the file spread across groups,and the resulting utilization within any one group is not too high:
+> ![](img/gid2.png)
+> Spreading blocks of a file across the disk will hurt performance, particularly in the relatively common case of sequential file access. Specifically, if the chunk size is large enough, the file system will spend most of its time transferring data from disk and just a little time seeking between  chunks of the block.
+
+> FFS took a simple approach to spread large files, based on the structure of the inode itself. The first twelve direct blocks were placed in the same group as the inode; each subsequent indirect block, and all the blocks it pointed to, was placed in a different group.
+
+> Note that the trend in disk drives is that transfer rate improves fairly rapidly, as disk manufactures are good at cramming more bits into the same surface, but the mechanical aspects of drives related to seeks(disk arm speed and the rate of rotation) improve rather slowly. The implication is that over time, mechanical costs become relatively more expensive, and thus, to amortize said costs, you have to transfer more data between seeks.
+
+#### 41.7 A Few Other Things About FFS
