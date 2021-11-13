@@ -1385,7 +1385,48 @@ AMAT = $T_{M}$ + ($P_{Miss}$ · $T_{D}$)
 #### 39.16 Permission Bits And Access Control Lists
 > The file system also presents a virtual view of a disk, transforming it from a bunch of raw blocks into much more user-friendly files and directories. However, the abstraction is notably different from that of the CPU and memory,in that files are commonly shared among different users and processes and are not(always) private.
 
-#### 39.17 Making And Mounting A File System
+### 40 File System Implementaion
+> The file system is pure software; unlike our development of CPU and memory virtualization, we will not be adding hardware features to make some aspect of the file system work better.
 
+#### 40.1 The Way To Think
+> To think about file systems, we usually suggest thinking about two different aspect of them; The first is the data structure of the file system. The second aspect of a file system is its access methods.
 
+#### 40.2 Overall Organization
+> The file system has to track information about each file. This information is a key piece of metadata, and tracks thing like which data blocks comprise a file, the size of the file, its owner and access rights, access and modify times, and other similar kinds of information. To store this information, file systems usually have a structure called an **inode**.
 
+> We'll need to reserve some space on the disk for inode table, which simply holds an array of on-disk inodes. Assuming 256 bytes per inode, a 4-KB block can hold 16 inodes, and our file system below contains 80 total inodes, this number represents the maximum number of files we can have in our file system.
+> ![](img/idr.png)
+
+> Such allocation structures are thus a requisite element to track whether inodes or data blocks are free or allocated. We choose a simple and popular structure known as a bitmap, one for the data region(the data bitmap), and one for the inode table(the inode bitmap). A bitmap is a simple structure: each bit is used to indicate whether the corresponding object/block is free(0) or in-use(1).
+> ![](img/idrb.png)
+
+> There is one block left in the design of the on-disk structure of our very simple file system. We reserve this for the superblock, denoted by an S in the diagram below. The superblock contains information about this parituclar file system.
+> ![](img/idrbs.png)
+
+> Thus, when mounting a file system, the operating system will read the superblock first, to initialize various parameters, and then attach the volume to the file-system tree. When files within the volume are accessed, the system will thus know exactly where to look for the needed on-disk strutures.
+
+#### 40.3 File Organization: The Inode
+> One of the most important on-disk structures of a file system is the **inode**; virtually all file systems have a strucuture similar to this. The name inode is short for index node, the historical name given to it in UNIX and possibly earlier systems, used because these nodes were originally arranged in an array, and the array indexed into when accessing a particular inode.
+
+> Each inode is implicitly referred to by a number(called the i-number), which we've earlier called the low-level name of the file. For example, take the inode table of vsfs as below: 20KB in size(five 4KB blocks) and thus consisting of 80 inodes(assuming each inode is 256 bytes); further assume that the inode region starts at 12KB(i.e., the superblock starts at 0KB, the inode bitmap is at address 4KB, the data bitmap at 8KB, and thus the inode table comes right after). To read inode number 32, the file system would calculate the offset into the inode region(32 · sizeof(inode) or 8192), add it to the start address of the inode table on disk(inodeStartAddr = 12KB), and thus arrive upon the correct byte address of the desired block of inodes: 20KB. 
+> ![](img/titc.png)
+More generally, the sector address sector of the inode block can be calculated as follows:
+>```
+>blk = (inumber * sizeof(inode_t)) / blockSize;
+>sector = ((blk * blockSize) + inodeStartAddr) / sectorSize;
+>```
+
+> Inside each inode is virtually all of the information you need about a file: its type(e.g., regular file, directory, etc.), its size, the number of blocks allocated to it, protection information(such as who owns the file, as well as who can access it), some time information, including when the file was created, modified, or last accessed, as well as information about where its data blocks reside on disk(e.g., pointers of some kind). 
+> ![](img/401.png)
+
+> One of the most important decisions in the design of the inode is how it refers to where data blocks are. One simple approach would be to have one or more direct pointers(disk addresses) inside the inode; each pointer refers to one disk block that belongs to the file. Such an approach is limited, if you want to have a file that is really big.
+
+##### The Multi-Level Index
+> To support bigger files, file system designers have had to introduce different structures within inodes. One common idea is to have a special pointer known as an indirect pointer. Instead of pointing to a block that contains user data, it points to a block that contains more pointers, each of which point to user data. Thus, an inode may have some fixed number of direct pointers, and a single indirect pointer. If a file grows large enough, an indirect block is allocated(from the data-block region of the disk), and the inode's slot for an indirect pointer is set to point to it.
+> Not surprisingly, in such an approach, you might want to support even larger files. To do so, just add another pointer to the inode: the double indirect pointer. This pointer refers to a block that contains pointers to indirect blocks, each of which contain pointers to data blocks.
+
+> Many researchers have studied file systems and how they are used, and virtually every time they find certain "truths" that hold across the decades. One such finding is that most files are small. This imbalanced design reflects such a reality; if most files are indeed small, it makes sense to optimize for this case.
+> ![](img/402.png)
+
+#### 40.4 Directory Organization
+> In vsfs, directories have a simple organization; a directory basically just contains a list of(entry name, inode number) pair. For each file or directory in a given directory, there is a string and a number in the data block(s) of the directory.

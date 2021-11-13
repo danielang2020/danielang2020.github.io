@@ -21,5 +21,14 @@
 
 >- We often use the past simple with time expressions like **yesterday, last month, six years, when I was a child.**
 
+>- We use **be going to** for something that we expect to happen because we can see from the present situation that it is very likely. We can't use the present continuous in this way.
+    It's so cold, I'm sure **it's going to** snow soon.
+    Oh no! That **car's going to** hit the tree.
+
+>- Use the present continuous and NOT the present simple for things that you have arranged to do. Use the present simple for future events on timeables and programmes.
+    **We're going** by train tomorrow morning.
+    **The train leaves** at 7:45.
+
+
 
 
