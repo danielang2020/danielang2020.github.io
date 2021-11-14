@@ -1571,3 +1571,11 @@ More generally, the sector address sector of the inode block can be calculated a
 > The data block, previously written to the log, would instead be written to the file system proper, avoiding the extra write; given that most I/O traffic to the disk is data, not writing data twice substantially reduces the I/O load of journaling.
 
 > The update consists of three blocks: inode, bitmap and data block, some file systems(e.g., Linux ext3) write data blocks(of regular files) to the disk first, before related metadata is written to disk.
+> 1. Data write: Write data to final location; wait for completion.
+> 2. Journal metadata write: Write the begin block and metadata to the log; wait for writes to complete.
+> 3. Journal commit: Write the transaction commit block(containing TxE) to the log; wait for the write to complete; the transaction(including data) is now committed.
+> 4. Checkpoint metadata: Write the contents of the metadata update to their final locations within the file system.
+> 5. Free: Later, mark the transaction free in journal superblock.
+> Finally, note that forcing the data write to complete(Step 1) before issuing writes to the journal(Step 2) is not required for correctness, as indicated in the protocol above. Specifically, it would be fine to concurrently issue writes to data, the transaction-begin block, and journaled metadata; the only real requirement is that Step 1 and 2 complete before the issuing of the journal commit block(Step 3).
+
+> By forcing the data write first, a file system can guarantee that a pointer will never point to garbage. Indeed, this rule of **"write the pointed-to object before the object that points to it"** is at the core of crash consistency, and is exploited even further by other crash consistency schemes.
