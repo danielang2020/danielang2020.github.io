@@ -1485,4 +1485,89 @@ More generally, the sector address sector of the inode block can be calculated a
 
 > Note that the trend in disk drives is that transfer rate improves fairly rapidly, as disk manufactures are good at cramming more bits into the same surface, but the mechanical aspects of drives related to seeks(disk arm speed and the rate of rotation) improve rather slowly. The implication is that over time, mechanical costs become relatively more expensive, and thus, to amortize said costs, you have to transfer more data between seeks.
 
-#### 41.7 A Few Other Things About FFS
+### 42 Crash Consistency:FSCK and Journaling
+#### 42.1 A Detailed Example
+> You can see that a single inode is allocated(inode number 2), which is marked in the inode bitmap, and a single allocated data block(data block 4), also marked in the data bitmap.
+> ![](img/ade1.png)
+>```
+>owner : remzi
+>permissions : read-write
+>size : 1
+>pointer : 4
+>pointer : null
+>pointer : null
+>pointer : null
+>```
+
+> When we append to the file, we are adding a new data block to it, and thus must update three on-disk structures: the inode(which must point to the new block and record the new larger size due to the append), the new data block Db, and a new version of the data bitmap to indicate that the new data block has been allocated.
+> ![](img/ade2.png)
+>```
+>owner : remzi
+>permissions : read-write
+>size : 2
+>pointer : 4
+>pointer : 5
+>pointer : null
+>pointer : null
+>```
+
+> To achive this transition, the file system must perform three seperate writes to the disk, one each for the inode, bitmap, and data block. Note that these writes usually don't happen immediately when the user issues a write() system call; rather, the dirty inode, bitmap, and new data will sit in main memory(in the page cache or buffer cache) for some time first; then, when the file system finally decides to write them to disk(after say 5 seconds or 30 seconds), the file system will issue the requisite write requests to the disk. Unfortunately, a crash may occur and thus interfere with these updates to the disk. In particular, if a crash happens after one or two of these writes have taken place, but not all there,the file system could be left in a funny state.
+
+##### Crash Scenarios
+>- Just the data block is written to disk.
+>- Just the update inode is written to disk.
+>- Just the updated bitmap is written to disk.
+>- The inode and bitmap are written to disk, but not data.
+>- The inode and the data block are written, but not the bitmap.
+>- The bitmap and data block are written, but not the inode.
+
+##### The Crash Consistency Problem
+> We can have inconsistency in file system data structures; we can have space leaks; we can return garbage data to a user.
+
+#### 42.2 Solution #1: The File System Checker
+> Early file systems took a simple approach to crash consistency. Basically, they decided to let inconsistencies happen and then fix them later(when rebooting). A classic example of this lazy approach is found in a tool that does this: fsck. fsck is a UNIX tool for finding such inconsistencies and repairing them; similar tools to check and repair a disk partition exist on different systems. Note that such an approach can't fix all problems; consider, for example, the case above where the file system looks consistent but the inode points to garbage data. The only real goal is to make sure the file system metadata is internally consistent.
+
+> Building a working fsck requires intricate knowledge of the file system; making sure such a piece of code works correctly in all cases can be challenging. However, fsck(and similar approaches) have a bigger and perhaps more fundamental problem: they are too slow. With a very large disk volume, scanning the entire disk to find all the allocated blocks and read the entire directory tree may take many minutes or hours. Performance of fsck, as disks grew in capacity and RAIDs grew in popularity, became prohibitive.
+
+#### 42.3 Solution #2: Journaling(or Write-Ahead Logging)
+> Probably the most popular solution to the consistent update problem is to steal an idea from the world of database management systems. That idea, known as write-ahead logging, was invented to address exactly this type of problem.
+
+> The basic idea is as follow. When updating the disk, before overwriting the structures in place, first write down a little note(somewhere else on the disk, in a well-known location) describing what you are about to do. Writing this note is the "write ahead" part, and we write it to a structure that we organize as a "log"; hence, write-ahead logging.
+> By writing the note to disk, you are guaranteeing that if a crash takes places during the update(overwrite) of the structures you are updating, you can go back and look at the note you made and try again; thus, you will know exactly what to fix(and how to fix it) after a crash, instead of having to scan the entire disk. By design, journaling thus adds a bit of work during updates to greatly reduce the amount of work required during recovery.
+
+> We'll now describe how Linux ext3, a popular journaling file system, incorporates journaling into the file system. Most of the on-disk structures are identical to Linux ext2. An ext2 file system(without journaling) looks like this:
+> ![](img/ext2.png)
+> Assuming the journal is placed within the same file system image, an ext3 file system with a journal looks like this:
+> ![](img/ext3.png)
+
+##### Data Journaling
+> Say we have our canonical update, where we wish to write the inode, bitmap, and data block to disk. Before writing them to their final disk locations, we are now first going to write them to the log(a.k.a. journal). This is what this will look like in the log:
+> ![](img/dj.png)
+> The transaction begin(TxB) tells us about this update, including information about the pending update to the file system, and some kind of transaction identifier(TID). The middle three blocks just contain the exact contents of the blocks themselves; this is known as physical logging as we are putting the exact physical contents of the update in the journal. The final block(TxE) is a marker of the end of this transaction, and will also contain the TID.
+> Once this transaction is safely on disk, we are ready to overwrite the old structures in the file system; this process is called checkpointing. Thus, to checkpoint the file system, we issue the write inode, bitmap, and data block to their disk locations as seen above; if these writes complete successfully, we have successfully checkpointed the file system and are basically done.
+
+> Things get a little tricker when a crash occurs during the writes to the journal. Here, we are trying to write the set of blocks in the transaction to disk. One simple way to do this would be to issue each one at a time, waiting for each to complete, and then issuing the next. However, this is slow. Ideally, we'd like to issue all five block writes at once, as this would turn five writes into a single sequential write and thus be faster. However, this is unsafe, for the following reason: given such a big write, the disk internally may perform scheduling and complete small piece of the big write in any order. Thus, the disk internally may write TxB, inode, bitmap, and TxE and only later write data block. Unforunately, if the disk loses power between them, this is what ends up on disk:
+> ![](img/dj1.png)
+
+> To avoid this problem, the file system issues the transactional write in two steps. First, it writes all blocks except the TxE block to the journal, issuing these writes all at once. When these writes complete, the journal will look something like this:
+> ![](img/dj2.png)
+> When those writes completes, the file system issue the write of the TxE block, thus leaving the journal in this final, safe state:
+> ![](img/dj3.png)
+> **An important aspect of this process is the atomicity guarantee provided by the disk.** It turns out that the disk guarantees that any 512-byte write will either happen or not(and never be half-written); thus, to make sure the write of TxE is atomic, one should make it a single 512-byte block.
+
+##### Revoery
+> If the crash happens before the transaction is written safely to the log, then our job is easy: the pending update is simply skipped. If the crash the checkpoint is complete, the file system can recover the update as follows. When the system boots, the file system recovery process will scan the log and look for transactions that have committed to the disk; there transactions are thus replayed(in order), with the file system again atttempting to write out the blocks in the transaction to their final on-disk location. This form of logging is one of the simplest forms there is, and is called redo logging. By recovering the committed transactions in the journal, the file system ensures that the on-disk structures are consistent, and thus can proceed by mounting the file system and readying itself for new requests.
+
+##### Batching Log Updates
+> Some file systems do not commit each update to disk one at a time(e.g., Linux ext3); rather, one can buffer all updates into a global transaction. In our example above, when the two files are created, the file system just marks the in-memory inode bitmap, inodes of the files, directory data, and directory inode as dirty, and adds them to the list of blocks that form the current transaction. When it is finally time to write these blocks to disk(say, after a timeout of 5 seconds), this single global transaction is committed containting all of the updates described above. Thus, by buffering updates, a file system can avoid excessive write traffic to disk in many cases.
+
+##### Making The Log Finite
+> Two problems arise when the log becomes full. The first is simpler, but less critical: the larger the log, the longer recovery will take, as the recovery process must replay all the transactions within the log(in order) to recover. The second is more of an issue: when the log is full(or nearly full), no further transactions can be committed to the disk, thus making the file system "less than useful"(i.e., useless).
+> To address these problems, journaling file systems treat the log as a circular data structure, re-using it over and over; this is why the journal is sometimes referred to as a circualr log.
+
+##### Metadata Journaling
+> Because of the high cost of writing every data block to disk twice, people have tried a few different things in order to speed up performance. For example, the mode of journaling we described above is often called data journaling(as in Linux ext3), as it journals all user data. A simpler form of journaling is sometimes called ordered journaling(or just metadata journaling), and it is nearly the same, except that user data is not written to the journal. Thus, when performing the same update as above, the following information would be written to the journal.
+> ![](img/dj4.png)
+> The data block, previously written to the log, would instead be written to the file system proper, avoiding the extra write; given that most I/O traffic to the disk is data, not writing data twice substantially reduces the I/O load of journaling.
+
+> The update consists of three blocks: inode, bitmap and data block, some file systems(e.g., Linux ext3) write data blocks(of regular files) to the disk first, before related metadata is written to disk.
