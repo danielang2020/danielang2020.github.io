@@ -30,5 +30,22 @@
     **The train leaves** at 7:45.
 
 
+>- **Followed by a gerund(-ing form)**
+    admit, advise, consider, discuss, dislike, dread, enjoy, finish, mind, practice, recommend, suggest
+>- **Followed by an infinitive**
+    agree, appear, choose, decide, expect, fail, hope, learn, need, refuse, seem, wait, want
+>- **Flollowed by either, usually with no change in meaning**
+    begin, continue, hate, like, love, prefer, start
+>- **Followed by either, with a change in meaning**
+    forget, regret, remember, stop, try
+
+> With verbs like **work** and **live**, which can describe permanent or temporary situations, we usually use the present perfect + 'for'/'since' for a long period of time. For a short period, we use the present perfect continuous.
+    **I've worked** for this company **for 20 years**.(present perfect)
+    **I've been working** here **for a week**.(present perfect continuous)
+
+> If a situation is finished, we use past simple + 'for', not the present perfect:
+    **I worked** for that company **for 20 years** and then I retired.
+> When you listen to someone using a sentence with **for** + a period of time, listen carefully to the verb. It is sometimes difficult to hear the different between, for example, **I've lived in New York for five years** and **I lived in New York for five years**, but it makes a big difference in meaning. It tells us whether the speaker still lives there or not.
+
 
 
