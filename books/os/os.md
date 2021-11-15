@@ -1579,3 +1579,45 @@ More generally, the sector address sector of the inode block can be calculated a
 > Finally, note that forcing the data write to complete(Step 1) before issuing writes to the journal(Step 2) is not required for correctness, as indicated in the protocol above. Specifically, it would be fine to concurrently issue writes to data, the transaction-begin block, and journaled metadata; the only real requirement is that Step 1 and 2 complete before the issuing of the journal commit block(Step 3).
 
 > By forcing the data write first, a file system can guarantee that a pointer will never point to garbage. Indeed, this rule of **"write the pointed-to object before the object that points to it"** is at the core of crash consistency, and is exploited even further by other crash consistency schemes.
+
+### 43 Log-structured File Systems
+> When writing to disk, LFS first buffers all updates(including metadata!)in an in-memory segment; when the segment is full, it is written to disk in one long, sequential transfer to an unused part of the disk. LFS never overwrite existing data, but rather always writes segments to free locations. Because segmetns are large, the disk(or RAID) is used efficiently, and performance of the file system approaches its zenith.
+
+#### 43.1 Writing To Disk Sequentially
+> This basic idea, of simply writing all updates(such as data blocks, inode, etc.) to the disk sequentially, sits at the heart of LFS.
+> ![](img/lfs1.png)
+
+#### 43.2 Writing Sequentially And Effectively
+> Before writing to the disk, LFS keeps track of updates in memory; when it has received a sufficient number of updates, it writes them to disk all at once, thus ensuring effcient use of the disk.
+> The large chunk of updates LFS writes at one time is referred to by the name of segment. When writing to disk, LFS buffers updates in an in-memory segment, and then writes the segment all at once to the disk. As long as the segment is large enough, these writes will be efficient.
+
+#### 43.4 Problem: Finding Inodes
+> In LFS, finding inodes is more difficult. We've managed to scatter the inodes all throughout the disk! Worse, we never overwrite in place, and thus the latest version of an inode(i.e., the one we want) keeps moving.
+
+#### 43.5 Solution Through Indirection: The Inode Map
+> The imap is a structure that takes an inode number as input and produces the disk address of the most recent version of the inode. Any time an inode is written to disk, the imap is updated with its new location.
+
+> LFS places chunks of the inode map right next to where it is writing all of the other new information.
+> ![](img/lfs2.png)
+
+#### 43.6 Completing The Solution: The Checkpoint Region
+> LFS has just such a fixed place on disk for this, known as the checkpoint region(CR). The checkpoint region contains pointers to the latest piece of the inode map, and thus the inode map piece can be found by reading the CR first. Note the checkpoint region is only updated periodically, and thus performance is not ill-affected. Thus, the overall structure of the on-disk layout contains a checkpoint region; the inode map pieces each contain addresses of the inodes; the inodes point to files(and directories) just like typical UNIX file system.
+> ![](img/lfs3.png)
+
+#### 43.7 Reading A File From Disk: A Recap
+> The first on-disk data structure we must read is the checkpoint region. The checkpoint region contains pointers to the entire inode map, and thus LFS then reads in the entire inode map and caches it in memory. After this point, when given an inode number of a file, LFS simply looks up the inode-number to inode-disk-address mapping in the imap, and reads in the most recent version of the inode.
+
+#### 43.8 What About Directories?
+> When creating a file on disk, LFS must both write a new inode, some data, as well as the directory data and its inode that refer to this file. Remember that LFS will do so sequentially on the disk(after buffering the updates for some time).
+> ![](img/lfs4.png)
+
+#### 43.9 A New Problem: Garbage Collection
+> LFS instead keeps only the latest live version of a file; thus(in the background), LFS must periodically find these old dead versions of file data, inodes, and other structures, and clean them; cleaning should thus make blocks on disk free again for use in subsequent writes.
+
+> Periodically, the LFS cleaner reads in a number of old(partially-used) segments, determines which blocks are live within these segment, and then write out a new set of segments which just the live blocks within them, freeing up the old ones for writing.
+
+#### 43.10 Determining Block Liveness
+> For a block D located on disk at address A, look in the segment summary block and find its inode number N and offset T. Next, look in the imap to find where N lives and read N from disk. Finally, using the offset T, look in the inode to see where the inode thinks the Tth block of this file is on disk. If it points exactly to disk address A, LFS can conclude that the block D is live. If it points anywhere else, LFS can conclude that D is not in use and thus know that this version is no longer needed.
+
+#### 43.12 Crash Recovery And The Log
+
