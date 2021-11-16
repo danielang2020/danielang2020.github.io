@@ -1619,5 +1619,38 @@ More generally, the sector address sector of the inode block can be calculated a
 #### 43.10 Determining Block Liveness
 > For a block D located on disk at address A, look in the segment summary block and find its inode number N and offset T. Next, look in the imap to find where N lives and read N from disk. Finally, using the offset T, look in the inode to see where the inode thinks the Tth block of this file is on disk. If it points exactly to disk address A, LFS can conclude that the block D is live. If it points anywhere else, LFS can conclude that D is not in use and thus know that this version is no longer needed.
 
-#### 43.12 Crash Recovery And The Log
+### 44 Flash-based SSDs
+#### 44.1 Storing a Single Bit
+> Flash chips are designed to store one or more bits in a single transistor; the level of charge trapped within the transistor is mapped to a binary value.
+
+#### 44.2 From Bits to Banks/Planes
+> Flash chips are organized into banks or planes which consist of a large number of cells.
+
+> A bank is accessed in two different sized units: blocks(sometimes called erase blocks), which are typically of size 128 KB or 256 KB, and pages, which are a few KB in size(e.g., 4KB). Within each bank there are a large number of blocks; within each block, there are a large number of pages.
+
+> The most important(and weird) thing you will learn is that to write to a page within a block, you first have to erase the entire block.
+> ![](img/441.png)
+
+#### 44.3 Basic Flash Operations
+> The read command is used to read a page from the flash; erase and program are used in tandom to write. 
+>- Read(a page): A client of the flash chip can read any page, simply by specifying the read command and appropriate page number to the device. Being able to access any location uniformly quickly means the device is a random access device.
+>- Erase(a block): Before writing to a page within a flash, the nature of the device requires that you first earse the entire block the page lies within. Erase, importantly, destroys the contents of the block(by setting each bit to the value 1); therefore, you must be sure that any data you care about in the block has been copied elsewhere before executing the erase.
+>- Program(a page): Once a block has been erased, the program command can be used to change some of the 1's within a page to 0's, and write the desired contents of a page to the flash.
+
+> Once a page has been programmed, the only way to change its contents is to erase the entire block within which the page resides.
+> ![](img/ssd1.png)
+
+> Frequent repetitions of this program/erase cycle can lead to the biggest reliability problem flash chips have: wear out.
+
+#### 44.4 Flash Performance And Reliability
+> The primary concern is wear out; when a flash block is erased and programmed, it slowly accrues a little bit of extra charge. Over time, as that extra charge builds up, it becomes increasingly difficult to differentiate between a 0 and a 1.
+> One other reliability problem within flash chips is known as disturbance. When accessing a particular page within a flash, it is possible that some bits get flipped in neighboring page; such bit flips are known as read disturbs or program disturbs.
+
+#### 44.5 From Raw Flash to Flash-Based SSDs
+> Internally, an SSD consists of some number of flash chips(for persistent storage). An SSD also contains some amount of volatile(i.e., non-persistent) memory; such memory is useful for caching and buffering of data as well as for mapping tables. Finally, an SSD contains control logic to orchestrate device opertaion.
+> ![](img/443.png)
+
+> The flash translation layer(FTL) should try to spread writes across the blocks of the flash as evenly as possible, ensuring that all of the blocks of the device wear out at roughly the same time.
+
+> To minimize such disturbance, FTLs will commonly program pages within an erased block in order, from low page to high page.
 

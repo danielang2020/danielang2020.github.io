@@ -47,5 +47,5 @@
     **I worked** for that company **for 20 years** and then I retired.
 > When you listen to someone using a sentence with **for** + a period of time, listen carefully to the verb. It is sometimes difficult to hear the different between, for example, **I've lived in New York for five years** and **I lived in New York for five years**, but it makes a big difference in meaning. It tells us whether the speaker still lives there or not.
 
-
-
+> After superlative adjectives, we usually use **in**, not **of**.
+    He was the tallest person **in** his family.
