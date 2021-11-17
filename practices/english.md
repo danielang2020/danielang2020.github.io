@@ -49,3 +49,17 @@
 
 > After superlative adjectives, we usually use **in**, not **of**.
     He was the tallest person **in** his family.
+
+> We use **might + verb, may + werb** or **could + verb** to talk about the possiblility of something in the present or the future.
+    I **might go** to the exhibition at the Tate this afternoon.(future)
+    We **might not move** into the new offices until the New Year.(future)
+    He's travelling in Eastern Europe. He **may be** in Ukraine by now.(present)
+    Our client **may not agree** with our suggestions.
+
+> It's possible to ask question with **Might/May/Could + subject + infinitive without 'to',** but it is more common to form a question with **Do you think + subject + might/may/could + infinitive without 'to'**.
+    **Do you think he might/may/could be** in Ukraine by now?
+
+> We don't use **couldn't** in the same way as **might not/mightn't/may not**. 'Couldn't' means that something is impossible.
+
+> I used to eat some cake last Saturday night.('Saturday night' was just one time, so it was not something done regularly.)
+
