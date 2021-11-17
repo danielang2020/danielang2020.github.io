@@ -1672,3 +1672,19 @@ More generally, the sector address sector of the inode block can be calculated a
 
 #### 45.5 A New Problem: Misdirected Writes
 > This arises in disk and RAID controllers which write the data to disk correctly, except in the wrong location.
+> In this case, adding a physical identifier(physical ID) is quite helpful. If the stored information now contains the checksum C(D) and both the disk and sector numbers of the block, it is easy for the client to determine whether the correct information resides within a particular locale.
+
+#### 45.6 One Last Problem: Lost Writes
+> Lost writes occurs when the device informs the upper layer that a write has completed but in fact it never is persisted; thus, what remains is the old contents of the block rather than the updated new contents.
+
+> One classic approach is to perform a write verify or read-after-write; by immediately reading back the data after a write, a system can ensure that the data indeed reached the disk surface. This approach, however, is quite slow, doubling the number of I/Os needed to complete a write.
+
+#### 45.7 Scrubbing
+> By periodically reading through every block of the system, and checking whether checksums are still valid, the disk system can reduce the chances that all copies of a certain data item become corrupted. Typical systems schedule scans on a nightly or weekly basis.
+
+#### 45.8 Overheads Of Checksumming
+> The first is on the disk itself; each stored checksum takes up room on the disk, which can no longer be used for user data.
+> The second type of space overhead comes in the memory of the system. When accessing data, there must now be room in memory for the checksums as well as the data itself.
+
+> While space overheads are small, the time overheads induced by checksumming can be quite noticeable. One approach to reducing CPU overheads, employed by many system that use checksums(including network stacks), is to combine data copying and checksumming into one streamlined activity.
+
