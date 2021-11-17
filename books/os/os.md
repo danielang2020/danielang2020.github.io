@@ -1654,3 +1654,21 @@ More generally, the sector address sector of the inode block can be calculated a
 
 > To minimize such disturbance, FTLs will commonly program pages within an erased block in order, from low page to high page.
 
+### 45 Data Integrity and Protection
+#### 45.1 Disk Failure Modes
+> Latent-sector errors(LSEs) arise when a disk sector(or group of sectors) has been damaged in some way.
+> There are also cases where a disk block becomes corrupt in a way not detectable by the disk itself.
+
+> If you really wish to build a reliable storage system, you must include machinery to detect and recover from both LSFs and block corruption.
+
+#### 45.2 Handling Latent Sector Errors
+> When a storage system tries to access a block, and the disk returns an error, the storage system should simply use whatever redundancy mechanism it has to return the correct data. In a mirrored RAID, for example, the system should access the alternate copy; in a RAID-4 or RAID-5 system based on parity, the system should reconstruct the block from the other blocks in the parity group.
+
+#### 45.3 Detection Corruption: The Checksum
+> The primary mechanism used by modern storage systems to preserve data integrity is called the checksum. A checksum is simply the result of a function that takes a chunk of data as input and computes a function over said data, producing a small summary of the contents of the data. The goal of such a computation is to enable a system to detect if data has somehow been corrupted or altered by storing the checksum with the data and then confirming upon later access that the data's current checksum matches the original storage value.
+
+#### 45.4 Using Checksums
+> When reading a block D, the client also reads its checksum from disk $C_{s}$(D),which we call the stored checksum. The client then computes the checksum over the retrieved block D, which we call the computed checksum $C_{c}$(D). At this point, the client compares the stored and computed checksums; if they are equal, the data has likely not been corrupted, and thus can be safely returned to the user.
+
+#### 45.5 A New Problem: Misdirected Writes
+> This arises in disk and RAID controllers which write the data to disk correctly, except in the wrong location.
