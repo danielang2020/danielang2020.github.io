@@ -63,3 +63,19 @@
 
 > I used to eat some cake last Saturday night.('Saturday night' was just one time, so it was not something done regularly.)
 
+> **Too** describes something negative or unwanted, **enough** describes the right amount of something, and **very** makes the adjective stronger.
+
+> For **degree**, we use **too + adjective**.
+    It's **too hot** in here.
+
+> For **amount** or **number**, the order is **too + many/much + noun**.
+    James ate **too much pizza**.
+
+> If we are making an indirect question from a direct question which already contains a question word, like **what, who, when, where or how**, we keep that same question word.
+    (Direct question) - **What** is the dress code in the office?
+    (Indirect question) - Could you tell me **what** the dress code is in the office?
+
+> If the direct question doesn't have a question word, then we use **if** or **whether** in the indirect question. We can use these interchangeably, although **if** is a little more informal.
+    (Direct question) - Is the coffee for everyone?
+    (Indirect question) - Could you tell me **if** the coffee is for everyone?
+
