@@ -1688,3 +1688,22 @@ More generally, the sector address sector of the inode block can be calculated a
 
 > While space overheads are small, the time overheads induced by checksumming can be quite noticeable. One approach to reducing CPU overheads, employed by many system that use checksums(including network stacks), is to combine data copying and checksumming into one streamlined activity.
 
+### 48 Distributed Systems
+#### 48.1 Communication Basic
+> The central tenet of modern networking is that communication is fundamentally unreliable. Whether in the wide-area Internet, or a local-area high-speed network such as Infiniband, packets are regularly lost, corrupted, or otherwise do not reach their destination.
+
+#### 48.2 Unreliable Communication Layers
+> One excellent example of such an unreliable layer is found in the UDP/IP networking stack available today on virtually all modern systems. 
+> If you use it, you will encounter situations where packets get lost(dropped) and thus do not reach their destination; the sender is never thus informed of the loss. However, that does not mean that UDP does not guard against any failures at all. For example, UDP includes a checksum to detect some forms of packet corruption.
+
+#### 48.3 Reliable Communication Layers
+> The technique that we will use is known as an acknowledgment, or ack for short. The sender sends a message to the receiver; the receiver then sends a short message back to acknowledge its receipt.
+> ![](img/483.png)
+
+> When we are aiming for a reliable message layer, we also usually want to guarantee that each message is received exactly once by the receiver.
+> To enable the receiver to detect duplicate message transmission, the sender has to identify each message in some unique way, and the receiver needs some way to track whether it has already seen each message before. When the receiver sees a duplicate transmission, it simply acks the message, but(critically) does not pass the message to the application that receives the data. Thus, the sender receives the ack but the message is not received twice, preserving the exactly-once semantics mentioned above.
+
+> With a sequence counter, the sender and receiver agree upon a start value(e.g., 1) for a counter that each side will maintain. Whenever a message is sent, the current value of the counter is sent along with the message; this counter value(N) serves as an ID for the message. After the message is sent, the sender then increments the value(to N + 1).
+> The receiver uses its counter value as the expected value for the ID of the incoming message from that sender. If the ID of a received message(N) matches the receiver's counter(also N), it acks the message and passes it up to the application; in this case, the receiver concludes this is the first time this message has been received. The receiver then increments its counter(to N + 1),and waits for the next message.
+
+> The most commonly used reliable communication layer is known as TCP/IP, or just TCP for short.
