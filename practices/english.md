@@ -79,3 +79,28 @@
     (Direct question) - Is the coffee for everyone?
     (Indirect question) - Could you tell me **if** the coffee is for everyone?
 
+> The **passive** is made with **subject + to be + past participle**. The verb **to be** is used to express both **present tense** and **past tense**.
+
+> We use the first conditional to talk about possible future situation(or 'conditions') and their results. We use **if** for things we think are likely to happen, and **when** for things we think are certain to happen.
+    **If I visit** London, **I'll stay** with friends.
+    **When I visit** London, **I'll stay** with friends.
+
+> **When you finsih** school, **what will you do**?
+> **If we don't hurry**, we **will miss** the train.    
+> **If you pass** your exams, **will you go** to university?
+
+> We can use modals such as **may, might, can** or **should** in first conditional sentenses. **May** and **might** show we are less certain than when we use **will**.
+    We **might** be late if the shops are busy.
+    If you **can't** finish your homework tonight, you **can't** go out tomorrow.
+    If I feel unwell tomorrow, I **may** stay at home.
+
+> We can use **going to** or **the present continuous** with future meaning in the if/when part or the main part in first conditional sentenses.
+    If we don't leave right now, we **are going to** be late.
+    If you **are playing** tennis later, you'll need to take your racket.
+
+> We can use **as long as** and **unless** with the same meaning as **if** and **if not** in first conditional sentenses.
+    **As long as** we leave now, we won't be late.(= if we leave now, we won't be late.)
+    **Unless** we leave now, we'll be late.(= If we don't leave now, we'll be late.)
+
+    
+
