@@ -1707,3 +1707,36 @@ More generally, the sector address sector of the inode block can be calculated a
 > The receiver uses its counter value as the expected value for the ID of the incoming message from that sender. If the ID of a received message(N) matches the receiver's counter(also N), it acks the message and passes it up to the application; in this case, the receiver concludes this is the first time this message has been received. The receiver then increments its counter(to N + 1),and waits for the next message.
 
 > The most commonly used reliable communication layer is known as TCP/IP, or just TCP for short.
+
+### 49 Sun's Network File System(NFS)
+> One of the first uses of distributed client/server computing was in the realm of distributed file systems. In such an enviroment, there are a number of client machines and one server(or a few); the server stores the data on its disk, and clients request data through well-formed protocol messages.
+> ![](img/491.png)
+
+#### 49.1 A Basic Distributed File System
+> On the client side, there are client applications which access files and directories through the client-side file system. A client application issues system calls to the client-side file system in order to access files which are stored on the server.
+> The role of the client-side file system is to execute the actions needed to service those system calls. For example, if the client issues a read() request, the client-side file system may send a message to the server-side file system to read a particular block; the file server will then read the block from disk, and send a message back to the client with the requested data. The client-side file system will then copy the data into the user buffer supplied to the read() system call and thus the request will complete. Note that a subsequent read() of the same block on the client may be cached in client memory or on the client's disk even; in the best such case, on network traffic need be generated.
+> ![](img/492.png)
+
+#### 49.4 Key To Fast Crash Recovery: Statelessness
+> The server doesn't track anything about what clients are doing; rather, the protocol is designed to deliver in each protocol request all the information that is needed in order to complete the request.
+
+#### 49.5 The NFSv2 Protocol
+> First, the LOOKUP protocol message is used to obtain a file handle, which is then subsequently used to access file data. The client passes a directory file handle and name of a file to look up, and the handle to that file(or directory) plus its attributes are pass ack to the client from the server.
+
+#### 49.6 From Protocol To Distributed File System
+> ![](img/495.png)
+
+#### 49.7 Handling Server Failure With Idempotent Operations
+> In NFSv2, a client handles all of these failures in a single, uniform, and elegent way: it simply retries the request. Specifically, after sending the request, the client sets a timer to go off after a specified time period. If a  reply is received before the timer goes off, the timer is canceled and all is well. If, however, the timer goes off before any reply is received, the client assumes the request has not been processed and resends it. If the server replies, all is well and the client has neatly handled the problem.
+
+> The ability of the client to simply retry the request(regardless of what caused the failure)is due to an important property of most NFS requests: they are idempotent. More generally, any operation that just reads data is obviously idempotent. an operation that updates data must be more carefully considered to determine if it has this property.
+
+> The heart of the design of crash recovery in NFS is the idempotency of most common operations. LOOKUP and READ requests are trivially idempotent, as they only read information from the file server and do not update it. More interestingly, WRITE requests are also idempotent. If, for example, a WRITE fails, the client can simply retry it. The WRITE message contains the data, the count, and(importantly) the exact offset to write the data to. Thus, it can be repeated with the knowledge that the outcome of mulitple writes is the same as the outcome of a single one.
+
+> A small aside: some operations are hard to make idempotent. For example, when you try to make a directory that already exists, you are informed that the mkdir request has failed. Thus, in NFS, if the file server receives a MKDIR protocol message and executes it successfully but the reply is lost, the client may repeat it and encounter that failure when in fact the operation at first succeeded and then only failed on the retry. Thus, **life is not perfect**.
+
+> The NFS design philosophy covers most of the important cases, and overall makes the system design clean and simple with regards to failure.
+> The best is the enemy of the good.
+
+
+
