@@ -1738,5 +1738,39 @@ More generally, the sector address sector of the inode block can be calculated a
 > The NFS design philosophy covers most of the important cases, and overall makes the system design clean and simple with regards to failure.
 > The best is the enemy of the good.
 
+#### 49.8 Improving Performance: Client-side Caching
+> The NFS client-side file system cache file data(and metadata) that it has read from the server in client memory. Thus, while the first access is expensive(i.e., it requires netowkr communication), subsequent accesses are serviced quite quickly out of client memory.
+
+> Adding cache into any sort of system with multiple client caches introduces a big and interesting challedge which we will refer to as the cache consistency problem.
+
+#### 49.9 The Cahce Consistency Problem
+> The first problem is that the client C2 may buffer its writes in its cache for a time before propagating them to the server; in this case, while F(v2) sits in C2's memory, any access of F from another client(say C3) will fetch the old version of the file(F[v1]). Thus, by buffering writes at the client, other clients may get stale versions of the file, which may be undersirable; indeed, imagine the case where you log into machine C2, update F, and then log into C3 and try to read the file, only to get the old copy. Let's call this aspect of the cache consistency problem update visibility.
+> The second problem of cahce consistency is a stale cache; in this case, C2 has finally flushed its writes to the file server, and thus the server has the latest version(F[v2]). However, C1 still has F[v1] in its cache; if a program running on C1 reads file F, it will get a stale version F[v1] and not the most recent copy F[v2], which is(often) undesirable.
+
+> NFSv2 implementations solve these cache consistency problems in two ways. First, to address update visibility, clients implmement what is sometimes called flush-on-close(a.k.a., close-to-open) consistency semantics; specifically, the client flushes all updates(i.e., dirty pages in the cache) to the server. With flush-on-close consistency, NFS ensures that a subsequent open from another node will see the latest file version.
+> Second, to address the stale-cache problem, NFSv2 clients first check to see whether a file has changed before using its cache contents. Specifically, before using a cache block, the client-side file system will issue a GETATTR request to the server to fetch the file's attributes. The attributes, importantly, include information as to when the file was last modified on the server; if the time-of-modification is more recent than the time that the file was fetched into the client cache, the client invalidates the file, thus removing it from the client cache and ensuring that subsequent reads will go to the server and retrieve the latest version of the file. If, on the other hand, the client sees that it has the latest version of the file, it will go ahead and use the cached contents, thus increasing performance.
+
+> A client would still validate a file before accessing it, but most often would just look in attribute cache to fetch the attributes. The attributes for a particular file were placed in the cache when the file was first accessed, and then would timeout after a certain amount of time(say 3 seconds). Thus, during those three seconds, all file accesses would determine that it was OK to use the cached file and thus do so with no network communication with the server.
+
+#### 49.11 Implications On Server-Side Write Buffering
+> NFS servers must commit each write to stable storage before informing the client of success; doing so enables the client to detect server failure during a write, and thus retry until it finally succeeds.
+> Writing performance can be the major bottleneck. One trick is to first put writes in a battery-backed memory, thus enabling to quickly reply to WRITE requests without fear of losing the data and without the cost of having to write to disk right away; the second trick is to use a file system design specifically designed to write to disk quickly when one finally needs to do so.
+
+### 50 The Andrew File System(AFS)
+#### 50.1 AFS Version 1
+> One of the basic tenets of all versions of AFS is whole-file caching on the local disk of the client machine that is accessing a file. When you open() a file, the entire file(if it exists) is fetched from the server and stored in a file on your local disk. Subsequent application read() and write() operations are redirected to the loca file system where the file is stored; thus, these operations require no network communication and are fast. Finally, upon close(), the file(if it has been modified) is flushed back to the server.
+
+#### 50.4 AFS Version 2
+> A callback is simply a promise from the server to the client that the server will inform the client when a file that the client is caching has been modified. By adding this state to the system, the client no longer needs to contact the server to find out if a cached file is still valid. Rather, it assumes that the file is valid until the server tells it otherwise.
+
+> An FID in AFS consists of a volume identifier, a file identifier, and a "uniquifier". Thus, instead of sending whole pathnames to the server and letting the server walk the pathname to find the desired file, the client would walk the pathname, one piece at a time, caching the results and thus hopefully reducing the load on the server.
+
+#### 50.5 Cache Consistency
+> Between different machines, AFS makes updates visible at the server and invalidates cached copies at the exact same time, which is when the updated file is closed. A client opens a file, and then writes to it. When it is finally closed, the new file is flushed to the server. At this point, the server then "breaks" callbacks for any clients with cached copies; the break is accomplished by contacting each client and informed it that the callback it has on the file is no longer valid. This step ensures that clients will no longer read stale copies of the file; subsequent opens on those clients will require a re-fetch of the new version of the file from the server( and will also serve to reestablish a callback on the new version of the file).
+> ![](img/503.png)
+
+#### 50.7 Scale And Performance Of AFSv2
+
+
 
 
