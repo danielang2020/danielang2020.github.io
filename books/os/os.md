@@ -1769,8 +1769,25 @@ More generally, the sector address sector of the inode block can be calculated a
 > Between different machines, AFS makes updates visible at the server and invalidates cached copies at the exact same time, which is when the updated file is closed. A client opens a file, and then writes to it. When it is finally closed, the new file is flushed to the server. At this point, the server then "breaks" callbacks for any clients with cached copies; the break is accomplished by contacting each client and informed it that the callback it has on the file is no longer valid. This step ensures that clients will no longer read stale copies of the file; subsequent opens on those clients will require a re-fetch of the new version of the file from the server( and will also serve to reestablish a callback on the new version of the file).
 > ![](img/503.png)
 
-#### 50.7 Scale And Performance Of AFSv2
+### 53 Introduction to Operating System Security
+#### 53.3 Security Goals and Policies
+> As a high conceptual level, they have defined three big security-related goals that are common to many systems:
+1、 **Confidentitality** - If some piece of information is supported to be hidden from others, don't allow them to find it out.
+2、 **Integrity** - If some piece of information or component of a system is supposed to be in a particular state, don't allow an adversary to change it.
+3、**Availability** - If some information or service is supposed to be available for your own or other's use, make sure an attacker cann't prevent its use.
 
+#### 53.4 Designing Secure Systems
+> 1、 **Economy** of mechanism - This basically means keep your system as small and simple as possible.  
+2、**Fail-safe defaults** - Default to security, not insecurity.
+3、**Complete mediation** - This is a security term meaning that you should check if an action to be performed meets security policies every single time the action is taken.
+4、**Open design** - Assume your adversary knows every detail of your design. If the system can achieve its security goals anyway, you're in good shape.
+5、**Seperation of privilege** - Require seperate parties or credentials to perform critical actions.
+6、**Least privilege** - Give a user or a process the minimum privileges required to perform the actions you wish to allow.
+7、**Least common mechanism** - For different users or processes, use seperate data structures or mechanisms to handle them.
+8、**Acceptability** - A critical property not dear to the hearts of many programmers.
+
+#### 53.5 The Basic of OS Security
+> A lot of system security is going to be related to process handling.
 
 
 
