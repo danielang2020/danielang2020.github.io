@@ -1788,6 +1788,3 @@ More generally, the sector address sector of the inode block can be calculated a
 
 #### 53.5 The Basic of OS Security
 > A lot of system security is going to be related to process handling.
-
-
-
