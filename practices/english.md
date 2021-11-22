@@ -102,5 +102,27 @@
     **As long as** we leave now, we won't be late.(= if we leave now, we won't be late.)
     **Unless** we leave now, we'll be late.(= If we don't leave now, we'll be late.)
 
-    
+> We use the **past simple** in the if part - but **second conditional** sentences aren't about the past. We use the **past form** to show that the situation isn't real. The **would** part tells us the result of this imaginary situation.
 
+> We sometimes use **were** instead of **was** in the **if** part of a second conditional sentense. It means the same, but when we use **were**, the sentense sounds more **formal**.
+
+> **Action verbs** can be used in all tenses. **State verbs** can not be used in continuous forms.
+
+> When talking about a life experience, we can use the **present perfect**. We don't say when it happened because we're more interested in the experience, than the time or date.
+    My Wife **has been** both Sex and the City movies.
+> If we want to say **when** the experience happened in the past, we use the **past simple**.
+    She **watched** the newest Sex and th City movie **last week**.
+
+> We use the **present perfect** when things that happened in the recent past are important now.
+    Oh no! I **have lost** my wedding ring... My wife will kill me!
+> We use the **past simple** to say when the action happened.
+    I **lost** my wedding ring **last night**.
+
+> We use the **present perfect** for situations that started in the past and are still happening now.
+    I haven't seen my husband this morning.(It is still this morning.)    
+> We use the **past simple** for situations that started and finished in the past.
+    I didn't see my husband this morning.(It is this afternoon or evening now.)
+
+> If we know it is a completed event, we can ask a **how long** question with the **past simple**.
+    **'How long did** you live with your ex-husband?' 'We **lived** together for about six years. I moved out when I found out he was cheating!'
+    
