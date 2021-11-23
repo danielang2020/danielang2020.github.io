@@ -8,6 +8,7 @@
 ## CS
 
 ### [Operating System](books/os/os.md)
+### [Computer Network](books/computer_network/cn.md)
 
 # Documents
 
@@ -18,6 +19,7 @@
 
 # Blogs
 ## [How to Scale WebSockets](blogs/how_to_scale_websockets.md)
+## [Monolith, Distributed Monolith and Microservice architectures](blogs/m_dm_m.md)
 
 # Practice
 
