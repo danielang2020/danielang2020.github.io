@@ -126,3 +126,20 @@
 > If we know it is a completed event, we can ask a **how long** question with the **past simple**.
     **'How long did** you live with your ex-husband?' 'We **lived** together for about six years. I moved out when I found out he was cheating!'
     
+> There is a special case if the pronoun is **I** and we use **be** in the statement. The tag is made with **am** when the statement is negative - but when the statement is positive, the tag is made with **aren't**.
+    **I'm** not the right person for the job, **am** I?
+    **I'm** in the right building for the interview, **aren't** I?
+
+> The negative of **likely** is **unlikely**.
+    **It's likely to be** a major advance in computing technology.
+    **The new smartwatches are unlikely** to be a big revolution in technology.
+
+> We can use **used to** and **would** to talk about things we did regularly in the past, but we don't do now. We use **used to** for either habits or states in the past. **Would** is used only for past habits, not for past states.
+    Elena **used to** visit her grandson on Saturdays, but now she visits him on Sundays.(past habit)
+    On Fridays, we **would** take a long walk after lunch.(past habit)
+    The weather **didn't use to** be so cold in May.(past state)
+> **Used to** and **would** already show that something happened in the past. We don't usually add adverbs. But, if you want to stress a time period, you can add an adverb.
+    **I didn't use to** travel **frequently**, but now I do.
+    Nancy **would** go for a jog **every day**, but now she doesn't have enough time.
+
+
