@@ -1,4 +1,6 @@
 # Grammer
+
+## Basic grammar reference
 >- We use the present continuous for: **temporary situations**
     She usually works in London, but she’s working from home this week. (temporary situation)
 
@@ -142,4 +144,33 @@
     **I didn't use to** travel **frequently**, but now I do.
     Nancy **would** go for a jog **every day**, but now she doesn't have enough time.
 
+> We use **can** or **be able to** for saying that somebody or something has the ability to do something. **Can** and **be able to** mean the same, but we often use **be able to** when something is surprising or unusual.
+    They **are able to close** their noses to keep out the sand.
 
+> For a single event int the past, we use **be able to**(not **could**) in positive statements.
+    Our guide **was able to show** us the caves where the bushmen lived.
+> However, in negative statements and questions about single events, we can use **could** or **be able to**.
+
+> If something is very difficult to do or is very successful, we often use the verb **manage to** instead of a modal verb.
+    The bushman **managed to live** happily in their natural environment for at least 20,000 years.
+
+> **Can** has no infinitive form or present perfect form. So in some sentences, we have to use **be able to**.
+    I'd like to **be able to speak** Russian.(infinitive)
+    We **haven't been able to contact** them by phone yet.(present perfect)
+
+> **Manage to** is a regular verb in the positive form. But in the negative form we say **can't manage to** in the present and **couldn't** or **didn't manage to** in the past. We also use **did** for questions.
+    I **can't manage to eat** all that!
+    They **couldn't/didn't manage to finish** the race.
+    **Did** you really **manage** to swim across the Channel?
+
+> We usually use **can** and not **be able to** with sense verbs and verbs of thinking such as **see,hear,smell,believe,remember**.
+    I **can see** the Lena River from here.
+    I **can't believe** that it gets so cold there.
+
+
+## Intermediate Grammar Reference
+> Some verbs are almost never used in the present perfect continuous. We use the present perfect instead. The most familiar example of these are **be** and **know**.
+    WRONG: **She's been being** here for ten minutes.
+    CORRECT: **She's been** here for 10 minutes.
+    WRONG: **I've** only **been knowing** him since last week.
+    CORRECT: **I've** only **known** him since last week.
