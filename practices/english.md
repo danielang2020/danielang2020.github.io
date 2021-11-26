@@ -174,3 +174,27 @@
     CORRECT: **She's been** here for 10 minutes.
     WRONG: **I've** only **been knowing** him since last week.
     CORRECT: **I've** only **known** him since last week.
+
+> **Every** and **each** are followed by a singluar noun.
+    **Every/Each student** has their own room.
+
+> For emphasising every single one, we must use **every** not **each**.
+    You've eaten **every chocolate** in the box!
+
+> For only two things, we can use **each** but not **every**.
+    In baseball, how many players are there in **each team**?
+
+> We don't use an article(**the,a/an**) before **every** or **each**
+    **Every painting** is unique.
+    **NOT**: The every painting is unique.
+
+> **Either** is used mainly in questions and negative sentenses.
+    She didn't buy **either** picture in the end.
+
+> After **neither(of)** the verb is always positive. It can be singular or plural after **neither of**.
+    **Neither of** these answers **is/are** correct.
+
+> But after **neither** + noun the verb is always singular.
+    **Neither answer is** correct.
+    
+            
