@@ -133,6 +133,55 @@
 > We see that e-mail, remote terminal access, the Web, and file transfer all use TCP. These applications have chosen TCP primarily because TCP provides reliable data transfer, guaranteeing that all data will eventually get to its destionation. Because Internet telephony applications(such as Skype) can often tolerate some loss but require a minimal rate to be effective, developers of Internet telephony applications usually prefer to run their applications over UDP, thereby circumventing TCP's congestion control mechanism and packet overheads. But because many firewalls are configured to block(most type of) UDP traffic, Internet telephony applications often are designed to use TCP as a backup if UDP communication fails.
 > ![](img/25.png)
 
+#### 2.1.5 Application-Layer Protocols
+> An **aplication-layer protocols** defines how an application's processes, running on different end systems, pass messages to each other.
 
+> It's important to distinguish between network applications and application-layer protocols. An application-layer protocol is only one piece of a network application.
 
-119
+> The Web's application-layer protocol, HTTP, defines the format and sequence of messages exchanged between browser and Web server. Thus, HTTP is only one piece of the Web application.
+
+### 2.2 The Web and HTTP
+#### 2.2.1 Overview of HTTP
+> HTTP uses TCP as its underlying transport protocol. The HTTP client first initiates a TCP connection with the server. Once the connection is established, the browser and the server processes access TCP through their socket interface. Once the client sends a message into its socket interface, the message is out of the client's hands and is "in the hands" of TCP. TCP provides a reliable data transfer service to HTTP. This implies that each HTTP request message sent by a client process eventually arrives intact at the server; similarly, each HTTP response message sent by the server process eventually arrives intact at the client. Here we see one of the great advantages of a layered architecture - HTTP need not worry about lost data or the details of how TCP recovers from loss or recording of data within the network. That is the job of TCP and the protocols in the lower layers of the protocol stack.
+
+> Because an HTTP server maintains no information about the clients, HTTP is said to be a **stateless protocol**.
+
+#### 2.2.2 Non-Persistent and Persistent Connections
+> When this client-server interaction is taking place over TCP, the application developer needs to make an important decision - should each request/response pair be sent over a separate TCP connection, or should all of the requests and their corresponding response be sent over the same TCP connection? In the former approach, the application is said to use **non-persistent connections**; and in the latter approach, **persistent connections**.
+
+#### 2.2.3 HTTP Message Format
+> There are two types of HTTP messsages, request messages and response messages.
+
+##### HTTP Request Message
+>```
+>GET /somedir/page.html HTTP/1.1
+>Host: www.someschool.edu
+>Connection: close
+>User-agent: Mozilla/5.0
+>Accept-language: fr
+>```
+> The first line of an HTTP request message is called the **request line**; the subsequent lines are called the **header lines**. The request line has three fields: the method field, the URL field, and the HTTP version field. The method field can take on servral different values, including GET, POST, HEAD, PUT, and DELETE.
+> The header line Host: www.someschool.edu specifies the host on which the object resides. You might think that this  header line is unnecessary, as there is already a TCP connection in place to the host. But the information provided by the host header line is required by Web proxy caches. By including the Connection: close header line, the browser is telling the server that it doesn't want to bother with persistent connections; it wants the server to close the connection after sending the requested object. The User-agent: header line specifies the user agent, that is, the browser type that is making the request to the server. This header line is useful because the server can actually send different versions of the same object to different types of user agents. Finally, the Accept-language: header indicate that the user prefers to receive a French version of the object, it is just one of many content negotiation headers available in HTTP.
+> ![](img/28.png)
+
+##### HTTP Response Message
+>```
+>HTTP/1.1 200 OK
+>Connection: close
+>Date: Tue, 18 Aug 2015 15:44:04 GMT
+>Server: Apache/2.2.3 (CentOS)
+>Last-Modified: Tue, 18 Aug 2015 15:11:03 GMT
+>Content-Length: 6821
+>Content-Type: text/html
+>(data data data data data ...)
+>```
+> It has three sections: an initial **status line**, six **header lines**, and then the **entity body**. The entity body is the meat of the message - it contains the requested object itself. The status line has three fields: the protocol version field, a status code, and a corresponding status message. In this example, the status line indicates that the server is using HTTP/1.1 and that everything is OK. The server uses the Connection: close header line to tell the client that it is going to close the TCP connection after sending the message. The Date: header line indicates the time and date when the HTTP response was created and sent by the server. Note that this is not the time when the object was created or last modified; it is the time when the server retrieves the object from its file system, inserts the object into the response message, and sends the response message. The Server: header line indicates that the message was generated by an Apache Web server; it is analogous to the User-agent: header line in the HTTP request message. The Last-Modified: header line indicates the time and date when the object was created or last modified. The Last-Modified: header, which we will soon cover in more detail, is critical for object caching, both in the local client and in network cache servers(also known as proxy servers). The Content-Length: header line indicates the number of bytes in the object being sent. The Content-Type: header line indicates that the object in the entity body is HTML text.
+> ![](img/29.png)
+
+#### 2.2.4 User-Server Interaction: Cookies
+> HTTP uses cookies that allow sites to keep track of users.
+
+> Cookie technology has four components: (1) a cookie header line
+> ![](img/210.png)
+
+131
