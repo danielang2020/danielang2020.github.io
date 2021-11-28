@@ -113,5 +113,26 @@
 #### 2.1.3 Transport Services Available to Application
 > What are the services that a transport-layer protocol can offer to applications invoking it? We can broadly classify the possible services along four dimensions: reliable data transfer, throughput, timing, and security.
 
-#####
-113
+#### 2.1.4 Transport Services Provided by the Internet
+> The Internet(and, more generally, TCP/IP networks) makes two transport protocols available to applications, UDP and TCP.
+> ![](img/24.png)
+
+##### TCP Services
+> The TCP service model includes a connection-oriented service and a reliable data transfer service. When an application invokes TCP as its transport protocol, the application receives both of these services from TCP.
+>- Connection-oriented service.
+>- Reliable data transfer service.
+> The TCP congestion-control mechanism throttles a sending process(client or server) when the network is congested between sender and receiver.
+
+##### UDP Services
+> UDP is connectionless, so there is no handshaking before the two processes start to communicate. UDP provides an unreliable data transfer service. Furthermore, messages that do arrive at the receiving process may arrive out of order.
+> UDP does not include a congestion-control mechanism, so the sending side of UDP can pump data into the layer below(the network layer) at any rate it pleases.
+
+##### Services Not Provided by Internet Transport Protocols
+> Today's Internet can often provide satisfactory service to time-sensitive applications, but it can't provide any timing or throughput guarantees.
+
+> We see that e-mail, remote terminal access, the Web, and file transfer all use TCP. These applications have chosen TCP primarily because TCP provides reliable data transfer, guaranteeing that all data will eventually get to its destionation. Because Internet telephony applications(such as Skype) can often tolerate some loss but require a minimal rate to be effective, developers of Internet telephony applications usually prefer to run their applications over UDP, thereby circumventing TCP's congestion control mechanism and packet overheads. But because many firewalls are configured to block(most type of) UDP traffic, Internet telephony applications often are designed to use TCP as a backup if UDP communication fails.
+> ![](img/25.png)
+
+
+
+119
