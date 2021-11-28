@@ -181,7 +181,31 @@
 #### 2.2.4 User-Server Interaction: Cookies
 > HTTP uses cookies that allow sites to keep track of users.
 
-> Cookie technology has four components: (1) a cookie header line
+> Cookie technology has four components: (1) a cookie header line in the HTTP response message; (2) a cookie header line in the HTTP request message; (3) a cookie file kept on the user's end system and managed by the user's browser; and (4) a back-end database at the Web site.
 > ![](img/210.png)
 
-131
+#### 2.2.5 Web Caching
+> A **Web cache** -  also called a **proxy server** - is a network entity that satisfies HTTP requests on the behalf of an origin Web server. The Web cache has its own disk storage and keeps copies of recently requested objects in this storage. A user's browser can be configured so that all of the user's HTTP requests are first directed to the Web cache.
+> ![](img/211.png)
+> Not that a cache is both a server and a client at the same time. When it receives requests from and sends responses to a browser, it is a server. When it sends requests to and receives responses from an origin server, it is a client.
+
+> Typically a Web cache is purchased and installed by an ISP.
+
+> We caching has seen deployment in the Internet for two reasons. First, a Web cache can substantially reduce the response time for a client request, particularly if the bottleneck bandwith between the client and the origin server is much less than the bottleneck bandwith between  the client and the cache. Second, Web cache can substantially reduce traffic on an institution's access link to the Internet. Furthermore, Web caches can substantially reduce Web traffic in the Internet as a whole, thereby improving performance for all applications.
+
+> Through the use of **Content Distribution Network(CDNs)**, Web cache are increasingly playing an important role in the Internet. A CDN company installs many geographically distributed caches throughout the Internet, thereby localizing much of the traffic.
+
+##### The Conditional GET
+> Althrough caching can reduce user-perceived response times, it introduces a new problem - the copy of an object residing in the cache may be stale. In other words, the object housed in the Web server may have been modified since the copy was cached at the client. Fortunately, HTTP has a mechanism that allows a cache to verify that its objects are up to date. This mechanism is called the **conditional GET**. An HTTP request message is a so-called conditional GET message if (1) the request message uses the GET method and (2) the request message includes an If-Modified-Since: header line.
+
+>```
+>GET /fruit/kiwi.gif HTTP/1.1
+>Host: www.exotiquecuisine.com
+>If-modified-since: Wed, 9 Sep 2015 09:23:24
+>```
+> Note that the value of the If-modified-since: header line is exactly equal to the value of the Last-Modified: header line that was sent by the server. This conditional GET is telling the server to send the object only if the object has been modified since the specified date.
+
+#### 2.2.6 HTTP/2
+> The primary goals for HTTP/2 are to reduce perceived latency by enabling request and response mulitplexing over a single TCP connection, provide request prioritization and server push, and provide efficient compression of HTTP header fields.
+
+138
