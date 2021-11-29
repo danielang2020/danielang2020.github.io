@@ -197,4 +197,21 @@
 > But after **neither** + noun the verb is always singular.
     **Neither answer is** correct.
     
-            
+> We can also use **might, may** and **could** for talking about what we think was possible in the past.
+    NASA says it **may/might/could have been** suitable for life in the past.
+
+> **Might not(mightn't)** and **may not** are used for talking about negative possiblility.
+    Their information **might not/may not be** correct.
+
+> But **couldn't** is different. It means that something is completely impossible.
+    The gas **couldn't be coming** from living organisms.
+
+> We use the modal verbs **must** and **can't** in the present and the past when we believe strongly that something is certain.
+    Oh, it **can't be** true! (I believe strongly that it isn’t true).
+    They **must have made** a mistake!(I believe they have made a mistake.)     
+
+> We don't usually form questions about what is possible or true with **might, may** or **must**. It's more common to use **Could** or **Do you think...?**    
+    **Could** the data **be** incorrect? **Do you think** it's incorrect?
+
+> We don't use **mustn't** to make guesses about what is possible or true. We use **can't** instead.
+    These figures don't add up. They **can't be** correct.    
