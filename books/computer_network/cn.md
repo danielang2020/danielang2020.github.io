@@ -206,6 +206,26 @@
 > Note that the value of the If-modified-since: header line is exactly equal to the value of the Last-Modified: header line that was sent by the server. This conditional GET is telling the server to send the object only if the object has been modified since the specified date.
 
 #### 2.2.6 HTTP/2
-> The primary goals for HTTP/2 are to reduce perceived latency by enabling request and response mulitplexing over a single TCP connection, provide request prioritization and server push, and provide efficient compression of HTTP header fields.
+> The primary goals for HTTP/2 are to reduce perceived latency by enabling request and response mulitplexing over a single TCP connection, provide request prioritization and server push, and provide efficient compression of HTTP header fields. HTTP/2 does not change HTTP methods, status codes, URLs, or header fields. Instead, HTTP/2 changes how the data is formatted and transported between the client and server.
 
-138
+> To understand HOL(Head of Line) blocking, consider a Web page that includes an HTML base page, a large video clip near the top of Web page, and many small objects below the video. Further suppose there is a low-to-medium speed bottleneck link on the path between server and client. Using a single TCP connection, the video clip will take a long time to pass through the bottleneck link, while the small objects are delayed as they wait behind the video clip; that is, the video clip at the head of the link blocks the small objects behind it.
+
+##### HTTP/2 Framing
+> The HTTP/2 solution for HOL blocking is to break each message into small frames, and interleave the request and response messages on the same TCP connection.
+
+##### Response Message Prioritization and Server Pushing
+> Message prioritization allows developers to customize the relative priority of request to better optimize application performance.
+
+> Another feature of HTTP/2 is the ability for a server to send multiple responses for a single client request.
+
+##### HTTP/3
+> QUIC is a new "transport" protocol that is implemented in the application layer over the bare-bones UDP protocol.
+
+### 2.3 Electronic Mail in the Internet
+> This diagram presents a high-level view of the Internet mail system. We see from this diagram that it has three major components: **user agent**, **mail servers**, and the **Simple Mail Transfer Protocol(SMTP)**.
+> ![](img/214.png)
+
+#### 2.3.1 SMTP
+> Let's now take a closer look at how SMTP transfer a message from a sending mail server to a receiving mail server. First, the client SMTP(running on the sending mail server host) has TCP establish a connection to port 25 at the server SMTP(running on the receiving mail server host). If the server is down, the client tries again later. Once this connection is established, the server and client perform some applcaation-layer handshaking, SMTP clients and servers introduce themselves before transferring information. During this SMTP handshaking phase, the SMTP clients indicates the e-mail address of the sender and the e-mail address of the recipient. Once the SMTP client and server have introduce themselves to each other, the client sends the message. SMTP can count on the reliable data transfer service of TCP to get the message to the server without errors. The client then repeats this process over the same TCP connection if it has other messages to send to the server; otherwise, it instructs TCP to close the connection.
+
+145
