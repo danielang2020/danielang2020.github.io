@@ -214,4 +214,27 @@
     **Could** the data **be** incorrect? **Do you think** it's incorrect?
 
 > We don't use **mustn't** to make guesses about what is possible or true. We use **can't** instead.
-    These figures don't add up. They **can't be** correct.    
+    These figures don't add up. They **can't be** correct.
+
+> We often use the past perfect when two things in a sentence happened in the past, and we need to show which thing in the sentence happened first.
+    When I arrived home, my sister **had** already **made** lunch.
+
+> We can use the past simple, with time expressions like **then**, to talk about the things in the order that they happened.
+    My sister **made** lunch. **Then I arrived** home.
+
+> The past perfect is often used with time expressions like **when** and **by the time**.
+    **When** I arrived home, my sister had made lunch.
+    **By the time** I arrived at work, the staff meeting had already started.
+
+> We can use **the past continuous** in the **if** part of the sentence.
+    **If he'd been driving** more carefully, **he wouldn't have had** an accident.
+    **I wouldn't have met** my girlfriend **if I'd been living** abroad.
+
+> We can use other modal verbs in the main part, for example **might**. **Might** shows we are less certain that when we use **will**.
+    **We might have been** happier if we'd bought the other house.
+
+> We use **I wish** or **If only** with the past perfect when we are sorry about something that happened in the past, and we imagine doing things differently.
+    **I wish I'd stayed** in bed this morning.
+    **If only I'd picked** the other horse!
+    
+            
