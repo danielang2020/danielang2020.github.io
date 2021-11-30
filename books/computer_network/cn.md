@@ -228,4 +228,34 @@
 #### 2.3.1 SMTP
 > Let's now take a closer look at how SMTP transfer a message from a sending mail server to a receiving mail server. First, the client SMTP(running on the sending mail server host) has TCP establish a connection to port 25 at the server SMTP(running on the receiving mail server host). If the server is down, the client tries again later. Once this connection is established, the server and client perform some applcaation-layer handshaking, SMTP clients and servers introduce themselves before transferring information. During this SMTP handshaking phase, the SMTP clients indicates the e-mail address of the sender and the e-mail address of the recipient. Once the SMTP client and server have introduce themselves to each other, the client sends the message. SMTP can count on the reliable data transfer service of TCP to get the message to the server without errors. The client then repeats this process over the same TCP connection if it has other messages to send to the server; otherwise, it instructs TCP to close the connection.
 
-145
+### 2.4 DNS - The Internet's Directory Service
+#### 2.4.1 Services Provided by DNS
+> The DNS is (1) a distributed database implemented in a hierarchy of **DNS servers**, and (2) an application-layer protocol that allows hosts to query the distributed database. The DNS protocol runs over UDP and uses port 53.
+
+#### 2.4.2 Overview of How DNS Works
+##### A Distributed, Hierarchical Database
+> In order to deal with the issue of scale, the DNS uses a large number of servers, organized in a hierarchical fashion and distributed around the world. No single DNS server has all of the mappings for all the hosts in the Internet. Instead, the mappings are distributed across the DNS servers. To a first approximation, there are three classes of DNS servers - root DNS servers, top-level domain(TLD) DNS servers, and authoritative DNS servers - orginized in a hierarchy.
+> ![](img/217.png)
+>- **Root DNS servers**. There are more than 1000 root servers instances scattered all over the world. Root name servers provide the IP addresses of the TLD servers.
+>- **Top-Level domain(TLD) servers**. TLD servers provide the IP addresses for authoritative DNS servers.
+>- **Authoritative DNS servers**. Every organization with publicly accessible hosts on the Internet must provide publicly accessible DNS records that map the names of those hosts to IP addresses.
+
+> There is another important type of DNS server called the **local DNS server**. A local DNS server does not strictly belong to the hierarchy of servers but is nevertheless central to the DNS architecture. Each ISP - such as a residential ISP or an institutional ISP - has a local DNS server. When a host connects to an ISP, the ISP provides the host with the IP address of one or more of its local DNS servers.
+
+#### 2.4.3 DNS Records and Messages
+> The DNS servers that together implement the DNS distributed database store **resource records(RRs)**, including RRs that provide hostname-to-IP address mappings.
+
+> A resource record is a four-tuple that contains the following fields:
+(Name, Value, Type, TTL)
+TTL is the time to live of the resource record; it determines when a resource should be removed from a cache.
+>- If Type = A, then Name is a hostname and Value is the IP address for the hostname. Thus, a Type A record provides the standard hostname-to-IP address mapping. As an example, (relay1.bar.foo.com, 145.37.93.126, A) is a Type A record.
+>- If Type = NS, then Name is a domain(such as foo.com) and Value is the hostname of an authoritative DNS server that knows how to obtain the IP addresses for hosts in the domain. This record is used to route DNS queries further along in the query chain. As an example, (foo.com, dns.foo.com, NS) is a Type NS record.
+>- If Type = CNAME, then Value is a canonical hostname for the alias hostname Name. This record can provide querying hosts the canonical name for a hostname. As an example, (foo.com, relay1.bar.foo.com, CNAME) is a CNAME record.
+>- If Type = MX, then Value is the canonical name of a mail server that has an alias hostname Name. As an example, (foo.com, mail.bar.foo.com, MX) is a MX record.
+
+> If a DNS server is authoritative for a particular hostname, then the DNS server will contain a Type A record for the hostname. If a server is not authoritiative for a hostname, then the server will contain a Type NS record for the domain that includes the hostname; it will also contain a Type A record that provides the IP address of the DNS server in the Value field of the NS record.
+
+##### DNS Messages
+> ![](img/221.png)
+
+168
