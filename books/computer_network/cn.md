@@ -258,4 +258,22 @@ TTL is the time to live of the resource record; it determines when a resource sh
 ##### DNS Messages
 > ![](img/221.png)
 
-168
+## 3 Transport Layer
+### 3.1 Introduction and Transport-Layer Service
+> Transport-layer protocols are implemented in the end systems but not in network routers. On the sending side, the transport layer converts the application-layer messages it receives from a sending application process into transport-layer packets, known as transport-layer **segment** in Internet terminology. This is done by(possibly) breaking the application messages into smaller chunks and adding a transport-layer header to each chunk to create the transport-layer segment. The transport layer then passes the segment to the network layer at the sending end system, where the segment is encapsulated within a network-layer packet(a datagram) and sent to the destination. It's important to note that network routers act only on the network-layer fields of the datagram; that is, they do not examine the fields of the transport-layer segment encapsulated with the datagram. On the receving side, the network layer extracts the transport-layer segment from the datagram and passes the segment up to the transport layer. The transport layer then processes the received segment, making the data in the segment available to the receiving application.
+> ![](img/31.png)
+
+#### 3.1.1 Relationship Between Transport and Network Layers
+> Recall that the transport layer lies just above the network layer in the protocol stack. Whereas a transport-layer protocol provides logical communication between processes running on different hosts, a network-layer protocol provides logical-communication between hosts.
+
+#### 3.1.2 Overview of the Transport Layer in the Internet
+> The most fundamental responsibility of UDP and TCP is to extend IP's delivery service between two end systems to a delivery service between two processes running on the end systems. Extending host-to-host delivery to process-to-process delivery is called **transport-layer multiplexing** and **demultiplexing**.
+
+> TCP provides **reliable data transfer**. Using flow control, sequence numbers, acknowledgements, and timers, TCP ensures that data is delivered from sending process to receiving process, correctly and in order. TCP thus converts IP's unreliable service between end systems into a reliable data transport service between processes. TCP also provides **congestion control**. Congestion control is not so much a service provided to the invoking application as it is a service for the Internet as a whole, a service for the general good. Loosely speaking, TCP congestion control prevents any one TCP connection from swamping the links and routers between communication hosts with an excessive amount of  traffic. TCP strive to give each connection traversing a congested link an equal share of the link bandwith. This is done by regulating the rate at which the sending side of TCP connections can send traffic into the network. UDP traffic, on the other hand, is unregulated. An application using UDP transport can send at any rate it pleases, for as long as it pleases.
+
+### 3.2 Multiplexing and Demultiplexing
+> A process(as part of a network application) can have one or more **sockets**. Thus, the transport layer in the receiving host does not actually deliver data directly to a process, but instead to an intermediary socket. Because at any given time there can be more than one socket in the receiving host, each socket has a unique identifier.
+> ![](img/32.png)
+> At the receiving end, the transport layer examines these fields to identify the receiving socket and then directs the segment to that socket. This job of delivering the data in a transport-layer segment to the correct socket is called **demultiplexing**. The job of gathering data chunks at the source host from different sockets, encapsulating each data chunk with header information(that will later be used in demultiplexing) to create segments, and passing the segments to the network layer is called **multiplexing**. Note that the transport layer in the middle host must demultiplex segments arriving from the network layer below to either process $P_{1}$ or $P_{2}$ above;
+
+213
