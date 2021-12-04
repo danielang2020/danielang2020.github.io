@@ -300,4 +300,92 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > ![](img/35.png)
 
 ### 3.3 Connectionless Transport: UDP
-219
+> UDP does just about as little as a transport protocol can do. Aside from the multiplexing/demultiplexing function and some light error checking, it adds nothing to IP. In fact, if the application developer choose UDP instead of TCP, then the application is almost directly talking with IP. UDP takes messages from the application process, attaches source and destination port number fields for the multiplexing/demultiplexing service, adds two other small fields, and passes the resulting segment to the network layer. The network layer encapsulates the transport-layer segment into an IP datagram and then makes a best-effort attempt to deliver the segment to the receiving host. If the segment arrives at the receving host, UDP uses the destination port number to deliver the segment's data to the correct application process. Note that with UDP there is no handshaking between sending and receiving transport-layer entities before sending a segment. For this reason, UDP is said to be connectionless.
+
+> Some applications are better suited for UDP for the following reasons:
+>- Finer application-level control over what data is sent, and when. Under UDP, as soon as an application process passes data to UDP, UDP will package the data inside a UDP segment and immediately pass the segment to the network layer. Since real-time applications often require a minimum sending rate, do not want to overly delay segment transmission, and can tolerate some data loss.
+>- No connection establishment. 
+>- No connection state.
+>- Small packet header overhead. The TCP segment has 20 bytes of header overhead in every segment, whereas UDP has only 8 bytes of overhead.
+
+#### 3.3.1 UDP Segment Structure
+> The UDP header has only four fields, each consisting of two bytes. The port numbers allow the destination host to pass the application data to the correct process running on the destination end system. The length field specifies the number of bytes in the UDP segment. The checksum is used by the receiving host to check whether errors have been introduced into the segment.
+> ![](img/37.png)
+
+#### 3.3.2 UDP Checksum
+> UDP at the sending side performs the 1s complement of the sum of all the 16-bit words in the segment, with any overflow encountered during the sum being wrapped around.
+
+> Suppose that we have the following three 16-bit words:
+>```
+>0110011001100000
+>0101010101010101
+>1000111100001100
+>```
+> The sum of first two of these 16-bit words is 
+>```
+>0110011001100000
+>0101010101010101
+>----------------
+>1011101110110101
+>```
+> Adding the third word to the above sum gives
+>```
+>1011101110110101
+>1000111100001100
+>----------------
+>0100101011000010
+>```
+> Note that this last addition had overflow, which was wrapped around. The 1s complement is obtained by converting all the 0s to 1s and converting all the 1s to 0s. Thus, the 1s complement of the sum 0100101011000010 is 1011010100111101, which become the checksum. If no errors are introduced into the packet, then clearly the sum at the receiver will be 1111111111111111. If one of the bits is a 0, then we know that errors have been introduced into the packet.
+
+> You may wonder why UDP provides a checksum in the first place, as many link-layer protocols also provide error checking. The reason is that there is no guarantee that all the links between source and destination provide error checking; that is, one of the links may use a link-layer protocol that does not provide error checking. Furthermore, even if segments are correctly transferred across a link, it's possible that bit errors could be introduced when a segment is stored in a router's memory. Given that neither link-by-link reliability nor in-memory error detection is guaranteed, UDP must provide error detection at the transport layer, on an end-end basis, if the end-end data transfer service is to provide error detection.
+
+> Although UDP provides error checking, it does not do anything to recover from an error. Some implementations of UDP simply discard the damaged segment; others pass the damaged segment to the application with a warning.
+
+### 3.4 Principles of Reliable Data Transfer
+#### 3.4.1 Building a Reliable Data Transfer Protocol
+> rdt stands for reliable data transfer.
+##### Reliable Data Transfer over a Perfectly Reliable Channel: rdt1.0
+> ![](img/39.png)
+
+##### Reliable Data Transfer over a Channel with Bit Errors: rdt2.0
+> ![](img/310.png)
+> ![](img/311.png)
+> ![](img/312.png)
+> ![](img/313.png)
+> ![](img/314.png)
+
+##### Reliable Data Transfer over a Lossy Channel with Bit Errors: rdt3.0
+> ![](img/315.png)
+> ![](img/316.png)
+
+### 3.4.2 Pipelined Reliable Data Transfer Protocols
+> ![](img/317.png)
+> ![](img/318.png)
+
+### 3.4.3 Go-Back-N(GBN)
+> In a **Go-Back-N(GBN) protocol**, the sender is allowed to transmit multiple packets(when available) without waiting for an acknowledgement, but is constrained to have no more than some maximum allowable number, N, of unacknowledged packets in the pipeline.
+> ![](img/319.png)
+> If we define base to be the sequence number of the oldest unacknowledged packet and nextseqnum to be the smallest unused sequence number, then four intervals in the range of sequence numbers can be identified. Sequence numbers in the interval[0, base-1] correspond to packets that have already been transmitted and acknowledged. The interval[base, nextseqnum - 1] corresponds to packets that have been sent but not yet acknowledged. Sequence numbers in the interval[nextseqnum, base + N - 1] can be used for packets that can be sent immediately, should data arrive from the upper layer. Finally, sequence numbers greater than or equal to base + N cann't be used until an unacknowledged packet currently in the pipeline has been acknowledged.
+> The range of permissible sequence numbers for transmitted but not yet acknowleged packets can be viewed as a window of size N over the range of sequence numbers. As the protocol operates, this window slides forward over the sequence number space. For this reason, N is often referred to as the **window size** and the GBN protocol itself as a **slide-window protocol**.
+
+> In practice, a packet's sequence number is carried in a fix-length field in the packet header. If k is the number bits in the packet sequence number field, the range of sequence numbers is thus[0,$2^{k}$ - 1]. With a finite range of sequence numbers, all arithmetic involving sequence numbers must then be done using modulo $2^{k}$ arithmetic.(That is, the sequence number space can be thought of as a ring of size $2^{k}$, where sequence number $2^{k}$ - 1 is immediately followed by sequence 0.)
+
+> ![](img/320.png)
+> ![](img/321.png)
+
+> Note that since packets are delivered one at a time to the upper layer, if packet k has been received and delivered, then all packets with a sequence number lower than k have also been delivered.
+
+> ![](img/322.png)
+
+### 3.4.4 Selective Repeat(SR)
+> The SR receiver will acknowledge a correctly received packet whether or not it is in order. Out-of-order packets are buffered until any missing packets(that is, packets with lower sequence numbers) are received, at which point a batch of packets can be delivered in order to the upper layer.
+> ![](img/323.png)
+> ![](img/324.png)
+> ![](img/325.png)
+> ![](img/326.png)
+
+> ![](img/31111.png)
+
+> The approach taken in practice is to ensure that a sequence number is not reused until the sender is "sure" that any previously sent packets with sequence number x are no longer in the network.
+
+252
