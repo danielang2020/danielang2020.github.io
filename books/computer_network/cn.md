@@ -272,8 +272,32 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > TCP provides **reliable data transfer**. Using flow control, sequence numbers, acknowledgements, and timers, TCP ensures that data is delivered from sending process to receiving process, correctly and in order. TCP thus converts IP's unreliable service between end systems into a reliable data transport service between processes. TCP also provides **congestion control**. Congestion control is not so much a service provided to the invoking application as it is a service for the Internet as a whole, a service for the general good. Loosely speaking, TCP congestion control prevents any one TCP connection from swamping the links and routers between communication hosts with an excessive amount of  traffic. TCP strive to give each connection traversing a congested link an equal share of the link bandwith. This is done by regulating the rate at which the sending side of TCP connections can send traffic into the network. UDP traffic, on the other hand, is unregulated. An application using UDP transport can send at any rate it pleases, for as long as it pleases.
 
 ### 3.2 Multiplexing and Demultiplexing
+> At the destination host, the transport layer receives segements from the network layer just below. The transport layer has the responsibility of delivering the data in these segments to the appropriate application process running in the host.
+
 > A process(as part of a network application) can have one or more **sockets**. Thus, the transport layer in the receiving host does not actually deliver data directly to a process, but instead to an intermediary socket. Because at any given time there can be more than one socket in the receiving host, each socket has a unique identifier.
 > ![](img/32.png)
-> At the receiving end, the transport layer examines these fields to identify the receiving socket and then directs the segment to that socket. This job of delivering the data in a transport-layer segment to the correct socket is called **demultiplexing**. The job of gathering data chunks at the source host from different sockets, encapsulating each data chunk with header information(that will later be used in demultiplexing) to create segments, and passing the segments to the network layer is called **multiplexing**. Note that the transport layer in the middle host must demultiplex segments arriving from the network layer below to either process $P_{1}$ or $P_{2}$ above;
+> Each transport-layer segment has a set of fields in the segment for this purpose. At the receiving end, the transport layer examines these fields to identify the receiving socket and then directs the segment to that socket. This job of delivering the data in a transport-layer segment to the correct socket is called **demultiplexing**. The job of gathering data chunks at the source host from different sockets, encapsulating each data chunk with header information(that will later be used in demultiplexing) to create segments, and passing the segments to the network layer is called **multiplexing**. Note that the transport layer in the middle host must demultiplex segments arriving from the network layer below to either process $P_{1}$ or $P_{2}$ above; this is done by directing the arriving segment's data to the corresponding process's socket. The transport layer in the middle host must also gather outgoing data from these sockets, form transport-layer segments, and pass the these segments down to the network layer. 
 
-213
+> Transport-layer multiplexing requires (1) that sockets have unique identifiers, and (2) that each segment have speicial fields that indicate the socket to which the segment is to be delivered. Those speicial fields are the **source port number field** and the **destination port number field**. Each port number is a 16-bit number, ranging from 0 to 65535. The port numbers ranging from 0 to 1023 are called **well-known port numbers** and are restricted, which means that they are reserved for use by well-known application protocols such as HTTP and FTP. When we develop a new application, we must assign the application a port number.
+> ![](img/33.png)
+
+> It should now be clear how the transport layer could implement the demultiplexing service: Each socket in the host could be assigned a port number, and when a segment arrives at the host, the transport layer examines the destination port number in the segment and directs the segment to the corresponding socket. The segment's data then passes through the socket into the attached process. As we'll see, this is basically how UDP does it.
+
+#### Connectionless Multiplexing and Demultiplexing
+> Whena UDP socket is created in client manner, the transport layer automatically assigns a port number to the socket. In particular, the transport layer assigns a port number in the range 1024 to 65535 that is currently not being used by any other UDP port in the host.
+
+> It is important to note that a UDP socket is fully identified by a two-tuple consising of a destination IP address and a destination port number. As a consequence, if two UDP segments have different source IP addresses and/or source port numbers, but have the same destination IP address and destination port number, then the two segments will be directed to the same destination process via the same destination socket.
+
+> In the A-to-B segment the source port number serves as part of a "return address" - when B wants to send a segment back to A, the destination port in the B-to-A segment will take its value from the source port value of the A-to-B segment.
+> ![](img/34.png)
+
+#### Connection-Oriented Multiplexing and Demultiplexing
+> One subtle different between a TCP socket and a UDP socket is that a TCP socket is identified by a four-tuple:(source IP address, source port number, destination IP address, destination port number). Thus, when a TCP segment arrives from the network to a host, the host uses all four values to direct(demultiplex) the segment to the appropriate socket.
+
+> In particular, and in contrast with UDP, two arriving TCP segments with different source IP addresses or source port numbers will be directed to two different sockets.
+
+> The server host may support many simultaneous TCP connection sockets, with each socket attached to a process, and with each socket identified by its own four-tuple. When a TCP segment arrives at the host, all four fields are used to direct(demultiplex) the segment to the appropriate socket.
+> ![](img/35.png)
+
+### 3.3 Connectionless Transport: UDP
+219
