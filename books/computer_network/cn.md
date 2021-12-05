@@ -388,4 +388,13 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 > The approach taken in practice is to ensure that a sequence number is not reused until the sender is "sure" that any previously sent packets with sequence number x are no longer in the network.
 
-252
+## 3.5 Connection-Oriented Transport: TCP
+### 3.5.1 The TCP Connection
+> The TCP protocol runs only in the end systems and not in the intermediate network elements(routers and link-layer switches), the intermediate network elements do not maintain TCP connection state.
+
+> A TCP connection provides a **full-duplex service**: If there is a TCP connection between Process A on one host and Process B on another host, then application-layer data can flow from Process A to Process B at the same time as application-layer data flows from Process B to Process A. A TCP connection is also always **point-to-point**, that is, between a single sender and a single receiver. So-called "multicasting" - the transfer of data from one sender to many receivers in a single send operation - is not possible with TCP.
+
+> The client process passes a stream of data through the socket, the data is in the hands of TCP running in the client. TCP directs this data to the connection's **send buffer**, which is one of the buffers that is set aside during the initial three-way handshake. From the time to time, TCP will grab chunks of data from the send buffer and pass the data to the network layer. The maximum amount of data that can be grabbed and placed in a segment is limited by the **maximum segment size(MSS)**. The MSS is typically set by first determining the length of the largest link-layer frame that can be sent by the local sending host(the so-called **maximum transmission unit , MTU**), and then setting the MSS to ensure that a TCP segment plus the TCP/IP header length will fit into a single link-layer frame.
+> ![](img/328.png)
+
+255
