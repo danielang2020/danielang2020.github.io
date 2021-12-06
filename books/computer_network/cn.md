@@ -397,4 +397,31 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > The client process passes a stream of data through the socket, the data is in the hands of TCP running in the client. TCP directs this data to the connection's **send buffer**, which is one of the buffers that is set aside during the initial three-way handshake. From the time to time, TCP will grab chunks of data from the send buffer and pass the data to the network layer. The maximum amount of data that can be grabbed and placed in a segment is limited by the **maximum segment size(MSS)**. The MSS is typically set by first determining the length of the largest link-layer frame that can be sent by the local sending host(the so-called **maximum transmission unit , MTU**), and then setting the MSS to ensure that a TCP segment plus the TCP/IP header length will fit into a single link-layer frame.
 > ![](img/328.png)
 
-255
+### 3.5.2 TCP Segment Structure
+> Apart from UDP headers, a TCP segment header also contains the following fields:
+>- The 32-bit **sequence number field** and the 32-bit **acknowledgement number field** are used by the TCP sender and receiver in implementing a reliable data transfer service.
+>- The 16-bit **receive window** field is used for flow control.
+>- The 4-bit **header length field** specifies the length of the TCP header in 32-bit words.
+>- The optional and variable-length **options field** is used when a sender and receiver negotiate the maximum segment size(MSS) or as a window scaling factor for use in high-speed networks.
+>- The **flag field** contains 6 bits. The **ACK bit** is used to indicate that the value carried in the acknowledgement field is valid; that is, the segment contains an acknowledgment for a segment that has been successfully received. The **RST**, **SYN**, and **FIN** bits are used for connection setup and teardown. The CWR and ECE bits are used in explicit congestion notification. Setting the **PSH** bit indicates that the receiver should pass the data to the upper layer immediately.  Finally, the **URG** bit is used to indicate that there is data in this segment that the sending-side upper-layer entity has marked as "urgent." The location of the last byte of this urgent data is indicated by the 16-bit **urgent data pointer field**.
+> ![](img/329.png)
+
+#### Sequence Numbers and Acknowledgment Numbers
+> The **sequence number for a segment** is the byte-stream number of the first byte in the segment.
+> ![](img/330.png)
+
+> The acknowledgment number that Host A puts in its segment is the sequence number of the next byte Host A is expecting from Host B.
+
+> A TCP connection randomly choose an initial sequence number. This is done to minimize the possibility that a segment that is still present in the network from an eariler, already-terminated connection between two hosts is mistaken for a valid segment in a later connection between these same two hosts.
+
+
+> ![](img/331.png)
+
+### 3.5.3 Round-Trip Time Estimation and Timeout
+#### Estimating the Round-Trip Time
+> The sample RTT for a segment is the amount of time between when the segment is sent and when an acknowledgment for the segment is received.
+
+### 3.5.4 Reliable Data Transfer
+> TCP's reliable data transfer service ensures that the data stream that a process reads out of its TCP receive buffer is uncorrupted, without gaps, without duplication, and in sequence; that is, the byte stream is exactly the same byte stream that was sent by the end system on the other side of the connection.
+
+267
