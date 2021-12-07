@@ -414,7 +414,6 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 > A TCP connection randomly choose an initial sequence number. This is done to minimize the possibility that a segment that is still present in the network from an eariler, already-terminated connection between two hosts is mistaken for a valid segment in a later connection between these same two hosts.
 
-
 > ![](img/331.png)
 
 ### 3.5.3 Round-Trip Time Estimation and Timeout
@@ -424,4 +423,29 @@ TTL is the time to live of the resource record; it determines when a resource sh
 ### 3.5.4 Reliable Data Transfer
 > TCP's reliable data transfer service ensures that the data stream that a process reads out of its TCP receive buffer is uncorrupted, without gaps, without duplication, and in sequence; that is, the byte stream is exactly the same byte stream that was sent by the end system on the other side of the connection.
 
-267
+#### Doubling the Timeout Interval
+> The timer expiration is most likely cause by congestion in the network, that is, too many packets arriving at one(or more) router queues in the path between the source and destination, causing packets to be dropped and/or long queuing delays. In times of congestion, if the sources continue to retransmit packets persistently, the congestion may get worst. Instead, TCP acts more politely, with each sender retransmitting after longer and longer intervals.
+
+#### Fast Retransmit
+> When a TCP receiver receives a segment with a sequence number that is larger than the next, expected, in-order sequence number, it detects a gap in the data stream -  that is, a missing segment. This gap could be the result of lost or reordered segments within the network. Since TCP doesn't use negative acknowledgments, the receiver cann't send an explicit negative acknowledgment back to the sender. Instead, it simply reacknowledges the last in-order byte of data it has received.
+> ![](img/32222.png)
+> If the TCP sender receives three duplicate ACKs for the same data, it takes this as an indication that the segment following the segment that has been ACKed three times has been lost. In that case, the TCP sender performs a **fast retransmit**, retransmitting the missing segment before that segment's timer expires.
+> ![](img/337.png)
+
+### 3.5.5 Flow Control
+> Flow control is a speed-matching service - matching the rate at which the sender is sending against the rate at which the receiving application is reading.
+
+> ![](img/338.png)
+
+### 3.5.6 TCP Connection Management
+> ![](img/339.png)
+
+> ![](img/340.png)
+
+> During the life of a TCP connection, the TCP protocol running in each host makes transitions through various **TCP states**.
+
+> The client TCP begins in the CLOSED state. The application on the client side initiates a new TCP connection. This causes TCP in the client to send a SYN segment to TCP in the server. After having sent the SYN segment, the client TCP enters the SYN_SENT state. While in the SYN_SENT state, the client TCP waits for a segment from the server TCP that includes an acknowledgment for the client's previous segment and has the SYN bit set to 1. Having received such a segment, the client TCP enters the ESTABLISHED state. While in the ESTABLISHED state, the TCP client can send and receive TCP segments containing payload data.
+> ![](img/341.png)
+> Closing the connection causes the client TCP to send a TCP segment with the FIN bit set to 1 and to enter the FIN_WAIT_1 state. While in the FIN_WAIT_1 state, the client TCP waits for a TCP segment from the server with an acknowledgment. When it receives this segment, the client TCP enters the FIN_WAIT_2 state. While in the FIN_WAIT_2 state,
+
+277
