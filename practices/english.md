@@ -279,3 +279,12 @@
 >- I **got** fired for being late!
 >- These letters get delivered first.
 >- You bike **will get** stolen if you don't lock it up.
+
+> We use **much** or **a lot** before an adjective or adverb to emphasise the degree of comparision.
+>- Shirley is **much more popular than** Janet.
+>- This winter is **a lot worse** than last year.
+
+> When the verb **to be** is the main verb of a sentence, we usually put adverbs **immediately after** the verb.
+>- He's **always** on time.
+>- I was **never** happy at school.
+
