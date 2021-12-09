@@ -288,3 +288,13 @@
 >- He's **always** on time.
 >- I was **never** happy at school.
 
+> When we use **an abstract uncountable noun** to make **a general statement**, we don't use **the**.
+>- Money can't buy you **happiness**.
+
+> When we use **an abstract uncountable noun** to refer to a specific example of a noun, we use **the** before the noun.
+>- I can't express **the happiness** (that) I felt when my son was born.
+
+> In **informal** communication, relative pronouns, such as **who** and **when**, are commonly replaced with **that** in defining relative clauses.
+>- Th woman **that** called last night was very polite.
+>- Do you remember the time **that** you first met?
+
