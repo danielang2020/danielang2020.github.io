@@ -451,3 +451,8 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > ![](img/ext1.png)
 > ![](img/ext2.png)
 
+> ![](img/342.png)
+
+> Let's consider what happens when a host receives a TCP segment whose port number or source IP address do not match with any of the ongoing sockets in the host. For example, suppose a host receives a TCP SYN packet with destination port 80, but the host is not accepting connections on port 80. Then the host will send a special reset segment to source. This TCP segment has the RST flag bit set to 1. Thus, when a host sends a reset segment, it is telling the source "I don't have a socket for that segment. Please do not resend the segment." When a host receives a UDP packet whose destination port number doesn't match with an ongoing UDP socket, the host sends a special ICMP datagram.
+
+280
