@@ -455,4 +455,31 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 > Let's consider what happens when a host receives a TCP segment whose port number or source IP address do not match with any of the ongoing sockets in the host. For example, suppose a host receives a TCP SYN packet with destination port 80, but the host is not accepting connections on port 80. Then the host will send a special reset segment to source. This TCP segment has the RST flag bit set to 1. Thus, when a host sends a reset segment, it is telling the source "I don't have a socket for that segment. Please do not resend the segment." When a host receives a UDP packet whose destination port number doesn't match with an ongoing UDP socket, the host sends a special ICMP datagram.
 
-280
+>- ESTABLISHED: The socket has an established connection.
+>- SYN_SENT: The socket is actively attempting to establish a connectin.
+>- SYN_RECV: A connection request has been received from the network
+>- FIN_WAIT1: The socket is closed, and the connection is shutting down.
+>- FIN_WAIT2: Connection is closed, and the socket is waiting for a shutdown from the remote end.
+>- TIME_WAIT: The socket is waiting after close to handle packets still in the network.
+>- CLOSE: The socket is not being used.
+>- CLOSE_WAIT: The remote end has shut down, waiting for the socket to close.
+>- LAST_ACK: The remote end has shut down, and the socket is closed. Waiting for acknowledgement.
+>- LISTEN: The socket is listening for incoming connections.
+
+## 3.6 Principles of Congestion Control
+### 3.6.1 The Cause and the Costs of Congestion
+#### Scenario 1: Two Senders, a Router with Infinte Buffers
+> ![](img/343.png)
+
+#### Scenario 2: Two Senders and a Router with Finite Buffers
+> ![](img/345.png)
+
+#### Scenario 3: Four Senders, Routers with Finite Buffers, and Mulithop Paths
+> ![](img/347.png)
+
+### 3.6.2 Approaches to Congestion Control
+> At the highest level, we can distinguish among congestion-control approaches by whether the network layer provides explicit assistance to the transport layer for congestion-control purposes:
+>- End-to-end congestion control.
+>- Network-assisted congestion control.
+
+288
