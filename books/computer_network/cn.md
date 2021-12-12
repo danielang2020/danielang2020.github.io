@@ -386,7 +386,7 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 > ![](img/31111.png)
 
-> The approach taken in practice is to ensure that a sequence number is not reused until the sender is "sure" that any previously sent packets with sequence number x are no longer in the network.
+> Because sequence numbers may be reused, some care must be taken to guard against such duplicate packets. The approach taken in practice is to ensure that a sequence number is not reused until the sender is "sure" that any previously sent packets with sequence number x are no longer in the network. This is done by assuming that a packet cannot "live" in the network for longer than some fixed maximum amount of time. A maximum packet lifetime of approximately three minutes is assumed in the TCP extensions for high-speed networks.
 
 ## 3.5 Connection-Oriented Transport: TCP
 ### 3.5.1 The TCP Connection
@@ -482,4 +482,65 @@ TTL is the time to live of the resource record; it determines when a resource sh
 >- End-to-end congestion control.
 >- Network-assisted congestion control.
 
-288
+## 3.7 TCP Congestion Control
+### 3.7.1 Classic TCP Congestion Control
+> The TCP congestion-control mechanism operating at the sender keeps track of an additional variable, the **congestion window**. The congestion window, denoted cwnd, imposes a constraint on the rate at which a TCP sender can send traffic into the network. Specifially, the amount of unacknowledged data at a sender may not exceed the minimum of cwnd and rwnd, that is:
+> $ LastByteSent - LastByteAcked \le  min(cwnd, rwnd) $
+
+> The sender's send rate is roughly cwnd/RTT bytes/sec. By adjusting the value of cwnd, the sender can therefore adjust the rate at which it sends data into its connection.
+
+> When there is excessive congestion, then one(or more) router buffers along the path overflows, causing a datagram(containing a TCP segment) to be dropped. The dropped datagram, in turn, results in a loss event at the sender - either a timeout or the receipt of three duplicate ACKs - which is taken by the sender to be an indication of congestion on the sender-to-receiver path.
+
+> Adjusting the value of cwnd to control the sending rate:
+>- A lost segment implies congestion, and hence, the TCP sender's rate should be decreased when a segment is lost.
+>- An acknowledged segment indicates that the nework is delivering the sender's segment to the receiver, and hence, the sender's rate can be increased when an ACK arrives for a previously unacknowledged segment.
+>- Bandwithd probing.
+
+> **TCP congestion-control algorithm** has three major components: (1) slow start, (2) congestion avoidance, and (3) fast recovery.
+> ![](img/351.png)
+
+#### Slow Start
+> In the **slow-start** state, the value of cwnd begins at 1 MSS and increased by 1 MSS every time a transmitted segment is first acknowledged. The TCP send rate starts slow but grows exponentially during the slow start phase. But when should this exponential growth end? First, if there is a loss event indicated by a timeout, the TCP sender sets the value of cwnd to 1 and begins the slow start process anew. It also sets the value of a second state variable, ssthresh(slow start threshold) to cwnd/2 - half of the value of the congestion window value when congestion was detected. 
+
+> When the value of cwnd equals ssthresh, slow start ends and TCP transitions into congestion-avoidance mode. The final way in which slow start can end is if three duplicate ACKs are detected, in which case TCP performs a fast retransmit and enters the fast recovery state.
+
+> ![](img/350.png)
+
+#### Congestion Avoidance
+> On entry to the congestion-avoidance state, the value of cwnd is approximately half its value when congestion was last encountered - congestion could be just around the corner! Thus, rather than doubling the value of cwnd every RTT, TCP adopts a more conservative approach and increases the value of cwnd by just a single MSS every RTT. A common approach is for the TCP sender to increase cwnd by MSS bytes(MSS/cwnd) whenever a new acknowledgment arrives.
+
+> When should congestion avoidance's linear increase(of 1 MSS per RTT) end? TCP's congestion-avoidance algorithm behaves the same when a timeout occurs as in the case of slow start: The value of cwnd is set to 1 MSS, and the value of ssthresh is updated to half the value of cwnd when the loss event occured. Recall, however, that a loss event also can be triggered by a triple duplicate ACK event. In this case, the network is continuing to deliver some segments from sender to receiver. So TCP's behavior to this type of loss event should be less drastic than with a timeout-indicated loss: TCP halves the value of cwnd and records the value of ssthresh to be half the value of cwnd when the triple duplicate ACKs were received. The fast-recovery state is then entered.
+
+#### Fast Recovery
+> In fast recovery, the value of cwnd is increased by 1 MSS for every duplicate ACK received for the missing segment that caused TCP to enter the fast-recovery state. Eventually, when an ACK arrives for the missing segment, TCP enters the congestion-avoidance state after deflating cwnd. If a timeout event occurs, fast recovery transitions to the slow-start state after performing the same actions as in slow start and congestion avoidance: The value of cwnd is set to 1 MSS, and the  value of ssthresh is set to half the value of cwnd when the loss event occured.
+
+#### TCP Congestion Control: Retrospective
+> Congestion control gives rise to the "saw tooth" behavior which also nicely illustrates our earlier intuition of TCP "probing" for bandwidth - TCP linearly increases its congestion window size until a triple duplicate - ACK event occurs. It then decreases its congestion window size by a factor of two but then again begins increasing it linearly, probing to see if there is additional available bandwidth.
+> ![](img/353.png)
+
+#### TCP Cubic
+> TCP CUBIC differs only slightly from TCP Reno. The congestion window is increased only on ACK receipt, and the slow start and fast recovery phases remain the same.
+
+### 3.7.2 Network-Assisted Explicit Congestion Notification and Delayed-based Congestion Control
+#### Explicit Congestion Notification
+> Explicit Congestion Notification(ECN) is the form of network-assisted congestion control performed within the Internet. Both TCP and IP are involved. At the network layer, two bits in the Type of Service field of the IP datagram header are used for ECN.
+> One setting of the ECN bits is used by a router to indicate that it(the router) is experiencing congestion. A second setting of the ECN bits is used by the sending host to inform routers that the sender and receiver are ECN-capable, and thus capable of taking action in response to ECN-indicated network congestion.
+
+> When the TCP in the receiving host receives an ECN congestion indication via a received datagram, the TCP in the receiving host informs the TCP in the sending host of the congestion indication by setting the ECE(Explicit Congestion Notification Echo) bit in a receiver-to-sender TCP ACK segment. The TCP sender, in turn, reacts to an ACK with a congestion indication by halving the congestion window, as it would react to a lost segment using fast retransmit, and sets the CWR(Congestion Window Reduced) bit in the header of the next transmitted TCP sender-to-receiver segment.
+> ![](img/355.png)
+
+> A congested router can set the congestion indication bit to signal congestion onset to senders before full buffers cause packets to be dropped at that router. This allows senders to decrease their sending rates earlier, hopefully before packet loss, thus avoiding costly packet loss and retransmission.
+
+#### Delay-based Congestion Control
+> In TCP Vegas, the sender measures the RTT of the source-to-destination path for all acknowledged packets. Let $RTT_{min}$ be the minimum of these measuresments at a sender; this occurs when the path is uncongested and packets experience minimal queueing delay. If TCP Vegas's congestion window size is cwnd, then the uncongested throughput rate would be cwnd/$RTT_{min}$. The intuition behind TCP Vegas is that if the actual sender-measured throughput is close to this value, the TCP sending rate can be increased since the path is not yet congested. However, if the actual sender-measured throughput is significantly less than the uncongested throughput rate, the path is congested and the Vegas TCP sender will decrease its sending rate.
+
+> TCP Vegas operats under the intuition that TCP senders should "Keep the pipe just full, but no fuller".
+
+### 3.7.3 Fairness
+> A congestion control mechanism is said to be fair if the average transmission rate of each  connection is approximately R/K; that is, each connection gets an equal share of the link bandwidth. You should convince yourself that the bandwidth realized by the two connections eventually fluctuates along the equal bandwidth share line.
+
+#### Fairness and UDP
+> When running over UDP, applications can pump their audio and video into the network at a constant rate and occasionally lose packets, rather than reduce their rates to "fair" levels at times of congestion and not lose any packets.
+
+## 4 The Network Layer: Data Plane
+328
