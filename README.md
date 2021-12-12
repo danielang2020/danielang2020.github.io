@@ -21,6 +21,7 @@
 ## [How to Scale WebSockets](blogs/how_to_scale_websockets.md)
 ## [Monolith, Distributed Monolith and Microservice architectures](blogs/m_dm_m.md)
 ## [TCP time_wait state](blogs/tcp_time_wait_state.md)
+## [best practices for a pragmatic restful api](blogs/best-practices-for-a-pragmatic-restful-api.md)
 
 # Practice
 
