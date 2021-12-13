@@ -543,4 +543,28 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > When running over UDP, applications can pump their audio and video into the network at a constant rate and occasionally lose packets, rather than reduce their rates to "fair" levels at times of congestion and not lose any packets.
 
 ## 4 The Network Layer: Data Plane
-328
+### 4.1 Overview of Network Layer
+> The primary data-plane role of each router is to forward datagrams from its input links to its output links; the primary role of the network control plane is to coordinate these local, per-router forwarding actions so that  datagrams are ultimately transfered end-to-end, along paths of routers between source and destination hosts.
+
+#### 4.1.1 Forwarding and Routing: The Data and Control Planes
+> Two important network-layer functions can be identified:
+>- Forwarding. When a packet arrives at a router's input link, the router must move the packet to the appropriate output link. Forwarding is implemented in the data plane. 
+>- Routing. The network layer must determine the route or path taken by packets as they flow from a sender to a receiver. Routing is implemented in the control plane of the network layer.
+
+> **Forwarding** refers to the router-local action of transferring a packet from an input link interface to the appropriate output link interface. Forwarding takes place at very short timescales, and thus is typically implemented in hardware. **Routing** refers to the network-wide process that determines the end-to-end paths that packets take from source to destination. Routing takes place on much longer timesales, and as we will see is often implemented in software.
+
+> A key element in every network router is its **forwarding table**. A router forwards a packet by examining the value of one or more fields in the arriving packet's header, and then using these header values to index into its forwarding table. The value stored in the forwarding table entry for those values indicates the outgoing link interface at that router to which that packet is to be forwarded.
+
+##### Control Plane: The Traditional Approach
+> All forwarding tables are configured directly by human network operators physically present at the routers.
+> ![](img/42.png)
+
+##### Control Plane: The SDN Approach
+> Control-plane routing functionality is seperated from the physical router - the routing devices performs forwarding only, while the remote controller computes and distributed forwarding tables.
+> ![](img/43.png)
+
+#### 4.1.2 Network Service Model
+> The Internet's network layer providers a single service, known as **best-effort service**. With best-effort service, packets are neither guaranteed to be received in the order in which they were sent, nor is their eventual delivery even guaranteed. There is no guarantee on the end-to-end delay nor is there a minimal bandwidth guarantee.
+
+### 4.2 What's Inside a Router?
+>336
