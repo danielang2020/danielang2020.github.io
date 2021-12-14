@@ -567,4 +567,34 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > The Internet's network layer providers a single service, known as **best-effort service**. With best-effort service, packets are neither guaranteed to be received in the order in which they were sent, nor is their eventual delivery even guaranteed. There is no guarantee on the end-to-end delay nor is there a minimal bandwidth guarantee.
 
 ### 4.2 What's Inside a Router?
->336
+> Four router components can be identified:
+>- Input ports.
+>- Switching fabric. The switching fabric connects the router's input ports to its output ports.
+>- Output ports.
+>- Routing processor.
+> ![](img/44.png)
+
+> A router's input ports, output ports, and switching fabric are almost always implemented in hardware.
+
+> These control plane functions are usually implemented in software and execute on the routing processor(typically a traditional CPU).
+
+#### 4.2.1 Input Port Processing and Destination-Based Forwarding
+> When there are multiple matches, the router uses the **longest prefix matching rule**; that is, it finds the longest matching entry in the table and forwards the packet to the link interface associated with the longest prefix match.
+
+#### 4.2.2 Switching
+> Switching can be accomplished in a number of ways.
+> ![](img/46.png)
+>- Switching via memory. An input port with an arriving packet first signaled the routing processor via an interrupt. The packet was then copied from the input port into processor memory. The routing processor then extracted the destination address from the header, looked up the appropriate output port in the forwarding table, and copied the packet to the output port's buffers. Note that two packets cannot be forwarded at the same time, even if they are different destination ports, since only one memory read/write can be done at a time over the shared system bus.
+>- Switching via a bus. This is typically done by having the input port pre-pend a switch-internal label(header) to the packet indicating the local output port to which this packet is being transferred and transmitting the packet onto the bus.
+>- Switching via an interconnection network. When a packet arrives from port A and needs to be forwarded to port Y, the switch controller closes the crosspoint at the intersection of busses A and Y, and port A then sends the packet onto its bus, which is picked up by bus Y.
+
+#### 4.2.3 Output Port Processing
+> This includes selecting and de-queueing packets for transmission, and performing the needed link-layer and physical-layer transmission functions.
+
+#### 4.2.4 Where Does Queueing Occur?
+> It's clear that packet queues may form at both the input ports and output ports. Since as these queues grow large, the router's memory can eventually be exhausted and **packet loss** will occur when no memory is available to store arriving packets.
+
+##### How Much Buffering Is "Enough?"
+> It's temping to think that more buffering must be better - larger buffers would allow a router to absorb larger fluctuations in the packet arrival rate, thereby decreasing the router's packet loss rate. But larger buffers also mean potentially longer queueing delay.
+
+350
