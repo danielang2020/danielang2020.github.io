@@ -298,3 +298,7 @@
 >- Th woman **that** called last night was very polite.
 >- Do you remember the time **that** you first met?
 
+> We also use **used to + the infinitive** for past situations. It emphasises that the situations are no longer true.
+>- There **used to be** lots of old forests here, but sadly they've all been cut down.
+
+> You use **be used to** to say that something isn't new, unusual or difficult for you. You have experienced it many times. You use **get used to** to say that you are gradually finding something less unusual or difficult. Both **be used to** and **get used to** can be followed by a noun/pronoun or the **-ing** form of the verb.
