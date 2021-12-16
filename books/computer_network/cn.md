@@ -597,4 +597,18 @@ TTL is the time to live of the resource record; it determines when a resource sh
 ##### How Much Buffering Is "Enough?"
 > It's temping to think that more buffering must be better - larger buffers would allow a router to absorb larger fluctuations in the packet arrival rate, thereby decreasing the router's packet loss rate. But larger buffers also mean potentially longer queueing delay.
 
-350
+#### 4.2.5 Packet Scheduling
+##### First-in-First-Out(FIFO)
+> Packets arriving at the link output queue wait for transmission if the link is currently busy transmitting another packet. If there is not sufficient buffering space to hold the arriving packet, the queue's packet-disarding policy then determines whether the packet will be dropped(lost) or whether other packets will be removed from the queue to make space for the arriving packet. When a packet is completely transmitted over the outgoing link it is removed from the queue.
+> ![](img/411.png)
+
+##### Priority Queuing
+> Under priority queuing, packets arriving at the output link are classified into priority class upon arrival at the queue.
+> ![](img/413.png)
+
+##### Round Robin and Weight Fair Queuing(WFQ)
+> Under the round robin queuing discipline, packets are sorted into classes as with priority queuing. However, rather than there being a strict service priority among classes, a round robin scheduler alternates service among the classes.
+
+### 4.3 The Internet Protocol(IP): IPv4, Addressing, IPv6, and More
+#### 4.3.1 IPv4 Datagram Format
+356
