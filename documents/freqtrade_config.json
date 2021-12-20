@@ -169,8 +169,8 @@
     "initial_state": "running",
     "forcebuy_enable": false,
     "internals": {        
-        "process_throttle_secs": 5, 
-        "process_throttle_secs comment": "loop runs every few seconds",
+        //loop runs every few seconds,
+        "process_throttle_secs": 5,        
         "heartbeat_interval": 60
     },
     "disable_dataframe_checks": false,
