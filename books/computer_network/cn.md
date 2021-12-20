@@ -611,4 +611,22 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 ### 4.3 The Internet Protocol(IP): IPv4, Addressing, IPv6, and More
 #### 4.3.1 IPv4 Datagram Format
-356
+> The key fields in the IPv4 datagram are the following:
+>- Version number.
+>- Header length.
+>- Type of service.
+>- Datagram length.
+>- Identifier, flags, fragmentation offset. These three fields have to do with so-called IP fragmentation, when a large IP datagram is broken into several smaller IP datagrams which are then forwarded independently to the destination, where they are reassembled before their payload data is passed up to the transport layer at the destination host.
+>- Time to live. This field is decremented by one each time the datagram is processed by a router. If the TTL field reaches 0, a router must drop that datagram.
+>- Protocol. A value of 6 indicates that the data portion is passed to TCP. The protocol number is the glue that binds the network and transport layer together, whereas the port number is the glue that binds the transport and application layer together.
+>- Header checksum. Note that the checksum must be recommended and stored again at each router, since the TTL field, and possiblly the options fields as well, will change. Why does TCP/IP perform error checking at both the transport and network layers? There are several reasons for this repetition. First, note that only the IP header is checksummed at the IP layer, while the TCP/UDP checksum is computed over the entire TCP/UDP segment, Second, TCP/UDP and IP do not necessarily both have to belong to the same protocol stack.
+>- Source and destination IP addresses.
+>- Options.
+>- Data(payload). In most circumstances, the data field of the IP datagram contains the transport-layer segment(TCP or UDP) to be delivered to the destination.
+> ![](img/417.png)
+
+#### 4.3.2 IPv4 Addressing
+> The boundary between the host and the physical link is called an interface.
+
+> An IP address is technically associated with an interface, rather than with the host or router containing that interface.
+359
