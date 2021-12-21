@@ -629,4 +629,19 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > The boundary between the host and the physical link is called an interface.
 
 > An IP address is technically associated with an interface, rather than with the host or router containing that interface.
-359
+
+> The Internet's address assignment strategy is known as **Classless Interdomain Routing(CIDR)**. CIDR generalizes the notion of subnet addressing. As with subnet addressing, the 32-bit IP address is divided into two parts and again has the dotted-decimal form a.b.c.d/x, where x indicates the number of bits in the first part of the address.
+
+> When a host sends a datagram with destination address 255.255.255.255, the message is delivered to all hosts on the same subnet.
+
+##### Obtaining a Host Address: The Dynamic Host Configuration Protocol
+> For a newly arriving host, the DHCP protocol is a four-step process:
+>- DHCP server discovery.
+>- DHCP server offer.
+>- DHCP request.
+>- DHCP ACK.
+> ![](img/424.png)
+
+#### 4.3.3 Network Address Translation(NAT)
+> In essence, the NAT-enabled router is hiding the details of the home network from the outside world.
+371
