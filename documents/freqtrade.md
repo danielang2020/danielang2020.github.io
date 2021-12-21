@@ -50,3 +50,43 @@
 >- Generate backtest report output.
 
 > Both Backtesting and Hyperopt include exchange default fees in the calculation. Custom fees can be passed to backtesting/hyperopt by specifiying the --fee argument.
+
+## Strategy Customization
+### Deploy your own strategy
+#### Anatomy of a strategy
+> A strategy file contains all the information needed to build a good strategy:
+   >>- Indicators
+   >>- Buy strategy rules
+   >>- Sell strategy rules
+   >>- Minimal ROI recommended
+   >>- Stopless strongly recommended
+
+#### Dataframe
+> Freqtrade uses [pandas](https://pandas.pydata.org/) to store/provide the candlestick(OHLCV) data.
+> Each row in a dataframe corresponds to one candle on a chart, with the latest candle always being the last in the dataframe(sorted by date).
+
+> As a dataframe is a table, simple python comparisions like the following will not work
+>```
+> if dataframe['rsi'] > 30:
+>     dataframe['buy'] = 1
+>```
+> The above section will fail with The truth value of a series is ambiguous.
+> This must instead be written in a pandas-compatible way, so the operation is performed across the whole dataframe.
+>```
+> dataframe.loc[
+>      (dataframe['rsi'] > 30)
+>      , 'buy'] = 1
+>```
+> With this section, you have a new column in your dataframe, which has 1 assigned whenever RSI is above 30.
+
+#### Customize Indicators
+> Buy and sell strategies need indicators. You can add more indicators by extending the list contained in the method populate_indicators() from your strategy file.
+
+> You should only add the indicators used in either populate_buy_trend() or populate_sell_trend(), or to populate another indicator, otherwise performance may suffer.
+
+> It's important to always return the dataframe without removing/modifing the columns "open","hight","low","close","volumn", otherwise these fields would contain something unexpected.
+
+#### Strategy startup period
+> Most indicators have an instable startup period, in which they are either not available(NaN), or the calculation is incorrect. This can lead to inconsistancies, since Freqtrade does not know how long this instable period should be. To account for this, the strategy can be assigned the startup_candle_count attribute. This should be set to the maximum number of candles that the strategy requires to calculate stable indicators.
+
+#### Buy signal rules
