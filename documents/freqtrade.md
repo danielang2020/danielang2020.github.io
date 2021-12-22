@@ -90,3 +90,42 @@
 > Most indicators have an instable startup period, in which they are either not available(NaN), or the calculation is incorrect. This can lead to inconsistancies, since Freqtrade does not know how long this instable period should be. To account for this, the strategy can be assigned the startup_candle_count attribute. This should be set to the maximum number of candles that the strategy requires to calculate stable indicators.
 
 #### Buy signal rules
+> populate_buy_trend() will define a new column, "buy", which needs to contain 1 for buys, and 0 for "no action".
+
+> Buying requires sellers to buy from - therefore volumn needs to be > 0(dataframe['volumn'] > 0) to make sure that the bot does not buy/sell in no-activity periods.
+
+#### Sell signal rules
+> populate_sell_trend() will define a new column, "sell", which needs to contain 1 for sells, and 0 for "no action".
+
+#### Minimal ROI
+> This dict defines the minimal Return On Investment(ROI) a trade should reach before selling, independent from the sell signal.
+
+> The calculation does include fees.
+
+#### Stoploss
+> Setting a stoploss is highly recommended to protect your capital from strong moves against you.
+
+#### Timeframe
+> This is set of candles the bot should download and use for the analysis. Common values are "1m","5m","15m","1h", however all values supported by your exchange should work.
+
+> Please note that the same buy/sell signals may work well with one timeframe, but not with the others.
+
+### Strategy file loading
+> By default, freqtrade will attempt to load strategies from all .py files within user_data/strategies.
+
+> Note that we're using the class-name, not the file name.
+
+### Informative Pairs
+#### Get data from non-tradable pairs
+> Data for additional, informative pairs(reference pairs) can be beneficial for some strategies. OHLCV data for these pairs will be downloaded as part of the regular whitelist refresh process and is available via DataProvider just as other pairs.
+
+> As these pairs will be refreshed as part of the regular whitelist refresh, it's best to keep this list short.
+
+#### Additional data(DataProvider)
+> The strategy provides access to the DataProvider. This allows you to get additional data to use in your strategy.
+
+#### Prevent trades from happening for a specific pair
+> Freqtrade locks pairs automatically for the current candle(until the candle is over) when a pair is sold, preventing an immediate re-buy of that pair.
+
+
+
