@@ -18,7 +18,7 @@
 
 ## Bloackchain
 ### [Freqtrade](documents/freqtrade.md)
-
+### [crypto20](documents/crypto20.md)
 
 # Blogs
 ## [How to Scale WebSockets](blogs/how_to_scale_websockets.md)
