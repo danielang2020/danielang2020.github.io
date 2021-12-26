@@ -688,5 +688,28 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 ### 5.4 Routing Among the ISPs: BGP
 #### 5.4.1 The Role of BGP
-> In BGP, packets are not routed to a speicific destination address, but instead to CIDRized prefixes, with each representing a subnet or a collection of subnets.
-425
+> In BGP(Border Gateway Protocol), packets are not routed to a speicific destination address, but instead to CIDRized prefixes, with each representing a subnet or a collection of subnets.
+
+> In the world of BGP, a destination may take the form 138.16.68/22, which for this example includes 1,024 IP addresses. Thus, a router's forwarding table will have entries of the form(x, I), where x is a prefix(such as 138.16.68/22) and I is an interface number for one of the router's interfaces.
+
+#### 5.4.2 Advertising BGP Route Information
+> A gateway router isa router on the edge of an AS that directly connects to one or more routers in other ASs. An internal router connects only to hosts and routers within its own AS.
+
+> In BGP, pairs of routers exchange routing information over semi-permanent TCP connections using port 179. Each such TCP connection, along with all the BGP messages sent over the connection, is called a BGP connection. Furthermore, a BGP connection that spans two ASs is called an external BGP connection(eBGP), and a BGP session between routers in the same AS is called an internal BGP(iBGP) connection.
+> ![](img/59.png)
+> There is typically one eBGP connection for each link that directly connects gateway routers in different ASs. \
+> Note that iBGP connections do not always correspond to physical links.
+
+#### 5.4.3 Determining the Best Routers
+> When a router advertises a prefix across a BGP connection, it includes with the prefix several BGP attributes. In BGP jargon, a prefix along with its attributes is called a route. Two of the more important attributes are AS-PATH and NEXT-HOP. The AS-PATH attribute contains the list of ASs through which the advertisement has passed. The NEXT-HOP is the IP address of the router interface that begins the AS-PATH.
+
+> Each BGP route is written as a list with three components: NEXT-HOP; AS-PATH; destination prefix.
+
+> ![](img/510.png)
+> IP address of leftmost interface for router 2a; AS2 AS3; x \
+> IP address of leftmost interface of router 3d; AS3; x
+
+### 5.6 ICMP: The Internet Control Message Protocol
+> The Internet Control Message Protocol(ICMP) is used by hosts and routers to communicate network-layer information to each other.
+
+450
