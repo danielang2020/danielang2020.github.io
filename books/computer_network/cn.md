@@ -655,4 +655,38 @@ TTL is the time to live of the resource record; it determines when a resource sh
 
 ## 5 The Network Layer: Control Plane
 ### 5.1 Introduction
-403
+>- Per-router control.
+> ![](img/51.png)
+>- Logically centralized control.
+> ![](img/52.png)
+
+### 5.2 Routing Algorithms
+> A graph is used to formulate routing problems. Recall that a graph G = (N, E) is a set N of nodes and a collection E of edges, where each edge is a pair of nodes from N.
+> ![](img/53.png)
+
+> Given that costs are assigned to the various edges in the graph abstraction, a natural goal of a routing algorithm is to identify the least costly paths between sources and destinations.
+
+> The least-cost problem is therefore clear: Find a path between the source and destination that has least cost.
+
+> Note that if all edges in the graph have the same cost, the least-cost path is also the shortest path.
+
+> Broadly, one way in which we can classify routing algorithms is according to whether they are centralized or decentralized.
+>- A centralized routing algorithm computes the least-cost path between a source and destination using complete, global knowledge about the network.
+>- In a decentralized routing algorithm, the calculation of the least-cost path is carried out in an iterative, distributed manner by the routers.
+
+> A second broad way to classify routing algorithms is according to whether they are static dynamic. In static routing algorithms, routes change very slowly over time, often as a result of human intervention. Dynamic routing algorithms change the routing paths as the network traffic loads or topology change.
+
+> A third way to classify routing algorithms is according to whether they are load-sensitive or load-insensitive. In a load-sensitive algorithm, link costs vary dynamically to reflect the current level of congestion in the underlying link.
+
+#### 5.2.1 The Link-State(LS) Routing Algorithm
+> In practice, this is accomplished by having each node broadcast link-state packets to all other nodes in the network, with each link-state packet containing the identifies and costs of its attached links.
+
+### 5.3 Intra-AS Routing in the Internet: OSPF
+> In particular, some tier-1 ISPs use one gigantic AS for their entire network, whereas others break up their ISP into tens of interconnected ASs.
+
+> Routers within the same AS(autonomous systems) all run the same routing algorithm and have information about each other. The routing algorithm running within an autonomous system is called an intra-autonomous system routing protocol.
+
+### 5.4 Routing Among the ISPs: BGP
+#### 5.4.1 The Role of BGP
+> In BGP, packets are not routed to a speicific destination address, but instead to CIDRized prefixes, with each representing a subnet or a collection of subnets.
+425
