@@ -712,4 +712,5 @@ TTL is the time to live of the resource record; it determines when a resource sh
 ### 5.6 ICMP: The Internet Control Message Protocol
 > The Internet Control Message Protocol(ICMP) is used by hosts and routers to communicate network-layer information to each other.
 
-450
+## 6 The Link Layer and LANs
+to be continued...
