@@ -5,6 +5,10 @@
 ### [Java Concurrency in Practice](books/java_concurrency_in_practice/jcip.md)
 ### [Java NIO](books/java_nio/jn.md)
 
+## Design
+
+### [Designing Data-Intensive Applications](books/designing_data-intensive_applications/ddia.md)
+
 ## CS
 
 ### [Operating System](books/os/os.md)
