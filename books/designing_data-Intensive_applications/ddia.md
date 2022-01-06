@@ -9,4 +9,7 @@
 
 > It's not possible to say in general which data model leads to simpler application code; it depends on the kinds of relationships that exist between data items. For highly interconnected data, the document model is awkward, the relational model is acceptable, and graph models are the natural.
 
-42
+### MapReduce Querying
+![](img/mr.png)
+
+49
