@@ -62,4 +62,52 @@
 
 > The keys that you generate in AWS KMS are protected by FIPS 140-2 validated cryptographic modules. If you want a managed service for creating and controlling encryption keys, but do not want or need to operate your own HSM, consider using AWS key Management Serivce(KMS).
 
+#### AWS Key Management Service
+> AWS Key Management Service is an AWS service that makes it easy for you to create and control the encryption keys that are used to encrypt your data.
 
+> Many AWS services are integrated with AWS KMS so they encrypt your data with KMS keys in your AWS account. AWS KMS is also integrated with AWS CloudTrail to deliver detailed logs of all cryptographic operations that use your KMS keys and management operations that change their configuration. This detailed logging helps you fullfill your auditing, regulatory and compliance requirements.
+
+##### Why use AWS KMS?
+> AWS KMS protects your root keys. KMS keys are created, managed, used, and deleted entirely within AWS KMS. They never leave the service unencrypted.
+> ![](img/kms.png)
+
+##### Using and management KMS keys
+> Symmetric KMS keys are 256-bit Advanced Encryption Standard(AES) keys that are not exportable. They spend their entire lifecycle entirely within AWS KMS.
+
+> You can also create asymmetric RSA or elliptic curve(ECC) KMS keys backed by asmmetric key pairs. The public key in each asymmetric KMS key is exportable, but the private key remains within AWS KMS.
+
+> You can:
+>- Establish policies that determine who can use and manage your KMS keys.
+>- Enable and disable your KMS keys.
+>- Enable and disable automatic rotation of the key material in your KMS keys.
+>- Schedule deletion of your KMS keys when you are finished using them.
+
+### AWS Encryption SDK
+> The AWS Encryption SDK is a client-side encryption library to help you implements best-practice encryption and decryption in any application even if you're not a cryptography expert.
+
+### DynamoDB Encryption Client
+> The Amazon DynamoDB Encryption Client is a client-side encryption library that helps you to protect your table data before you send it to Amazon DyamoDB. Encrypting your sensitive data in transit and at rest helps ensure that your plaintext data isn't available to the third party, including AWS.
+
+### AWS Secrets Manager
+> AWS provides the service AWS Secrets Manager for easier management of secrets. 
+
+### How to choose an encryption tool or service
+> Before selecting your cryptographic tools and services, decide if you prefer client-side encryption, server-side encryption, or both. Your decision depends on the design of your application, the sensitivity of your data, and the security requirements of your organization.
+
+> What do you need to protect your data?
+>- Do you need to create and manage the hardware security modules that store your encryption keys? Consider the AWS CloudHSM service.
+>- Would you benefit from an AWS service that protects your encryption keys for you? Consider AWS Key Management Service.
+>- Do you need to protect your data before you send it to AWS? Use a client-side encryption library, like the AWS Encryption SDK, the DynamoDB Encryption Client, or Amazon S3 client-side encryption.
+
+> What type of data do you need to protect?
+> To protect DynamoDB table items before you send them to DynamoDB, use the DynamoDB Encryption Client.
+> To protect Amazon S3 objects before you send them to an Amazon S3 bucket, use Amazon S3 client-side encryption.
+> To protect all other types of data at their source, use the AWS Encryption SDK.
+
+#### When to use AWS Key Management Service (AWS KMS)
+> When you encrypt data, you need to protect your encryption key. If you encrypt your key, you need to protect its encryption key. Eventually, you must protect the highest level encryption the highest level encryption key(known as a root key) in the hierarchy that protects your data. That's where AWS KMS comes in.
+
+> Secrets Manager integrates with AWS Key Management Service (AWS KMS) to encrypt every version of every secret value with a unique data key that is protected by an AWS KMS key. 
+
+#### When to use AWS CloudHSM
+> 
