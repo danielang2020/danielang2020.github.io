@@ -107,3 +107,10 @@
 
 > This algorithm ensures that the tree remains balanced: a B-tree with n keys always has a depth of O(log n). Most database can fit into a B-tree that is three or four levels deep, so you don't need to follow many page references to find the page you are looking for.(A four-level tree of 4 KB pages with a branching factor of 500 can store up to 256 TB.)
 
+#### Making B-tree reliable
+> In order to make the database resilient to crashes, it is common for B-tree implementations to include an additional data structure on disk: a write-ahead log(redo log). This is an append-only file to which every B-tree modification must be written before it can be applied to the pages of the tree itself. When the database comes back up after a crash, this log is used to restore the B-tree back to a consistent state.
+
+### Comparing B-Trees and LSM-Trees
+> LSM-trees are typically faster for writes, whereas B-trees are though to be faster for reads. Reads are typically slower on LSM-trees because they have to check several different data structures and SSTables at different stages fo compaction.
+
+85
