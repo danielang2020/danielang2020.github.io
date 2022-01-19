@@ -137,3 +137,31 @@
 
 > On the surface, a data warehouse and a relational OLTP database look similar, because they both have a SQL query interface. However, the internals of the systems can look quite different, because they are optimized for very different query patterns. Many database vendors now focus on supporting either transaction processing or analytics workloads, but not both.
 
+#### Stars and Snowflakes: Schemas for Analytics
+> In analytics, there is much less diversity of data models. Many data warehouses are used in a fairly formulaic style, known as a star schema.
+
+> The example schema in Figure 3-9 shows a data warehouse that might be found at a grocery retailer. At the center of the schema is a so-called fact table (in this example, it is called fact_sales). Each row of the fact table represents an event that occurred at a particular time (here, each row represents a customer’s purchase of a product). If we were analyzing website traffic rather than retail sales, each row might represent a page view or a click by a user.
+![](img/ft.png)
+
+> A variation of this template is known as the snowflake schema, where dimensions are further broken down into subdimensions.
+
+> In a typical data warehouse, tables are often very wide: fact tables often have over 100 columns, sometimes several hundred. Dimension tables can also be very wide, as they include all the metadata that may be relevant for analysis.
+
+### Column-Oriented Storage
+> In order to process a query, a row-oriented storage engine still needs to load all of those rows(each consisting of over 100 attributes) from disk into memory, parse them, and filter out those that don't meet the required conditions. That can take a long time.
+
+> The idea behind column-oriented storage is simple: don't store all the values from one row together, but store all the values from each column together instead. If each column is stored in a seperate file, a query only needs to read and parse those columns that are used in that query, which can save a lot of work.
+![](img/310.png)
+
+> The column-oriented storage layout relies on each column file containing the rows in the same order. Thus, if you need to reassemble an entire row, you can take the 23rd entry from each of the individual column files and put them together to form the 23rd row of the table.
+
+#### Column Compression
+> Besides only loading those columns from disk that are required for a query, we can further reduce the demands on disk throughput by compressing data. Fortunately, column-oriented storage often lends itself very well to compression.
+
+#### Memory bandwidth and vertorized processing
+> Beside reducing the volumn of data that needs to be loaded from disk, column-oriented storage layouts are also good for making efficient use of CPU cycles.
+
+#### Sort Order in Column Storage
+> Note that it wouldn’t make sense to sort each column independently, because then we would no longer know which items in the columns belong to the same row. We can only reconstruct a row because we know that the kth item in one column belongs to the same row as the kth item in another column.
+
+#### Writing to Column-Oriented Storage
