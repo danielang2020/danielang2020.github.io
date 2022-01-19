@@ -164,4 +164,21 @@
 #### Sort Order in Column Storage
 > Note that it wouldn’t make sense to sort each column independently, because then we would no longer know which items in the columns belong to the same row. We can only reconstruct a row because we know that the kth item in one column belongs to the same row as the kth item in another column.
 
-#### Writing to Column-Oriented Storage
+## CHAPTER 4 Encoding and Evolution
+### Formats for Encoding Data
+> Programs usually work with data in(at least) two different representations:
+>1. In memory, data is kept in objects, structs, lists, arrays, hash tables, trees, and so on. These data structures are optimized for efficient access and manipulation by the CPU(typically using pointers).
+>2. When you want to write data to a file or send it over the network, you have to encode it as some kind of self-contained sequence of bytes(e.g. a JSON document). Since a pointer wouldn't make sense to any other process, this sequence-of-bytes representation looks quite different from the data structures that are normally used in memory.
+
+> The transaction from the in-memory representation to a byte sequence is called encoding(also known as serialization or marshalling), and the reverse is called decoding(parsing, deserialization, unmarshalling).
+
+#### Language-Specific Formats
+> Language-specific encoding libraries have a number of deep problems:
+>- The encoding is often tied to a particular programming language, and reading the data in another language is very difficult.
+>- In order to restore data in the same object types, the decoding process needs to be able to instantiate arbitrary classes. This is frequently a source of security problems.
+>- Versioning data is often an afterthought in these libraries.
+>- Efficiency is also often an afterthought.
+
+> For these reason it's generally a bad idea to use your language's built-in encoding for anything other than very transient purposes.
+
+
