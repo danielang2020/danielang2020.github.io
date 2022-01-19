@@ -32,6 +32,7 @@
 ## [Monolith, Distributed Monolith and Microservice architectures](blogs/m_dm_m.md)
 ## [TCP time_wait state](https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux)
 ## [best practices for a pragmatic restful api](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+## [The Clean Architecture](blogs/the_clean_arch.md)
 
 # Practice
 
