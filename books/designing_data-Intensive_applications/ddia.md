@@ -181,4 +181,4 @@
 
 > For these reason it's generally a bad idea to use your language's built-in encoding for anything other than very transient purposes.
 
-
+## CHAPTER 5 Replication
