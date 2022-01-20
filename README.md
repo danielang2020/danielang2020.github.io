@@ -25,7 +25,8 @@
 ### [crypto20](documents/crypto20.md)
 
 ## AWS
-### [AWS cryptographic services and tools](documents/aws/aws_cryptographic/aws_cryptographic.md)
+### [AWS cryptographic services and tools](documents/aws/cryptographic/cryptographic.md)
+### [High Performance Computing Lens - AWS Well-Architected Framework](documents/aws/hpcl/high_performance_compute_lens.md)
 
 # Blogs
 ## [How to Scale WebSockets](blogs/how_to_scale_websockets.md)
