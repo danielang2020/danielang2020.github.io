@@ -28,6 +28,9 @@
 ### [AWS cryptographic services and tools](documents/aws/cryptographic/cryptographic.md)
 ### [High Performance Computing Lens - AWS Well-Architected Framework](documents/aws/hpcl/high_performance_compute_lens.md)
 
+## K8S/Docker
+### [Kubernetes](documents/k8s/k8s.md)
+
 # Blogs
 ## [How to Scale WebSockets](blogs/how_to_scale_websockets.md)
 ## [Monolith, Distributed Monolith and Microservice architectures](blogs/m_dm_m.md)
