@@ -24,11 +24,7 @@
 ### [Freqtrade](documents/freqtrade.md)
 ### [crypto20](documents/crypto20.md)
 
-## AWS
-### [AWS cryptographic services and tools](documents/aws/cryptographic/cryptographic.md)
-### [High Performance Computing Lens - AWS Well-Architected Framework](documents/aws/hpcl/high_performance_compute_lens.md)
-
-## K8S/Docker
+## K8s/Docker
 ### [Kubernetes](documents/k8s/k8s.md)
 
 # Blogs
@@ -48,3 +44,6 @@
 # Tools
 
 # Cloud
+## AWS
+### [AWS cryptographic services and tools](documents/aws/cryptographic/cryptographic.md)
+### [High Performance Computing Lens - AWS Well-Architected Framework](documents/aws/hpcl/high_performance_compute_lens.md)

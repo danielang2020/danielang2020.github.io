@@ -82,4 +82,52 @@
 >- metadata - Data that helps uniquely identify the object, including a name string, UID, and optional namespace
 >- spec -  What state you desire for the object
 
+##### Kubernetes Object Management
+> ![](img/mt.png)
+
+###### Imperative commands
+>- When using imperative commands, a user operates directly on live objects in a cluster. The user provides operations to the kubectl command as arguments or flags.
+>```
+> kubectl create deployment nginx --image nginx
+>```
+
+###### Imperative object configuration
+> In imperative object configuration, the kubectl command speicifies the operation(create, replace, etc.), optional flags and at least one file name. The file speicified must contain a full definition of the object in YAML or JSON format.
+>```
+> kubectl create -f nginx.yaml
+>```
+
+###### Declarative object configuration
+> When using declarative object configuration, a user operates on object configuration files stored locally, however the user does not define the operations to be taken on the files. Create, update, and delete operations are automatically detected per-object by kubectl. This enables working on directories, where different operations might be needed for different objects.
+>```
+> kubectl diff -f configs/
+> kubectl diff -R -f configs/
+>```
+
+##### Object Names and IDs
+> Each object in your cluster has a Name that is unique for that type of resource. Every Kubernetes object also has a UID that is unique across your whole cluster.
+
+###### Names
+> A client-provided string that refers to an object in a resource URL, such as /api/v1/pods/some-name .
+
+##### Namespace
+> In Kubernetes, namespaces provides a mechanism for isolating groups of resources within a single cluster. Names of resources need to be unique within a namespace, but not across namespaces. Namespace-based scoping is applicable only for namespaced objects(e.g. Deployments, Services, etc) and not for cluster-wide objects(e.g. StorageClass, Nodes, PersistentVolumes, etc).
+
+> Namespaces are intended for use in environments with many users spread across multiple teams, or projects. For clusters with a few to ten of users, you should not need to create or think about namespaces at all. Start using namespaces when you need the features they provide.
+
+> Namespaces provide a scope for names. Names of resources need to be unique within a namespace, but not across namespaces. Namespaces cannot be nested inside one another and each Kubernetes resource can only be in one namespace.
+
+> Namespaces are a way to divide cluster resources between  multiple users.
+
+> It's not necessary to use multiple namespaces to seperate slightly different resources, such as different versions of the same software: use labels to distinguish resources within the same namespace.
+
+> Kubernetes starts with four initial namespaces:
+>- default The default namespace for objects with no other namespace    
+>- kube-system The namespace for objects created by the Kubernetes system
+>- kube-public This namespace is created automatically and is readable by all users. This namespace is mostly reserved for cluster usage, in case that some resources should be visible and readable publicly throughout the whole cluster. The public aspect of this namespace is only a convention, not a requirement.
+>- kube-node-lease This namespace holds Lease objects associated with each node. Node leases allow the kubelet to send heartbeats so that the control plane can detect node failure.
+
+> When you create a Service, it creates a corresponding DNS entry. This entry is of the form <service-name>.<namespace-name>.svc.cluster.local, which means that if a container only uses <service-name>, it will resolve to the service which is local to a namespace. This is useful for using the same configuration across multiple namespaces such as Development, Staging and Production.
+
+> Most Kubernetes resources are in some namespaces. However namespace resources are not themselves in a namespace. And low-level resources, such as nodes and persistentVolumes, are not in any namespace.
 
