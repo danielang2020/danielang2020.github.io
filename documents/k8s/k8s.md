@@ -154,3 +154,7 @@
 
 ##### Finalizers
 > Finalizers are namespaced keys that tell Kubernetes to wait until specific conditions are met before it fully deletes resources marked for deletion.
+
+> You can use finalizers to control garbage collection of resources by alerting controllers to perform specific cleanup tasks before deleting the target resource.
+
+### Cluster Architecture
