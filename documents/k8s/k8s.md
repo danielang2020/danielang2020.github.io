@@ -158,3 +158,30 @@
 > You can use finalizers to control garbage collection of resources by alerting controllers to perform specific cleanup tasks before deleting the target resource.
 
 ### Cluster Architecture
+#### Nodes
+> Kubernetes runs your workload by placing containers into Pods to run on Nodes. A node may be a virtual or physical machine, depending on the cluster. Each node is managed by the control plane and contains the services necessary to run Pods.
+
+> The componenets on a node include the kubelet, a container runtime, and the kube-proxy.
+
+> There are two main ways to have Nodes added to the API server:
+>1. The kubelet on a node self-registers to the control plane
+>2. You(or another human user) manually add a Node object
+
+> A Node's status contains the following information:
+>- Address
+>- Conditions
+>- Capacity and Allocatable
+>>- The fields in the capacity block indicate the total amount of resources that a Node has. 
+>>- The allocatable block indicates the amount of resources on a Node that is available to be consumed by normal Pods.
+>- Info
+
+> Heartbeats, sent by Kubernetes nodes, help your cluster determine the availability of each node, and to take action when failure are detected.
+
+> The node controller is a Kubernetes control plane component that manages various aspects of nodes.
+
+> The node controller has multiple roles in a node's life. The first is assigning a CIDR block to the node when it is registered. The second is keeping the node controller's internal list of nodes up to date with the cloud provider's list of available machines. The third is monitoring the node's health.
+
+> Nodes that self register report their capacity during registration. If you manually add a Node, then you need to set the node's capacity information when you add it.
+
+> The Kubernetes scheduler ensures that there are enough resources for all the Pods on a Node. The scheduler checks that the sum of the requests of containers on the node is no greater than the node's capacity. That sum of requests includes managed by kubelet, but excludes any containers started directly by the container runtime. and also excludes any processes running outside of the kubelet's control.
+
