@@ -212,12 +212,87 @@
 > Many objects in Kubernetes link to each other through owner references. Owner references tell the control plane which objects are dependent on others. Kubernetes uses owner references to give the control plane, and other API clients, the opportunity to clean up related resources before deleting an object. In most cases, Kubernetes manages owner references automatically.
 
 > Kubernetes checks for and deletes objects that no longer have owner references. When you delete an object, you can control whether Kubernetes deletes the object's dependents automatically, in a process called cascading deletion. There are two types of cascading deletion, as follows:
->- Foreground cascading deletion
->> The object itself cann't be deleted before all the objects that it owns are deleted.
->- Background cascading deletion
->> The object itself is delted, after which the GC deletes the objects that it owned.
+>- Foreground cascading deletion: The object itself cann't be deleted before all the objects that it owns are deleted.
+>- Background cascading deletion: The object itself is deleted, after which the GC deletes the objects that it owned.
+
+> By default, Kubernetes uses background cascading deletion unless you manually use foreground deletion or choose to orphan the dependent objects.
 
 > When Kubernetes deletes an owner object, the dependents left behind are called orphan objects. By default, Kubernetes deletes dependent objects.
 
+> The kubelet performs garbage collection on unused images every five minutes and on unused containers every minutes. You should avoid using external garbage collection tools, as these can break the kubelet behavior and remove containers that should exist.
 
+> Kubernetes manages the lifecycle of all images through its images manager, which is part of the kubelet, with the cooperation of cadvisor. 
+
+> Disk usage above the configured HighThresholdPercent value triggers garbage collection, which deletes images in order based on the last time they were used, starting with the oldest first. The kubelet deletes images until disk usage reaches the LowThresholdPercent value.
+
+### Containers
+> Kubernetes supports container runtimes such as containerd, CRI-O, and any other implementation of the Kubernetes CRI.
+
+#### Images
+> A container image represents binary data that encapsulates an application and all its software dependencies. Container images are executable software bundles that can run standalone and that make very well defined assumptions about their runtime environment.
+
+> You typically create a container image of your application and push it to a registry before referring to it in a Pod.
+
+> If you don't specify a registry hostname, Kubernetes assumes that you mean the Docker public registry.
+
+> If you don't specify a tag, Kubernetes assumes you mean the tag latest.
+
+> You should avoid using the :latest tag when deploying containers in production as it is harder to track which version of the image is running and more difficult to roll back properly.
+
+> To make sure the Pod always uses the same version of a container image, you can specify the image's digest; replace image-name:tag with image-name@digest.
+
+> When using image tags, if the image registry were to change the code that the tag on that image represents, you might end up with a mix of Pods running the old and new code. An image digest uniquely identifies a specific version of the image, so Kubernetes runs the same code every time it starts a container with that image name and digest specified. Specifying an image fixes the code that you run so that a change at the registry cann't lead to that mix of versions.
+
+> Pre-pulled images can be used to preload certain images for speed or as an alternative to authenticating to a private registry.
+
+> Specifying imagePullSecrets on a Pod is the recommended approach to run containers based on images in private registers.
+
+#### Container environment
+> The Pod name and namespace are available as environment variables through the downward API.
+
+> User defined environment variables from the Pod definition are also available to the Containers, as are any environment variables specified statically in the Docker image.
+
+#### Container Lifecycle Hooks
+> There are two hooks that are exposed to Containers:
+>- PostStart: This hook is executed immediately after a container is created. However, there is no guarantee that the hook will execute before the container ENTRYPOINT.
+>- PreStop: This hook is called immediately before a container is terminated due to an API request or management event such as a liveness/startup probe failure, preemption, resource contention and others. The Pod's termination grace period countdown begins before the PreStop hook is executed, so regardless of the outcome of the handler, the container will eventually terminate within the Pod's termination grace period.
+
+> Hook handler calls are synchronous within the context of the Pod containing the Container. This means that for a PostStart hook, the Container ENTRYPOINT and hook fire asynchronously. However, if the hook takes too long to run or hangs, the Container cannot reaching a running state.
+> PreStop hooks are not executed asynchronously from the signal to stop the Containers; the hook must complete its execution before the TERM signal can be sent. If a PreStop hook hangs during execution, the Pod's phase will be Terminating and remain there until the Pod is killed after its terminationGracePeriodSeconds expires.
+
+> If either a PostStart or PreStop hook fails, it kills the Container.
+
+> Users should make their hook handlers as lightweight as possible. There are cases, however, when long running commands make sense, such as when saving state prior to stopping a Container.
+
+> Hook delivery is intended to be at least once, which means that a hook may be called multiple times for any given event. It's up to the hook implementation to handle this correctly.
+
+### Workloads
+> A workload is an application running on Kubernetes. Whether your workload is a single component or several that work together, on Kubernetes you run it inside a set of pods. In Kubernetes, a Pod represents a set of running containers on your cluster.
+
+> To make life considerably easier, you don't need to manage each Pod directly. Instead, you can use workload resources that manage a set of pods on your behalf. These resources configure controllers that make sure the right number of the right kind of pod are running, to match the state you specified.
+
+> Kubernetes provides several built-in workload resources:
+>- Deployment and ReplicaSet: Deployement is a good fit for managing a stateless application workload on your cluster, where any Pod in the Deployment is interchangable and can be replaced if needed.
+>- StatefulSet: Lets you run one or more related Pods that do track state somehow.
+>- DaemonSet: Defines Pods that provide node-local facilities. These might be fundamental to the operation of your cluster, such as a networking helper tool, or be part of an add-on.
+>- Job and CronJob: Defines tasks that run to completion and then stop. Jobs represent one-off task, whereas CronJob recur according to a schedule.
+
+#### Pods
+> Pods are the smallest deployable units of computing that you can create and manage in Kubernetes.
+
+> A Pod is a group of one or more containers, with shared storage and network resources, and a specification for how to run the containers. A Pod's contents are always co-localed and co-scheduled, and run in a shared context. A Pod models an application-specific "logical host": it contains one or more application containers which are relatively tightly coupled.
+
+> Usually you don't need to create Pods directly, even singleton Pods. Instead, create them using workload resources such as Deployment or Job. If your Pods need to track state, consider the StatefulSet resource.
+
+> Pods in a Kubernetes cluster are used in two main ways:
+>- Pods that run a single container. The "one-container-Pod" model is the most common Kubernetes use cases; in this case, you can think of a Pod as a wrapper around a single container; Kubernetes manages Pods rather than managing the containers directly.
+>- Pods that run multiple containers that need to work together. A Pod can encapsulate an appliation composed of mulitple co-located containers that are tightly coupled and need to share resources. Those co-located containers form a single cohesive unit of service. The Pod wraps these containers, storage resources, and an ephemeral network identify together as a single unit.
+
+> Each Pod is meant to run a single instance of a given application. If you want to scale your application horizontally, you should use multiple Pods, one for each instance. In Kubernetes, this is typically referred to as replication. Replicated Pods are usually created and managed as a group by a workload resource and its controller.
+
+> Pods are designed to support multiple cooperating processes(as containers) that form a cohesive unit of service. The containers in a Pod are automatically co-located and co-scheduled on the same physical or virtual machine in the cluster. The containers can share resources and dependencies, communicate with one another, and coordinate when and how they are terminated.
+
+> Pods natively provide two kind of shared resources for their constituent containers: networking and storage.
+
+> Pods are designed as relatively ephemeral, disposable entities. When a Pod gets created(directly by you, or indirectly by a controller), the new Pod is scheduled to run on a Node in your cluster. The Pod remains on that Node until the Pod finished execution, the Pod object is deleted, the Pod is evicted for lack of resources, or the Node fails.
 
