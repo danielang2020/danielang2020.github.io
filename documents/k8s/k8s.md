@@ -318,7 +318,55 @@
 
 > The kubelet automatically tries to create a mirror Pod on the Kubernetes API server for each static Pod. This means that the Pods running on a node are visible on the API server, but cannot be controlled from there.
 
-> A probe is a diagnostic performed periodically by the kubelet on a container. To perform a diagnostic, the kubelet can invoke different actions:
->- ExecAction
->- TCPSocketAction
->- HTTPGetAction
+##### Pod Lifecycle
+> Pods follow a defined lifecycle, starting in the Pending phase, moving through Running if at least one of its primary containers starts OK, and then through either the Succeeded or Failed phases depending on whether any container in the Pod terminated in failure.
+
+> Whilst a Pod is running, the kubelet is able to restart containers to handle some kind of faults. Within a Pod, Kubernetes tracks different container states and determines what action to take to make the Pod healthy again.
+
+> In the Kubernetes API, Pods have both a specification and an actual status. The status for a Pod object consists of a set of Pod conditions. You can also inject custom readiness information into the condition data for Pod, if that is useful to your application.
+
+> Pods are only scheduled once in their lifetime. Once a Pod is scheduled(assigned) to a Node, the Pod runs on that Node until it stops or is terminated.
+
+> If a Node dies, the Pods scheduled to that node are scheduled for deletion after a timeout period.
+
+> Pods do not, by themselves, self-heal. If a Pod is scheduled to a node that then fails, the Pod is deleted; likewise, a Pod won't survive an eviction due to a lack of resources or Node maintenance. Kubernetes uses a higher-level abstraction, called a controller, that handles the work of managing the relatively disposable Pod instances.
+
+> A given Pod(as defined by a UID) is never "rescheduled" to a different node; instead, that Pod can be replaced by a new, near-identical Pod, with even the same name if desired, but with a different UID.
+
+> When something is said to have the same lifetime as a Pod, such as volume, that means that the thing exist as long as that specific Pod(with that exact UID) exist. If that Pod is deleted for any reason, and even if an identical replacement is created, the related thing is also destroyed and created a new.
+
+> If a node dies or is disconnected from the rest of the cluster, Kubernetes applies a policy for setting the phase of all Pods on the lost node to Failed.
+
+> Once the scheduler assigns a Pod to a Node, the kubelet starts creating containers for that Pod using a container runtime. There are three possible container states: Waiting, Running, and Terminated.
+
+> The restartPolicy applies to all containers in the Pod. restartPolicy only refers to restarts of the containers by the kubelet on the same node. After containers in a Pod exit, the kubelet restarts them with an exponential back-off delay(10s, 20s, 40s, ...), that is capped at five minutes. Once a container has executed for 10 minutes without any problems, the kubelet resets the restart backoff timer for that container.
+
+> A Pod has a PodStatus, which has an array of PodConditions through which the Pod has or has not passed:
+>- PodScheduled
+>- ContainersReady
+>- Initialized
+>- Ready
+
+> There are four different ways to check a container using a probe. Each probe must define exactly one of these four mechanisms:
+>- exec: Executes a specified command inside the container. The diagnostic is considered successful if the command exits with a status code of 0.
+>- grpc: Performs a remote procedure call using gRPC The target should implement gRPC health checks. 
+>- httpGet: Perform an HTTP Get request against the Pod's IP address on a specified port and path.
+>- tcpSocket: Performs a TCP check against the Pod's IP address on a specified port.
+
+> Each probe has one of three results:
+>- Success
+>- Failure
+>- Unknown
+
+>- The kubelet can optionally perform and react to three kinds of probes on running containers:
+>- livenessProbe: Indicates whether the container is running.
+>- readinessProbe: Indicates whether the container is ready to respond to requests.
+>- startupProbe: Indicates whether the application within the container is started.
+
+> When you request deletion of a Pod, the cluster records and tracks the intended grace period before the Pod is allowed to be forcefully killed. With that forceful shutdown tracking in place, the kubelet attempt graceful shutdown. Typically, the container runtime sends a TERM signal to the main process in each container. Once the grace period has expired, the KILL signal is sent to any remaining processes, and the Pod is then deleted from the API Server. If the kubelet or the container runtime's management service is restarted while waiting for processes to terminate, the cluster retires from the start including the full original grace period.
+
+> When a force deletion is performed, the API server doesn't wait for confirmation from the kubelet that the Pod has been terminated on the node it was running on. It removes the Pod in the API immediately so a new Pod can be created with the same name. On the node, Pods that are set to terminate immediately will still be given a small grace period before being force killed.
+
+> For failed Pods, the API objects remain in the cluster's API until a human or controller process explicitly removes them. The control plane cleans up terminated Pods, when the number of Pods exceeds the configured threshold. This avoids a resource leak as Pods are created and terminated over time.
+
+##### Init Containers
