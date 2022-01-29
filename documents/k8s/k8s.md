@@ -370,3 +370,32 @@
 > For failed Pods, the API objects remain in the cluster's API until a human or controller process explicitly removes them. The control plane cleans up terminated Pods, when the number of Pods exceeds the configured threshold. This avoids a resource leak as Pods are created and terminated over time.
 
 ##### Init Containers
+> Init containers that run before app containers in a Pod. Init containers can contain utilities or setup scripts not present in an app image.
+
+> If a Pod's init container fails, the kubelet repeatedly restarts that init container until it succeeds. However, if the Pod has a restartPolicy of Never, and an init container fails during startup of that Pod, Kubernetes treats the overall Pod as failed.
+
+> If you specify multiple init containers for a Pod, kubelet runs each init container sequentially. Each init container must succeed before the next can run. When all of the init containers have run to completion, kubelet initializes the application containers for the Pod and runs them as usual.
+
+> During Pod startup, the kubelet delays running init containers until the networking and storage are ready. Then the kubelet runs the Pod's init containers in the order they appear in the Pod's spec.
+
+> A Pod cannot be Ready until all init containers have succeeded. The ports on an init container are not aggregated under a Service. A Pod that is initializing is in the Pending state but should have a condition Initialized set to false.
+
+> If the Pod restarts, or is restarted, all init containers must execute again.
+
+> Changes to the init container spec are limited to the container image field. Altering an init container image field is equivalent to restarting the Pod.
+
+> Because init containers can be restarted, retires, or re-executed, init container code should be idempotent. In particular, code that writes to files on EmptyDirs should be prepared for the possibility that an output file already exists.
+
+> The Pod will not be restarted when the init container image is changed, or the init container completion record has been lost due to garbage collection.
+
+##### Pod Topology Spread Constraints
+> You can use topology spread constraints to control how Pods are spread across your cluster among failure-domains such as region, zones, nodes, and other user-defined topology domains. This can help to achieve high availability as well as efficient resource utilization.
+
+##### Disruptions
+> Pods do not disappear until someone(a person or a controller) destroys them, or there is an unavoidable hardware or system software error. We call these unavoidable cases involuntary disruption to an application.
+
+> We call other cases voluntary disruptions. These include both actions initiated by the application owner and those initiated by a Cluster Administrator.
+
+##### Ephemeral Containers
+> A special type of container that runs temporarily in an existing Pod to accomplish user-inititated actions such as troubleshooting. You use ephemeral containers to inspect services rather than to build applications.
+
