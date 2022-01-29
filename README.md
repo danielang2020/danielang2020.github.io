@@ -33,6 +33,9 @@
 ## [TCP time_wait state](https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux)
 ## [best practices for a pragmatic restful api](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
 ## [The Clean Architecture](blogs/the_clean_arch.md)
+## [Linux – What does TIME+ (cpu time, hundredth) in top mean](blogs/timeplus.md)
+## [Linux Commands – top](blogs/top.md)
+## [Dissecting the free command: What the Linux sysadmin needs to know](blogs/free.md)
 
 # Practice
 
