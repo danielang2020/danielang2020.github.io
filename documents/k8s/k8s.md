@@ -399,3 +399,46 @@
 ##### Ephemeral Containers
 > A special type of container that runs temporarily in an existing Pod to accomplish user-inititated actions such as troubleshooting. You use ephemeral containers to inspect services rather than to build applications.
 
+#### Workload Resources
+##### Deployments
+> You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate. You can define Deployments to create new ReplicaSets, or to remove existing Deployments and adopt all their resources with new Deployments.
+
+> The pod-template-hash label is added by the Deployment controller to every ReplicaSet that a Deployment creates or adopts. Do not change this label.
+
+> A Deployment's rollout is triggered if and only if the Deployment's Pod template is changed, for example if the labels or container images of the template are updated. Other updates, such as scaling the Deployment, do not trigger a rollout.
+
+> Deployment ensures that only a certain number of Pods are down while they are being updated. By default, it ensures that at least 75% of the desired number of Pods are up(25% max unavailable). <br/>
+> Deployment also ensures that only a certain number of Pods are created above the desired number of Pods. By default, it ensures that at most 125% of the desired number of Pods are up(25% max surge).<br/>
+> For example, if you look at the above Deployment closely, you will see that it first created a new Pod, then deleted some old Pods, and created new ones. It does not kill old Pods until a sufficient number of new Pods have come up, and does not create new Pods until a sufficient number of old Pods have been killed.
+
+> If you update a Deployment while an existing rollout is in progress, the Deployment creates a new ReplicaSet as per the update and start scaling that up, and rolls over the ReplicaSet that it was scaling up previously - it will add it to its list of old ReplicaSets and start scaling it down.
+
+> It is generally discouraged to make label selector updates and it is suggested to plan your selectors up front. In any case, if you need to perform a label selector update, exercise great caution and make sure you have grasped all of the implications.
+
+> Kubernetes marks a Deployment as progressing when one of the following tasks is performed:
+>- The Deployment creates a new ReplicaSet.
+>- The Deployment is scaling up its newest ReplicaSet.
+>- The Deployment is scaling down its oldest ReplicaSet(s).
+>- New Pods become ready or available.
+
+> Kubernetes marks a Deployment as complete when it has the following characteristics:
+>- All of the replicas associated with the Deployment have been updated to the lastest version you've specified, meaning any updates you've requested have been completed.
+>- All of the replicas associated with the Deployment are available.
+>- No old replicas for the Deployment are running.
+
+> Your Deployment may get stuck trying to deploy its newest ReplicaSet without ever completing.
+>- Insufficient quota
+>- Readiness probe failures
+>- Image pull errors
+>- Insufficient permissions
+>- Limit ranges
+>- Application runtime misconfiguration
+
+##### ReplicaSet
+> A ReplicaSet's purpose is to maintain a stable set of replica Pods running at any given time. As such, it is often used to guarantee the availability of a specified number of identical Pods.
+
+> A ReplicaSet is defined with fields, including a selector that specifies how to identify Pods it can acquire, a number or replicas indicating how many Pods it should be maintaining, and a pod template specifying the data of new Pods it should create to meet the number of replicas crtieria. A ReplicaSet then fullfills its purpose by creating and deleting Pods as needed to reach the desired number. When a ReplicaSet needs to create new Pods, it uses its Pod template.
+
+> A Deployment is a high-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, we recommend using Deployment instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
+
+
