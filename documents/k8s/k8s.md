@@ -439,6 +439,24 @@
 
 > A ReplicaSet is defined with fields, including a selector that specifies how to identify Pods it can acquire, a number or replicas indicating how many Pods it should be maintaining, and a pod template specifying the data of new Pods it should create to meet the number of replicas crtieria. A ReplicaSet then fullfills its purpose by creating and deleting Pods as needed to reach the desired number. When a ReplicaSet needs to create new Pods, it uses its Pod template.
 
-> A Deployment is a high-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, we recommend using Deployment instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
+> A Deployment is a higher-level concept that manages ReplicaSets and provides declarative updates to Pods along with a lot of other useful features. Therefore, we recommend using Deployment instead of directly using ReplicaSets, unless you require custom update orchestration or don't require updates at all.
+
+> While you can create bare Pods with no problem, it is strongly recommended to make sure that the bare Pods do not have labels which match the selector of one of your ReplicaSets. The reason for this is because a ReplicaSet is not limited to owning Pods specified by its template -- it can acquire other Pods in the manner specified in the other workloads.
+
+> You can delete a ReplicaSet without affecting any of its Pods using kubectl delete with the --cascade=orphan option.<br>
+> Once the original is deleted, you can create a new ReplicaSet to replace it. As long as the old and new .spec.selector are the same, then the new one will adopt the old Pods. However, it will not make any effort to make existing Pods match a new, different pod template. To update Pods to a new spec in a controlled way, use a Deployment, as ReplicaSets do not support a rolling update directly.
+
+> You can remove Pods from a ReplicaSet by changing their labels. This technique may be used to remove Pods from service for debugging, data recovery, etc. Pods that are removed in this way will be replaced automatically.
+
+> A ReplicaSet can be easily scaled up or down by simply updating the .spec.replicas field. The ReplicaSet controller ensures that a desired number of Pods with a matching label selector are available and operational.
+
+> When scaling down, the ReplicaSet controller chooses which pods to delete by sorting the available pods to prioritize scaling down pods based on the following general algorithm:
+>1. Pending(and unschedulable) pods are scaled down first.
+>2. If controller.kubernetes.io/pod-deletion-cost annotation is set, then the pod with the lower value will come first.
+>3. Pods on nodes with more replicas come before pods on nodes with fewer replicas.
+>4. If the Pods' creation timer differ, the pod that was created more recently comes before the older pod. 
+>5. If all of the above match, then selection is random.
+
+> Using the controller.kubernetes.io/pod-deletion-cost annotation, users can set a preference regarding which pods to remove first when downscaling a ReplicaSet.
 
 
