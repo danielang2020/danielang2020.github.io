@@ -459,4 +459,54 @@
 
 > Using the controller.kubernetes.io/pod-deletion-cost annotation, users can set a preference regarding which pods to remove first when downscaling a ReplicaSet.
 
+> ReplicaSets are the successors to ReplicationControllers. The two serve the same purpose, and behave similarly, except that a ReplicationController does not support set-based selector requirements as described in the labels user guide. As such, ReplicaSets are preferred over ReplicationControllers
+
+##### StatefulSets
+> Like a Deployment, a StatefulSet manages Pods that are based on an identical container spec. Unlike a Deployment, a StatefulSet maintains a sticky identity for each their Pods. Theses pods are created from the same spec, but are not interchangable: each has a persistent identifier that it maintains across any rescheduling.
+
+> If you want to use storage volumes to provide persistence for your workload, you can use a StatefulSet as part of the solution. Although individual Pods in a StatefulSet are susceptble to failure, the persistent Pod identifiers make it earier to match existing volumes to the new Pods that replace any that have failed.
+
+> StatefulSets are valuable for applications that require one or more of the following.
+>- Stable, unique network identifiers.
+>- Stable, persistent storage.
+>- Ordered, graceful deployment and scaling.
+>- Ordered, automated rolling updates.
+
+> Limitation
+>- The storage for a given Pod must either be provisioned by a PersistentVolumeProvisioner based on the requested storage class, or pre-provisioned by an admin.
+>- Deleting and/or scaling a StatefulSet down will not delete the volumes associated with StatefulSet. This is done to ensure date safey, which is generally more valuable than an automatic purge of all related StatefulSet resources.
+>- StatefulSets currently require a Headless Service to be responsible for the network identify of the Pods. You are responsible for creating this Service.
+>- StatefulSets do not provide any guarantees on the termination of pods when a StatefulSet is deleted. To achieve ordered and graceful termination of the pods in the StatefulSet, it is possible to scale the StatefulSet down to 0 prior to deletion.
+>- When using Rolling Updates with the default Pod Management Policy (OrderedReady), it's possible to get into a broken state that requires manual intervention to repair.
+
+##### DaemonSet
+> A DaemonSet ensures that all(or some) Nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them. As nodes are removed from the cluster, those Pods are garbage collected. Deleting a DaemonSet will clean up the Pods it created.
+
+>- For a StatefulSet with N replicas, when Pods are being deployed, they are created sequentially, in order from {0 ... N-1}.
+>- When Pods are being deleted, they are terminated in reverse order, from{N -1 ... 0}.
+>- Before a scaling operation is applied to a Pod, all of its predecessors must be Running and Ready.
+>- Before a Pod is terminated, all of its successors must be completely shutdown.
+
+##### Jobs
+> A Job creates one or more Pods and will continue to retry execution of the Pods until a specified number of them successfully terminate. As Pods successfully complete, the Job tracks the successful completions. When a specified number of successful completions is reached, the task is complete. Deleting a Job will clean up the Pods it created. Suspending a Job will delete its active Pods until the Job is resumed again.
+
+> There are three main types of task suitable to run as a Job:
+>1. Non-parallel Jobs
+>2. Parallel Jobs with a fixed completion count
+>3. Parallel Jobs with a work queue
+
+> When a Job completes, no more Pods are created, but the Pods are usually not deleted either. Keeping them around allows you to still view the logs of completed pods to check for errors, warnings, or other diagnostic output. The job object also remains after it is completed so that you can view its status. It is up to the user to delete old jobs after noting their status.
+
+##### Automatic Clean-up for Finished Jobs
+> The TTL-after-finished controller is only supported for Jobs. A cluster operator can use this feature to clean up finished Jobs(either Complete or Failed) automatically by specifying the .spec.ttlSecondsAfterFinished field of a Job. When the TTL-after-finished controller cleans up a job, it will delete it cascadingly, that is to say it will delete its dependent objects together with it.
+
+##### CronJob
+> A CronJob creates Jobs on a repeating schedule.
+
+> The CronJob is only responsible for creating Jobs that match its schedule, and the Job in turn is responsible for the management of the Pods it represents.
+
+##### ReplicationController
+> A ReplicationController ensures that a specified number of pod replicas are running at any one time.
+
+### Services, Load Balancing, and Networking
 
