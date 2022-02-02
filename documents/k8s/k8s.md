@@ -509,4 +509,22 @@
 > A ReplicationController ensures that a specified number of pod replicas are running at any one time.
 
 ### Services, Load Balancing, and Networking
+> Kubernetes imposes the following fundamental requirements on any networking implementation:
+>- pods on a node can communicate with all pods on all nodes without NAT
+>- agents on a node can communicate with all pods on that node
+
+> For those platforms that support Pods running in the host network:
+>- pods in the host network of a node can communiate with all pods on all nodes without NAT
+
+> Kubernetes IP addresses exist at the Pod scope - containers within a Pod share their network namespaces - including their IP address and MAC address. This means that containers within a Pod can all reach each other's ports on localhost. This also means that containers within a Pod must coordinate port usage, but this is no different from processes in a VM.
+
+> Kubernetes networking addresses four concerns:
+>- Containers within a Pod use networking to communicate via loopback.
+>- Cluster networking provides communication between different Pods.
+>- The Service resource lets you expose an application running in Pods to be reachable from outside your cluster.
+>- You can also use Services to publish services only for consumption inside your cluster.
+
+#### Service
+> An abstract way to expose an application running on a set of Pods as a network service.
+
 
