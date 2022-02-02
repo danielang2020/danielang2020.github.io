@@ -527,4 +527,32 @@
 #### Service
 > An abstract way to expose an application running on a set of Pods as a network service.
 
+> In Kubernetes, a Service is an abstract which defines a logical set of Pods and a policy by which to access them.
+
+> The controller for the Service selector continuously scans for Pods that match its selector, and then POSTs any updates to an Endpoint object.
+
+> If an Endpoints resource has more than 1000 endpoints then a Kubernetes v1.22(or later) cluster annotates that Endpoints with endpoints.kubernetets.io/over-capacity: truncated. This annotation indicates that the affected Endpoints object is over capacity and that the endpoints controller has truncated the number of endpoints to 1000.
+
+> In userspace mode, kube-proxy watches the Kubernetes control plane for the addition and removal of Service and Endpoint objects. For each Service it opens a port on the local node. Any connection to this "proxy port" are proxies to one of the Service's backend Pods. kube-proxy takes the SessionAffinity setting of the Service into account when deciding which backend Pod to use. By default, kube-proxy in userspace mode chooses a backend via a round-robin algorithm.
+> ![](img/usm.png)
+
+> In iptables mode, kube-proxy watches Kubernetes control plane for the addition and removal of Service and Endpoint objects. For each Service, it installs iptables rules, which capture traffic to the Serivce's clusterIP and port, and redirect that traffic to one of the Service's backend sets. For each Endpoint object, it installs iptables rules which select a backend Pod. By default, kube-proxy in iptables mode chooses a backend at random.
+> ![](img/itm.png)
+
+> If kube-proxy is running in iptables mode and the first Pod that's selected does not respond, the connection fails. This is different from userspace mode: in that scenario, kube-proxy would detect that the connection to the first Pod had failed and would automatically retry with a different backend Pod.
+
+> In ipvs mode, kube-proxy watches Kubernetes Services and Endpoints, calls netlink interface to create IPVS rules accordingly and synchronize IPVS rules with Kubernetes Services and Endpoints periodically.<br>
+> IPVS provides more options for balancing traffic to backend Pods:
+>- rr: round-robin
+>- lc: least connection
+>- dh: destination hashing
+>- sh: source hashing
+>- sed: shortest expected delay
+>- nq: never queue
+> ![](img/ivsm.png)
+
+> Kubernetes supports 2 primary modes of finding a Service - environment variables and DNS.
+
+
+
 
