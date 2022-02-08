@@ -553,6 +553,21 @@
 
 > Kubernetes supports 2 primary modes of finding a Service - environment variables and DNS.
 
+> For some parts of your application you may want to expose a Service onto an external IP address, that's outside of your cluster.
+>- ClusterIP: Expose the Service on a cluster-internal IP. This is the default ServiceType.
+>- NodePort: Exposes the Service on each Node's IP at a static port.
+>- LoadBalancer: Exposes the Service externally using a cloud provider's load balancer.
+>- ExternalName: Maps the Service to the contents of the externalName field, by returning a CNAME record with its value.
+
+> One of the philosophies of Kubernetes is that you should not be exposed to situations that could cause your actions to fail through no fault of your own. For the design of the Service resource, this means not making you choose your own port number if that choice might collide with someone else's choice. That is an ioslation failure.
+
+> Unlike Pod IP addresses, which actually route to a fixed destination, Service IPs are not actually answered by a single host. Instead, kube-proxy uses iptables to define virtual IP addresses which are transparently redirected as needed. When clients connect to the VIP, their traffic is automatically transported to an appropriate endpoint. The environment variables and DNS for Services are actually poplulated in terms of the Service's virtual IP address(and port).
+
+> kube-proxy supports three proxy modes - userspace, iptables, and IPVS - which each operate slightly differently.
+
+#### Topology-aware traffic routing with topology keys
+
+
 
 
 
