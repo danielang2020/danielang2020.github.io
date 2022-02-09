@@ -127,10 +127,10 @@
 ![](img/31d.png)
 
 #### Data Warehousing
-> A data warehouse is a seperate database that analysts can query to their hearts' content, without affecting OLTP operations. The data warehouse contains a read-only copy of the data in all the various OLTP systems in the company. Data is extracted from OLTP databases, transformed into an analysis-friendly schema, cleaned up, and then loaded into the data warehouse. This process of getting data into the warehouse is known as Extract-Transform-Load(ETL).
+> A data warehouse is a separate database that analysts can query to their hearts' content, without affecting OLTP operations. The data warehouse contains a read-only copy of the data in all the various OLTP systems in the company. Data is extracted from OLTP databases, transformed into an analysis-friendly schema, cleaned up, and then loaded into the data warehouse. This process of getting data into the warehouse is known as Extract-Transform-Load(ETL).
 ![](img/etl.png)
 
-> A big advantage of using a seperate data warehouse, rather than querying OLTP systems directly for analytics, is that the data warehouse can be optimized for analytic access patterns. It turns out that the OLTP indexing algorithms are not very good at answering analytic queries.
+> A big advantage of using a separate data warehouse, rather than querying OLTP systems directly for analytics, is that the data warehouse can be optimized for analytic access patterns. It turns out that the OLTP indexing algorithms are not very good at answering analytic queries.
 
 ##### The divergence between OLTP databases and data warehouses
 > The data model of a data warehouse is most commonly relational, because SQL is generally a good fit for analytic queries. There are many graphical data analysis tools that generate SQL queries, visualize the results, and allow analysts to explore the data (through operations such as drill-down and slicing and dicing).
@@ -150,7 +150,7 @@
 ### Column-Oriented Storage
 > In order to process a query, a row-oriented storage engine still needs to load all of those rows(each consisting of over 100 attributes) from disk into memory, parse them, and filter out those that don't meet the required conditions. That can take a long time.
 
-> The idea behind column-oriented storage is simple: don't store all the values from one row together, but store all the values from each column together instead. If each column is stored in a seperate file, a query only needs to read and parse those columns that are used in that query, which can save a lot of work.
+> The idea behind column-oriented storage is simple: don't store all the values from one row together, but store all the values from each column together instead. If each column is stored in a sepsrate file, a query only needs to read and parse those columns that are used in that query, which can save a lot of work.
 ![](img/310.png)
 
 > The column-oriented storage layout relies on each column file containing the rows in the same order. Thus, if you need to reassemble an entire row, you can take the 23rd entry from each of the individual column files and put them together to form the 23rd row of the table.

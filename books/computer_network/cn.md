@@ -560,7 +560,7 @@ TTL is the time to live of the resource record; it determines when a resource sh
 > ![](img/42.png)
 
 ##### Control Plane: The SDN Approach
-> Control-plane routing functionality is seperated from the physical router - the routing devices performs forwarding only, while the remote controller computes and distributed forwarding tables.
+> Control-plane routing functionality is separated from the physical router - the routing devices performs forwarding only, while the remote controller computes and distributed forwarding tables.
 > ![](img/43.png)
 
 #### 4.1.2 Network Service Model

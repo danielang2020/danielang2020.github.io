@@ -30,7 +30,7 @@
 >- Service Account & Token controllers: Create default accounts and API access tokens for new namespaces.
 
 ###### cloud-controller-manager
-> A Kubernetes contorl plane component that embeds cloud-specific control logic. The cloud controller manager lets you link your cluster into your provider's API, and seperates out the componenets that interact with that cloud platform from components that only interact with your cluster.
+> A Kubernetes contorl plane component that embeds cloud-specific control logic. The cloud controller manager lets you link your cluster into your provider's API, and separates out the componenets that interact with that cloud platform from components that only interact with your cluster.
 >- Node controller: For checking the cloud provider to determine if a node has been deleted in the cloud after it stops responding.
 >- Route controller: For setting up routes in the underlying cloud infrastructure.
 >- Service controller: For creating, updating and deleting cloud provider load balancers.
@@ -119,7 +119,7 @@
 
 > Namespaces are a way to divide cluster resources between  multiple users.
 
-> It's not necessary to use multiple namespaces to seperate slightly different resources, such as different versions of the same software: use labels to distinguish resources within the same namespace.
+> It's not necessary to use multiple namespaces to separate slightly different resources, such as different versions of the same software: use labels to distinguish resources within the same namespace.
 
 > Kubernetes starts with four initial namespaces:
 >- default The default namespace for objects with no other namespace    
@@ -134,7 +134,7 @@
 ##### Labels and Selectors
 > Labels are key/value pairs that are attached to objects, such as pods. Labels are intended to be used to specify identifying attributes of objects that are meaningful and relevant to users, but do not directly imply sematics to the core system. Labels can be used to organize and to select subsets of objects. Labels can be attached to objects at creation time and subsequently added and modified at any time. Each object can have a set of key/value labels defined. Each key must be unique for a given object.
 
-> Valid label keys have two segments: an optional prefix and name, seperated by a slash(/). The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels seperated by dots(.). If the prefix is omitted, the label key is presumed to be private to the user. Automated system components which add labels to end-user objects must specify a prefix.
+> Valid label keys have two segments: an optional prefix and name, separated by a slash(/). The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots(.). If the prefix is omitted, the label key is presumed to be private to the user. Automated system components which add labels to end-user objects must specify a prefix.
 
 > Via a label selector, the client/user can  identify a set of objects. The label selector is the core grouping primitive in Kubernetes. The Api currently supports two types of selectors: equality-based and set-based.
 >- Equality- or inequality-based requirements allow filtering by label keys and values. Matching objects must satisfy all of the specified label contraints, though they may have additional labels as well. Three kinds of operators are admitted =,==,!=.
@@ -145,7 +145,7 @@
 ##### Annotations
 > You can use either labels or annotations to attach metadata to Kubernetes objects. Labels can be used to select objects and to find collections of objects that satisfy certain conditions. In contrast, annotations are not used to identify and select objects.
 
-> Valid annotation keys have two segments: an optional prefix and name, seperated by a slash(/). The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels seperated by dots(.). If the prefix is omitted, the annotation key is presumed to be private to the user. Automated system components which add annotations to end-user objects must specify a prefix.
+> Valid annotation keys have two segments: an optional prefix and name, separated by a slash(/). The prefix is optional. If specified, the prefix must be a DNS subdomain: a series of DNS labels separated by dots(.). If the prefix is omitted, the annotation key is presumed to be private to the user. Automated system components which add annotations to end-user objects must specify a prefix.
 
 ##### Field Selectors
 > Field selectors let you select Kubernetes resources based on the value of one or more resource fields.
