@@ -119,3 +119,39 @@
 >- When you want to use managed services, rather than infrastructure as a service(IaaS).
 
 ### Design principles for Azure applications
+> IaaS is like having a box of parts. You can build anything, but you have to assemble it yourself. PaaS options are easier to configure and administer. You don't need to provision VMs, set up VNets, manage pathces and updates, and all of the other overhead associated with running software on a VM.
+
+> Your application may have specific requirements that make an IaaS approach more suitable. However, even if your application is based on IaaS, look for places where it may be natural to incorporate PaaS options.
+
+> Public facing services should expose a RESTful API over HTTP. Backend services might use an RPC-style messaging protocol for performance reasons.
+
+> When services expose well-defined APIs, you can develop and test against those APIs. That way, you can develop and test an individual service without spinning up all of its dependent services.(Of course, you would still perform integration and load testing against the real services.)
+
+> Function requirements let you judge whether the application does the right thing. Nonfunctional requirements let you judge whether the application does those things well.
+
+### Technology choices
+#### Choose a compute service
+> ![](img/acs.png)
+> ![](img/aacs.png)
+> Definitions:
+>- "Lift and shift" is a strategy for migrating a workload to the cloud without redesigning the application or making code changes. Also called rehost.
+>- Cloud optimized is a strategy for migrating to the cloud by refactoring an application to take advantage of cloud-native features and capabilities.
+
+> Infrastructure-as-a-Service(IaaS) lets you provision individual VMs along with the associated networking and storage components. Then you deploy whatever software and applications you want onto those VMs.  
+
+> Platform-as-a-Service(PaaS) provides a managed hosting environment, where you can deploy your application without needing to manage VMs or networking resources.
+
+> Functions-as-a-Service(FaaS) goes even further in removing the need to worry about the hosting environment. In a FaaS model, you simply deploy your code and the service automatically runs it.
+
+> For a microservices architecture, two approaches are especially popular:
+>- A service orchestrator that manages services running on dedicated nodes(VMs). An orchestrator handles tasks related to deploying and managing a set of services. These tasks include placing services on nodes, monitoring the health of services, restarting unhealthy services, load balancing network traffic across service instances, service discovery, scaling the number of instances of a service, and applying configuration updates.
+>- A serverless architecture using functions as service(FaaS). This approach tends to favor small granular functions that are coordinated using event-based triggers.
+
+#### Choose a container option
+> Decision tree for bare-metal Kubernetes at the edge
+> ![](img/bmk.png)
+
+#### Choose a data store
+> 
+
+
