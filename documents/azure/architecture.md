@@ -152,6 +152,142 @@
 > ![](img/bmk.png)
 
 #### Choose a data store
-> 
+> Relational database is very useful when strong consistency guarantees are important - where all changes are atomic, and transactions always leave the data in a consistent state. However, an RDBMS generally can't scale out horizontally without sharding the data in some way. Also, the data in an RDBMS must be normalized, which isn't appropriate for every data set.
+
+> Relational database Workload
+>- Records are frequently created and updated.
+>- Multiple operations have to be completed in a single transaction.
+>- Relationships are enfored using database constraints.
+>- Indexes are used to optimize query performance.
+
+> Relational Data type
+>- Data is highly normalized.
+>- Database schemas are required and enforced.
+>- Many-to-many relationships between data entities in the database.
+>- Constraints are defined in the schema and imposed on any data in the database.
+>- Data requires high integrity. Indexes and relationships need to be maintained accurately.
+>- Data requires strong consistency. Transactions operate in a way that ensures all data are 100% consistent for all users and processes.
+>- Size of individual data entries is small to medium-sized.
+
+
+> A key/value store associates each data value with a unique key. Most key/value stores only support simple query, insert, and delete operations. To modify a value(either partially or completely), an application must overwrite the existing data for the entire value. In most implementations, reading or writing a single value is an atomic operation.
+
+> Key/value store Workload
+>- Data is accessed using a single key, like a dictionary.
+>- No joins, lock, or unions are required.
+>- No aggregation mechanisms are used.
+>- Secondary indexes are generally not used.
+
+> Key/value store Data type
+>- Each key is associated with a single value.
+>- There is no schema enforcement.
+>- No relationships between entities.
+
+> A document database stores a collection of documents, where each document consist of named fields and data. The data can be simple values or complex elements such as lists and child collections. Document are retrived by unique keys.
+
+> Document database Workload
+>- Insert and update operations are common.
+>- No object-relational impedance mismatch. Documents can better match the object structures used in application code.
+>- Individual documents are retrived and written as a single block.
+>- Data requires index on multiple fields.
+
+> Document databse Data type
+>- Data can be managed in de-normalized way.
+>- Size of individual document data is relatively small.
+>- Each document type can use its own schema.
+>- Documents can include optional fields.
+>- Documents data is semi-structured, meaning that data types of each field are not strictly defined.
+
+> A graph database stores two types of infromation, nodes and edges. Edges specify relationships between nodes. Nodes and edges can have properties that provide information about that node or edge, similar to columns in a table. Edges can also have a direction indicating the nature of the relationship.
+
+> Graph database Workload
+>- Complex relationships between data items involving many hops between related data items.
+>- The relationship between data items are dynamic and change over time.
+>- Relationships between objects are first-class citizens, without requiring foreign-keys and joins to traverse.
+
+> Graph database Data type
+>- Nodes and relationships
+>- Nodes are similar to table rows or JSON documents.
+>- Relationships are just as important as nodes, and are exposed directly in the query language.
+>- Composite objeccts, such as a person with multiple phone numbers, tend to be broken into separate, smaller nodes, combined with traversable relationships.
+
+> Data analytics stores provide massively parallel solutions for ingesting, storing, and analyzing data. The data is distributed across multiple servers to maximize scalability. Large data file formats such as delimiter files(CSV), parquet, and ORC are widely used in data analytics.
+
+> Data analytics Workload
+>- Data analytics
+>- Enterprise BI
+
+>- Data analytics Data type
+>- Historical data from multiple sources.
+>- Usually denormalized in a "star" or "snowflake" schema, consisting of fact and dimension tables.
+>- Usually loaded with new data on a scheduled basis.
+>- Dimension tables often include multiple historic versions of an entity, referred to as a slowly changing dimension.
+
+> A column-family database organizes data into rows and columns. In its simplest form, a column family database can appear very similar to a relational database, at least conceptually. The real power of a column-family database lies in its denormalized approach to structuring sparse data. You can think of a column-family database as holding tabular data with rows and columns, but the columns are divided into groups known as column families. Each column family holds a set of columns that are logically related together and are typically retrived or manipulated as a unit. Other data that is accessed separately can be stored in separate column families. Within a column family, new columns can be added dynamically, and rows can be sparse(that is, a row doesn't need to have a value for every column). Unlike a key/value store or a document database, most column-family database store data in key order, rather than by computing a hash. Many implementations allow you to create indexes over specific columns in a column-family. Indexes let you retrive data by columns value, rather than row key.
+
+> Column-family database Workload
+>- Most column-family databases perform write operations extremely quickly.
+>- Update and delete operations are rare.
+>- Designed to provide high throughput and low-latency access.
+>- Supports easy query access to a particular set of fields within a much larger record.
+>- Massively scalable.
+
+> Column-family database Data type
+>- Data is stored in tables consisting of a key column and one or more column familes.
+>- Specific columns can vary by individual rows.
+>- Individual cells are accessed via get and put commands.
+>- Multiple rows are returned using a scan command. 
+
+> A search engine database allows applications to search for information held in external data stores. A search engine database can index massive volumes of data and provide near real-time access to these indexes.
+
+> Search engine database Workload
+>- Data indexes from multiple sources and services.
+>- Queries are ad-hoc and can be complex.
+>- Full text search is required.
+>- Ad hoc self-service query is required.
+
+> Search engine database Data type
+>- Semi-structured or unstructured text
+>- Text with reference to structured data
+
+> Time series data is a set of values organized by time. Time series database typically collect large amounts of data in real time from a large number of sources. Update are rare, and deletes are often done as bulk operations. Although the records written to a time-series database are generally small, there are often a large number of records, and total data size can grow rapidly.
+
+> Time series database Workload
+>- Records are generally appended sequentially in time order.
+>- An overwhelming proportion of operations(95% - 99%) are written.
+>- Update are rare.
+>- Deletes occur in bulk, and are made to contiguous blocks or records.
+>- Data is read sequentially in either ascending or descending time order, often in parallel.
+
+> Time series database Data type
+>- A timestamp is used as the primary key and sorting mechanism.
+>- Tags may define additional information about the type, origin, and other information about the entry.
+
+> Object storage is optimized for storing and retriving large binary objects(images, files, videos and audio streams, large application data objects and documents, virtual machine disk images). Large data files are also popularly used in this model, for example, delimiter file(CSV), parquet, and ORC. Object stores can manage extremely large amounts of unstructured data.
+
+> Object storage Workload
+>- Identified by key.
+>- Content is typically an asset such as a delimiter, image, or video file.
+>- Content must be durable and external to any application tier.
+
+> Object storage Data type
+>- Data size is large.
+>- Value is opaque.
+
+> Sometimes, using simple flat files can be the most effective means of storing and retriving information. Using file shares enables files to be accessed across a network. Given appropriate security and concurrent access control mechanisms, sharing data in this way can enable distributed services to provide highly scalable data access for performing basic, low-level operations such as simple read and write requests.
+
+> Shared files Workload
+>- Migration from existing apps that interact with the file system.
+>- Requires SMB interface.
+
+> Shared files Data type
+>- Files in a hierarchical set of folders.
+>- Accessible with standard I/O libraries.
+
+
+
+
+
+
 
 
