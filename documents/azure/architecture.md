@@ -332,10 +332,14 @@
 
 > A non-relational database is a database that does not use the tabular schema of rows and columns found in most traditional database systems. Instead, non-relational databases use a storage model that is optimized for the specific requirements of the type of data being stored.
 
-#### Choose an analytics solution
+#### Choose a network service
+> ![](img/ansd.png)
+> ![](img/aansd.png)
 
+> ![](img/alb.png)
+> ![](img/aalb.png)
 
-
+#### Choose a messaging service
 
 
 
