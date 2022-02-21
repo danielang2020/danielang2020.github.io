@@ -5,3 +5,5 @@
 [best practices for building a microservice architecture](https://www.vinaysahni.com/best-practices-for-building-a-microservice-architecture)
 
 [The Twelve-Factor App](https://12factor.net/)
+
+[Seven Ways to Fail at Microservices](https://www.infoq.com/articles/microservices-seven-fail/)
