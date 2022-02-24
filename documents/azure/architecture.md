@@ -340,7 +340,22 @@
 > ![](img/aalb.png)
 
 #### Choose a messaging service
+>- An event is a lightweight notification of a condition or a state change. The publisher of the event has no expectation about how the event is handled. The consumer of the event decides what to do with the notification. Events can be discrete units or part of a series. The events are time-ordered and interrelated. The consumer needs the sequenced series of events to analyze what happened.
 
+>- A message is raw data produced by a service to be consumed or stored elsewhere. The message contains the data that triggered the message pipline. The publisher of the message has an expectation about how the consumer handles the message. A contract exists between the two sides.
+
+> Messages can be classified into two main categories: If the producer expects an action from the consumer, that message is a command. If the message informs the consumer that an action has taken place, then the message is an event.
+
+### Best practices for cloud application
+> A resource in REST doesn't have to be based on a single physical data item. For example, an order resource might be implemented internally as several tables in a relational database, but presented to the client as a single entity. Avoiding creating APIs that simply mirror the internal structure of a database. The purpose of REST is to model entities and the operations that an application can perform on those entities. A client should not be exposed to the internal implementation.
+
+> Considering the relationships between different types of resources and how you might expose these associations. For example, the /customer/5/orders might represent all of the orders for customer 5. You could also go in the order direction, and represent the association from an order back to a customer with a URL such as /orders/99/customer. However, extending this model too far can become cumbersome to implement. A better solution is to provide navigable links to assocated resources in the body of the HTTP response message. 
+
+> Avoiding requiring resource URIs more complex than collection/item/collection.
+
+> Avoiding introducing dependencies between the web API and the underlying data source. For example, if your data is stored in a relational database, the web API doesn't need to expose each table as a collection of resources. In fact, that's probably a poor design. Instead, think of the web API as an abstraction of the database. If necessary, introduce a mapping layer between the database and the web API. That way, client applications are isolated from changes to the underlying database schema.
+
+> PUT requests must be idempotent. If a client submits the same PUT request multiple times, the results should always be the same(the same resource will be modified with the same values). POST and PATCH requests are not guaranteed to be idempotent.
 
 
 
