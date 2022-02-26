@@ -357,5 +357,18 @@
 
 > PUT requests must be idempotent. If a client submits the same PUT request multiple times, the results should always be the same(the same resource will be modified with the same values). POST and PATCH requests are not guaranteed to be idempotent.
 
+> The HTTP protocol provides the chunked transfer encoding mechanism to stream large data objects back to a client. When the client sends an HTTP GET request for a large object, the web API can send the reply back in piecemeal chunks over an HTTP connection. The length of the data in the reply may not be known initially(it might be generated), so the server hosting the web API should send a response message with each chunk that specifies the Transfer-Encoding: Chunked header rather than a Content-Length header. The client application can receive each chunk in turn to build up the complete response. The data transfer completes when the server sends back a final chunk with zero size.
+
+> It is important to ensure that the web API is implemented to maintain responsiveness under a heavy load, to be scalable to support a highly varing workload, and to guarantee availability for clients that perform business-critical operations.
+>- Providing asynchronous support for long-running requests.
+>> The web API can perform some initial checking to validate the  request, initiate a separate task to perform the work, and then return a response message with HTTP code 202(Accepted). The task could run asynchronously as part of the web API processing, or it could be offloaded to a background task. The web API should also provide a mechanism to return the results of the processing to the client application. You can achieve this by providing a polling mechanism for client applications to periodically query whether the processing has finished and obtain the result, or enabling the web API to send a notification when the operation has completed.
+>- Ensure that each request is stateless.
+>- Track clients and implement throttling to reduce the chances of DOS attacks.
+>- Manage persistent HTTP connections carefully.
+
+> If the solution implements a long-running task, design this task to support both scaling out and scaling in. Without due care, such a task could prevent an instance of a process from being shut down cleanly when the system scales in, or it could lose data if the process is forcibly terminated. Ideally, refactor a long-running task and break up the processing that it performs into smaller, discrete chunks.
+
+> Ideally, background tasks are "fire and forget" operations, and their execution progress has no impact on the UI or the calling process.
+
 
 
