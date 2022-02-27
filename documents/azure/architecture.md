@@ -347,6 +347,7 @@
 > Messages can be classified into two main categories: If the producer expects an action from the consumer, that message is a command. If the message informs the consumer that an action has taken place, then the message is an event.
 
 ### Best practices for cloud application
+#### API design
 > A resource in REST doesn't have to be based on a single physical data item. For example, an order resource might be implemented internally as several tables in a relational database, but presented to the client as a single entity. Avoiding creating APIs that simply mirror the internal structure of a database. The purpose of REST is to model entities and the operations that an application can perform on those entities. A client should not be exposed to the internal implementation.
 
 > Considering the relationships between different types of resources and how you might expose these associations. For example, the /customer/5/orders might represent all of the orders for customer 5. You could also go in the order direction, and represent the association from an order back to a customer with a URL such as /orders/99/customer. However, extending this model too far can become cumbersome to implement. A better solution is to provide navigable links to assocated resources in the body of the HTTP response message. 
@@ -357,6 +358,7 @@
 
 > PUT requests must be idempotent. If a client submits the same PUT request multiple times, the results should always be the same(the same resource will be modified with the same values). POST and PATCH requests are not guaranteed to be idempotent.
 
+#### API implementation
 > The HTTP protocol provides the chunked transfer encoding mechanism to stream large data objects back to a client. When the client sends an HTTP GET request for a large object, the web API can send the reply back in piecemeal chunks over an HTTP connection. The length of the data in the reply may not be known initially(it might be generated), so the server hosting the web API should send a response message with each chunk that specifies the Transfer-Encoding: Chunked header rather than a Content-Length header. The client application can receive each chunk in turn to build up the complete response. The data transfer completes when the server sends back a final chunk with zero size.
 
 > It is important to ensure that the web API is implemented to maintain responsiveness under a heavy load, to be scalable to support a highly varing workload, and to guarantee availability for clients that perform business-critical operations.
@@ -366,9 +368,21 @@
 >- Track clients and implement throttling to reduce the chances of DOS attacks.
 >- Manage persistent HTTP connections carefully.
 
+#### Autoscaling
 > If the solution implements a long-running task, design this task to support both scaling out and scaling in. Without due care, such a task could prevent an instance of a process from being shut down cleanly when the system scales in, or it could lose data if the process is forcibly terminated. Ideally, refactor a long-running task and break up the processing that it performs into smaller, discrete chunks.
 
+#### Background jobs
 > Ideally, background tasks are "fire and forget" operations, and their execution progress has no impact on the UI or the calling process.
 
+#### Caching
+> If an application choose not to cache this data on the basis that the cached information will nearly always be outdated, then the same consideration could be true when storing and retriving this information from the data store. In the time it takes to save and fetch this data, it might have changed. In a situation such as this, consider the benefits of storing the dynamic information directly in the cache instead of in the persistent data store. If the data is noncritical and does not require auditing, then it doesn't matter if the occasional change is lost.
 
+> Consider implementing a local, private cache in each instance of an application, together with the shared cache that all application instances access. When the application retrives an item, it can check first in its local cache, then in the shared cache, and finally in the original data store. The local cache can be populated using the data in either the shared cache, or in the database if the shared cache is unavailable. This approach requires careful configuration to prevent the local cache from becoming too stale with respect to the shared cache. However, the local cache acts as a buffer if the shared cache is unreachable.
+> ![](img/caching3.png)
 
+> If a shared cache is large, it might be beneficial to partition the cached data across nodes to reduce the chances of contention and improve scalability.
+
+#### Content Delivery Network
+> CDNs are typically used to deliver static content such as images, style sheets, documents, client-side script, and HTML pages. The major advantages of using a CDN are lower latency and faster delivery of content to users, regardless of their geographical location in relation to the datacenter where the application is hosted. CDNs can also help to reduce load on a web application, because the application does not have to service requests for the content that is hosted in the CDN.
+
+#### Data paritioning
