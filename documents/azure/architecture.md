@@ -386,3 +386,15 @@
 > CDNs are typically used to deliver static content such as images, style sheets, documents, client-side script, and HTML pages. The major advantages of using a CDN are lower latency and faster delivery of content to users, regardless of their geographical location in relation to the datacenter where the application is hosted. CDNs can also help to reduce load on a web application, because the application does not have to service requests for the content that is hosted in the CDN.
 
 #### Data paritioning
+> Vertical partitioning operates at the entity level within a data store, partially normalizing an entity to break it down from a wide item to a set of narrow items. It is ideally suited for column-oriented data stores such as HBase and Cassandra.
+
+> Use business requirements to determine the critical queries that must always perform quickly.
+
+> If cross-partition joins are necessary, run parallel queries over the partitions and join the data within the application.
+
+#### Message encoding considerations
+> The producer of the message defines the message shape based on the business logic and the information it wants to send to the consumer(s).
+
+> As business requirements change, the shape is expected to change, and the schema will evolve. Versioning allows the producer to indicate schema updates that might include new features.
+
+#### Monitoring and diagnostics
