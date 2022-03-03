@@ -398,3 +398,31 @@
 > As business requirements change, the shape is expected to change, and the schema will evolve. Versioning allows the producer to indicate schema updates that might include new features.
 
 #### Monitoring and diagnostics
+> A more advanced system might include a predictive element that performs a cold analysis over recent and current workloads.
+>- The rate of requests directed at each service or subsystem.
+>- The response times of these requests.
+>- The volume of data flowing into and out of each service.
+
+> Health monitoring provides an immediate view of the current health of the system, availability monitoring is concerned with tracking the availability of the system and its components to generate statistics about the uptime of the system.
+
+> You can calculate the percentage availability of a service over a period of time by using the following formula:
+>```
+> %Availability = ((Total Time - Total Downtime) / Total time) * 100
+>```
+> This is useful for SLA purposes.
+
+### Performance tuning and antipatterns
+> Performance is frequently measured in terms of throughput, response time, and availability.
+
+> Performance targets should explicitly include a target load. Also, not all users will receive exactly the same level of performance, even when accessing the system simultanously and performing the same work.
+
+#### Performance antipatterns
+>1. Busy Database  
+> Many database systems can run code. Examples include stored procedures and triggers. Often, it's more efficient to perform this processing close to the data, rather than transmitting the data to a client application for processing. However, overusing these features can hurt performance.
+>2. Busy Front End 
+> Performing asynchronous work on a large number of background threads can starve other concurrent foreground tasks of resources, deceasing response times to unacceptable levels. This problem typically occurs when an application is developed as monolithic piece of code, with all of the business logic combined into a single tier shared with the presentation layer.
+>3. Chatty I/O 
+> The cumulative effect of a large number of I/O requests can have a significant impact on performance and responsiveness.
+>4. Extraneous Fetching 
+> 
+
