@@ -1,6 +1,6 @@
 # [Application Architecture Guide](https://docs.microsoft.com/en-us/azure/architecture/guide/)
 
-## Azure application architecture fundamentals
+## Application architecture fundamentals
 | Traditional on-premises | Modern cloud |
 | ----------- | ----------- |
 | Monolithic | Decomposed |
@@ -424,5 +424,48 @@
 >3. Chatty I/O 
 > The cumulative effect of a large number of I/O requests can have a significant impact on performance and responsiveness.
 >4. Extraneous Fetching 
-> 
+> More than needed data is retrived for a business operation, often resulting in unnecessary I/O overhead and reduced responsiveness. e.g. For each request, the database returned 80,503 bytes, but the response to the client only contained 19,855 bytes, about 25% of the size of the database response. 
+>5. Improper Instantiation  
+> Sometimes new instances of a class are continually created, when it si  meant to be created once and then shared.  
+> object thats can't be shared -> not thread-safe -> new object.  
+> singleton object -> thread-safe -> object pool
+>6. Monolithic Persistence  
+> Putting all of an application's data into a single data store can hurt performance, either because it leads to resource contention, or because the data store is not a good fit for some of the data.  
+>7. No Caching  
+> When a cloud application that handles concurrent requests, repeatedly fetches the same data. This can reduce performance and scalability.
+>8. Noisy Neighbor  
+> The problem occurs when one tenant's performance is degraded because of the activities of another tenant.
+>9. Retry Storm  
+> When a service is unavailable or busy, having clients retry their connections too frequently can cause the service to struggle to recover, and can make the problem worse.
+>10. Synchronous I/O  
+> Blocking the calling thread while I/O completes can reduce performance and affect vertical scalability.
 
+### Architecture for startup
+> Kent Beck describes a three-stage process of software product innovation. Those stages are explore, expand, and extract.
+> ![](img/eee.png)
+>- Explore  
+> This stage requires discipline. It's easy to overinvest in an idea that you could test with less time and energy. A technologist finds it especially easy to fall into this trap. To make architectural choices that ease exploration, remember that you're exploring. You don't yet know if the current product idea is one that will scale.  
+> During the exploration phase, you need to optimize for speed, cost, and optionality. Speed is about how fast you can build and move forward with an idea, or move onto the next idea. Cost is how much you're spending to run your infrastructure. Optionality describes how fast you can change directions given the current architecture.  
+> It's important to balance cost, speed, and optionality. Too much focus on cost limits speed and optionality. Too much focus on speed can lead to increased costs and fewer options. Designing for too many options builds complexity, which increases costs and reduces speed.
+>- Expand  
+> Once your startup finds grownth through exploration, you shift gears to expansion. You focus on removing any blockages to your product's and company's continued growth. From a technical perspective, you solve infrastructure scale challenges and increase development velocity. The goals are to meet your new customers' needs and advance your product roadmap.  
+> In early startup stages, any architecture extension should be just-in-time. The extension should take only as much time and energy as needed to test the next hypothesis. Be ready to remove extension to reduce complexity. Look for product features that your customers aren't using as opportunities to simplify your architecture and reduce your infrastructure spending.
+>- Extract  
+> In the extraction phase, the pace of growth slows as you reach the limits of the market opportunity. Because you expanded through the previous phase, there's now a lot to lose, so you take a more cautious approach. Margin expansion, cost reduction, and efficiency improvements characterize the extraction phase. During the extraction phase, be careful not to compromise the product for the customers you won in the expansion phase.
+
+> In a product's initial explore stage, you need to optimize deployment for speed, cost, and optionality. Optionality refers to how fast you can change directions within a given architecture.  
+> A business in the expand and extract phases of product development might use a service-oriented or microservice architecture. This type of deployment architecture is rarely right for a startup that hasn't yet found product/market fit or commercial traction.  
+> For a core startup stack, a simple monolithic design is best. This design limits the time spent managing infrastructure, while providing ample ability to scale as the startup wins more customers.
+
+> Bugs aren't caused by complexity, but a complex stack makes it easier to ship bugs. Not all sophisticated architectures are a waste of energy, but they waste your resources if you haven't yet found product/market fit. Your first startup stack should be simple and get out of your way, so you can concentrate on product development.
+
+> The following simple diagram shows the recommended core startup stack. These components are enough to get your product off the ground and into the hands of your customers. For 80 percent of startups, this stack is all you need to test the basic hypotheses built into your product. Startups working in machine learning, internet of things(IoT), or highly regulated enviroments might require more components.
+> ![](img/ss.png)
+
+## Design pattern
+### Data management patterns
+>- Cache-Aside  
+> Caching is more effective for relatively static data, or data that is read frequently.  
+> Implementing the Cache-Aside pattern doesn't guarantee consistency between the data store and the cache.  
+>- CQRS  
+> 
