@@ -468,4 +468,14 @@
 > Caching is more effective for relatively static data, or data that is read frequently.  
 > Implementing the Cache-Aside pattern doesn't guarantee consistency between the data store and the cache.  
 >- CQRS  
+> CQRS separates reads and writes into different models, using commands(should be task-based) to update data, and queries to read data.
+>- Event Sourcing  
+> Instead of storing just the current state of the data in a domain, use an append-only store to record the full series of actions taken on that data.  
+> The event store is the permanent source of information, and so the event data should never be updated. The only way to update an entity to undo a change is to add a compensating event to the event store.  
+> Systems that predomainantly add data rather than updating it.
+>- Index Table  
+> Create indexes over the fields in data stores that are frequently referenced by queries.
+>- Materialized View  
+> Generate prepopulated views over the data in one or more data stores when the data isn't ideally formatted for required query operations.
+>- Sharding  
 > 
