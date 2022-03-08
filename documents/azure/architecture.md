@@ -478,4 +478,11 @@
 >- Materialized View  
 > Generate prepopulated views over the data in one or more data stores when the data isn't ideally formatted for required query operations.
 >- Sharding  
-> 
+> Divide a data store into a set of horizontal partitions or shards. This can improve scalability when storing and accessing large volumes of data.  
+> Use this pattern when a data store is likely to need to scale beyond the resources available to a single storage node, or to improve performance by reducing contention in a data store.
+>- Static Content Hosting  
+> In most cloud hosting environments, you can put some of an application's resources and static pages in a storage service. The storage service can serve requests for these resources, reducing load on the compute resources that handle other web requests.  
+> For maximum performance and availability, consider using a content delivery network(CDN) to cache the contents of the storage container in multiple datacenters around the world.  
+>- Valet Key  
+> Use a token that provides clients with restricted direct access to a specific resource, in order to offload data transfer from the application.
+
