@@ -486,3 +486,16 @@
 >- Valet Key  
 > Use a token that provides clients with restricted direct access to a specific resource, in order to offload data transfer from the application.
 
+### Design and implementation  
+>- Ambassador  
+> Ambassador services can be deployed as a sidecar to accompany the lifecyle of a consuming application or service.
+> ![](img/ae.png)
+>- Anti-corruption Layer  
+> Isolate the different subsystems by placing an anti-corruption layer between them. This layer translates communications between the two systems, allowing one system to remain unchanged while the other can avoid compromising its design and technological approach.  
+> ![](img/acl.png)
+>- Backends for Frontends  
+> Create one backend per user interface. Fine-tune the behavior and performance of each backend to best match the needs of the frontend environment, without worrying about affecting other frontend experiences.
+> ![](img/bff.png)
+>- Compute Resource Consolidation  
+> A common approach is to look for tasks that have a similar profile concerning their scalability, lifetime, and processing requirements. Grouping these together allows them to scale as a unit.
+

@@ -2,3 +2,5 @@
 
 - America stands up to bullying, we stand up for freedom.
 
+- Something seems/feels off. /  you seem off. = things aren't right.
+
