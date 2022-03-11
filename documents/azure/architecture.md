@@ -498,4 +498,10 @@
 > ![](img/bff.png)
 >- Compute Resource Consolidation  
 > A common approach is to look for tasks that have a similar profile concerning their scalability, lifetime, and processing requirements. Grouping these together allows them to scale as a unit.
-
+>- External Configuration Store  
+> Store the configuration information in external storage, and provide an interface that can be used to quickly and efficiently read and update configuration settings.
+>- Gateway Aggregation  
+> The gateway receives client requests, dispatches requests to the various backend systems, and then aggregates the results and sends them back to the requesting client.  
+> ![](img/ga.png)
+>- Gateway offloading  
+> Offload some features into a gateway, particularly cross-cutting concerns such as certificate management, authentication, SSL termination, monitoring, protocol translation, or throttling.
