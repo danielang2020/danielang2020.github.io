@@ -505,3 +505,69 @@
 > ![](img/ga.png)
 >- Gateway offloading  
 > Offload some features into a gateway, particularly cross-cutting concerns such as certificate management, authentication, SSL termination, monitoring, protocol translation, or throttling.
+>- Gateway Routing  
+> Place a gateway in front of a set of applications, services, or deployments. Use application Layer 7 routing to route the request to the appropriate instances.  
+>- Leader Election  
+> A single task instance should be elected to act as the leader, and this instance should coordinate the actions of the other subordinate task instances.  
+>- Pipes and Filters  
+> Break down the processing required for each stream into a set of separate componenets(or filters), each performance a single task.  
+>- Sidecar  
+> Co-locate a cohesive set of tasks with the primary application, but place them inside their own process or container, providing a homogenerous interface for platform services across languages.  
+>- Strangler Fig  
+> Incrementally replace specific pieces of functionality with new applications and services.  
+> ![](img/sf.png)
+>- Asynchronous Request-Reply  
+> In most cases, APIs for a client application are designed to respond quickly, on the order of 100ms or less. Many factors can affect the response latency, including:  
+>>- An application's hosting stack.  
+>>- Security components.
+>>- The relative geographic location of the caller and the backend.
+>>- Network infrastructure.
+>>- Current load.
+>>- The size of the request payload.
+>>- Processing queue length.
+>>- The time for the backend to process the request.
+> ![](img/ar.png)
+>- Claim Check  
+> Store the entire message payload into an external service, such as a database. Get the reference to the stored payload, and send just that reference to the message bus.
+> ![](img/cc.png)
+>- Choreograhpy  
+> Let each service decide when and how a business operation is processed, instead of depending on a central orchestrator. One way to implement choreography is to use the asynchronous messaging pattern to coordinate the business operations. 
+> ![](img/cp.png)
+> This pattern is a natural model for the serverless architecture where all services can be short lived, or even driven. Services can spin up because of an event, do their task, and are removed when the task is finished.
+>- Competing Consumers  
+> Use a message queue to implement the communication channel between the application and the instances of the consumer service.
+> ![](img/ccd.png)
+>- Priority Queue  
+> The application posting a message can assign a priority and the messages in the queue are automatically reordered so that those with a higher priority will be received before those with a low priority.
+> ![](img/pqp.png)
+> In systems that don't support priority-based message queues, an alternative solution is to maintain a separate queue for each priority.
+> ![](img/pqs.png)
+>- Publish/Subscribe  
+> A message is a packet of data. An event is a message that notifies other components about a change or an action that has taken place.
+> ![](img/ps.png)
+>- Queue-Based Load Leveling  
+> The task posts a message containing the data required by the service to a queue. The queue acts as a buffer, storing the message until it's retrieved by the service.
+> ![](img/qbll.png)
+>- Scheduler Agent Supervisor  
+> The scheduler maintains information about the progress of the task and the state of each step in a durable data store, called the state store. The supervisor can use this information to help determine whether a step has failed.  
+> ![](img/sas.png)
+>- Sequential Convoy  
+> Push related messages into categories within the queuing system, and have the queue listeners lock and pull only from one category, one message at a time.  
+> ![](img/scq.png)
+
+### Other
+>- Bulkhead  
+> Partition service instances into different groups, based on consumer load and availability requirements.  
+>- Circuit Breaker  
+
+>- Compensating Transaction
+>- Deployment Stamps
+>- Edge Workload Configuration
+>- Federated Identity
+>- Gatekeeper
+>- Geode
+>- Health Endpoint Monitoring
+>- Rate Limiting
+>- Retry
+>- Saga
+>- Throttling
