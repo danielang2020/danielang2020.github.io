@@ -559,8 +559,9 @@
 >- Bulkhead  
 > Partition service instances into different groups, based on consumer load and availability requirements.  
 >- Circuit Breaker  
-
->- Compensating Transaction
+> A circuit breaker acts as a proxy for operations that might fail. The proxy should monitor the number of recent failures that have occured, and use this information to decide whether to allow the operation to proceed, or simply return an exception immediately.  
+>- Compensating Transaction  
+> A compensating transaction might not be able to simply replace the current state with the state the system was in at the start of the operation because this approach could overwrite changes made by other concurrent instances of an application.  
 >- Deployment Stamps
 >- Edge Workload Configuration
 >- Federated Identity

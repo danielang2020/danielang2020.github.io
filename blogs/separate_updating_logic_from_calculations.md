@@ -1,0 +1,1 @@
+[Separate updating logic from calculations](http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html)
