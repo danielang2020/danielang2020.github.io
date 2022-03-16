@@ -562,10 +562,12 @@
 > A circuit breaker acts as a proxy for operations that might fail. The proxy should monitor the number of recent failures that have occured, and use this information to decide whether to allow the operation to proceed, or simply return an exception immediately.  
 >- Compensating Transaction  
 > A compensating transaction might not be able to simply replace the current state with the state the system was in at the start of the operation because this approach could overwrite changes made by other concurrent instances of an application.  
->- Deployment Stamps
+>- Deployment Stamps  
+> Each stamp(scale unit) will host and serve a subset of your tenants. Stamps operate independently of each other and can be deployed and updated independently.    
 >- Edge Workload Configuration
 >- Federated Identity
->- Gatekeeper
+>- Gatekeeper  
+> You can achieve this by using a facade or a dedicated task that interacts with clients and then hands off the request - perhaps through a decoupled interface - to the hosts or tasks that'll handle the request.  
 >- Geode
 >- Health Endpoint Monitoring
 >- Rate Limiting
