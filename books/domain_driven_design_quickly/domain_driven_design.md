@@ -91,8 +91,46 @@
 ![](img/cfrd.png)
 
 ## 4. Refactoring Toward Deeper Insight
+### Continuous Refactoring  
+> The purpose of refactoring is to make the code better not worse. Automated tests are of great help to ensure that we haven't broken anything.  
 
+> One of the first things we are taught about modeling is to read the business specifications and look for nouns and verbs. The nouns are converted to classes, while the verbs become methods.  
 
+> Traditionally, refactoring is described in terms of code transformations with technical motivations. Refactoring can also be motivated by an insight into the domain and a corresponding refinement of the model or its expression in code.  
+
+### Bring Key Concepts Into Light
+> When building knowledge it is possible to run into contradictions. What a domain expert says seem to contradict what another upholds. A requirement may seem to contradict another. Some of the contradictions are not really contradictions, but different ways of seeing the same thing, or simply lack of accuracy in explanations. We should try to reconile contradictions. Sometimes this brings to light important concepts. Even if it doesn't, it is still important to keep everything clear.   
+
+>- A constraint is simple way to express an invariant. Whatever happens to the object data, the invariant is respected. This is simply done by putting the invariant logic into a Constraint. Placing the Constraint into a separate method has the advantage of making it explicit.  
+>- Processes are usually expressed in code with procedures. We won't use a procedural approach, since we are using an object-oriented language, so we need to choose an object for the process, and add a behavior to it. The best way to implement processes is to use a Service.   
+>- A Specification is used to test an object to see if it satifies a certain criteria.  
+> The domain layer contains business rules which are applied to Entities and Value Objects. Those rules are usually incorporated into the objects they apply to. Some of these rules are just a set of questions whose answer is "yes" or "no". Such rules can be expressed through a series of logical operations performed on Boolean values, and the final result is also a Boolean.  
+> Such business rules can be large and complex, bloating the object to the point that it no longer serves its orginal purpose. At this point we might be tempted to move the entire rule to the application level, because it seems that it stretches beyond the domain level. Actually, it is time for a refactoring.  
+> The rule should be encapsulated into an object of its own, which becomes the Specification, and should be kept in the domain layer.  
+> The Specification is used to test objects to see if they fulfill some need, or if they are ready for some purpose. It can also be used to select a certain object from a collection, or as a condition during the creation of an object.  
+
+## 5. Preserving Model Integrity 
+> Preserving the model integrity by striving to maintain one large unified model for the entire enterprise project is not going to work. The solution is not so obvious, because it is the opposite of all we have learned so far. Instead of trying to keep one big model that will fall apart later, we should consciously divide it into serveral models. Serveral models well integrated can evolve independently as long as they obey the contract they are bound to. Each model should have a clearly delimited border, and the relationships between models should be defined with precision.  
+![](img/i.png)
+
+>- Bounded Context  
+> A model should be small enough to be assigned to one team. Team cooperation and communication is more fluid and complete, which helps the developers working on the same model.  
+
+> A Bounded Context is not a Module. A Bounded Context provides the logical frame inside of which the model evolves. Modules are used to organize the elements of a model, so Bounded Context encompasses the Module.  
+
+>- Continuous Integration 
+> A model is not fully defined from the beginning. It is created, then it evolves continuously based on new insight in the domain and feebback from the development process. That means that new concepts may enter the model, and new elements are added to the code. All these need are to be integrated into one unified model, and implemented accordingly in code. That’s why Continuous Integration is a necessary process within a Bounded Context. We need a process of integration to make sure that all the new elements which are added fit harmoniously into the rest of the model, and are implemented correctly in code. We need to have a procedure used to merge the code. The sooner we merge the code the better.  
+
+>- Context Map  
+> An enterprise application has multiple models, and each model has its own Bounded Context. A Context Map is a document which outlines the different Bounded Contexts and the relationships between them.
+
+>- Shared Kernel  
+> The purpose of the Kernel is to reduce duplication, but still keep two separate context.  
+
+>- Consumer-Supplier  
+
+>- Conformist  
+> 
 
 
 

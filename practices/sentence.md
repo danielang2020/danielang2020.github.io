@@ -4,3 +4,7 @@
 
 - Something seems/feels off. /  you seem off. = things aren't right.
 
+- I grew up ice fishing. / I grew up hearing Beyond's song. 
+
+
+
