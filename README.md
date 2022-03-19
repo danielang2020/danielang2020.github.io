@@ -8,6 +8,7 @@
 ## Design
 
 ### [Designing Data-Intensive Applications](books/designing_data-intensive_applications/ddia.md)
+### [Domain-Driven Design Quickly](books/domain_driven_design_quickly/domain_driven_design.md)
 
 ## CS
 
