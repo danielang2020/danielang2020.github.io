@@ -127,10 +127,23 @@
 >- Shared Kernel  
 > The purpose of the Kernel is to reduce duplication, but still keep two separate context.  
 
->- Consumer-Supplier  
+>- Customer-Supplier  
+> The contexts in which those two subsystems exist are different, and the processing result of one system is fed into the other.  
 
 >- Conformist  
-> 
+> When two development teams have a Consumer-Supplier relatioship in which the supplier team has no motivation to provide for the customer team's needs, the customer team is helpless. The most obvious one is to separate from the supplier and to be completely on their own.  
+
+>- Anticorruption Layer  
+
+>- Separate Ways  
+
+>- Open Host Service  
+> Define a protocol that gives access to your subsystem as a set of Services. Open the protocol so that all who need to integrate with you can use it. Enhance and expand the protocol to handle new integration requirements, except when a single team has idiosyncratic needs. Then, use a one-off translator to augment the protocol for that special case so that the shared protocol can stay simple and coherent.  
+
+>- Distillation  
+> Boil the model down. Find the Core Domain and provide a means of easily distinguishing it from the mass of supporting model and code. Emphasize the most valuable and specialized concepts. Make the Core small.  
+
+
 
 
 
