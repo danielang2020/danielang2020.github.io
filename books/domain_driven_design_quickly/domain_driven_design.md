@@ -145,7 +145,7 @@
 
 
 
-
+[example](http://www.zankavtaskin.com/2013/09/applied-domain-driven-design-ddd-part-1.html)
 
 
 
