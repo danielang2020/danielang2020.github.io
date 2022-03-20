@@ -57,6 +57,12 @@
 
 [Entity vs Value Object](https://enterprisecraftsmanship.com/posts/entity-vs-value-object-the-ultimate-list-of-differences/)
 
+> Domain entities must implement behavior in addition to implementing data attributes.
+>![](img/dep.png)
+
+>![](img/voa.png)
+
+
 >- Service  
 > Such an object does not have an internal state, and its purpose is to simply provide functionality for the domain.  
 > A Service can group related functionality which serves the Entities and the Value Objects.  
