@@ -39,6 +39,7 @@
 ## [Dissecting the free command: What the Linux sysadmin needs to know](blogs/free.md)
 ## [Tcp Close](blogs/tcp_close.md)
 ## [Separate updating logic from calculations](blogs/separate_updating_logic_from_calculations.md)
+## [Java Object Size](blogs/java_object_size.md)
 
 # Practice
 
