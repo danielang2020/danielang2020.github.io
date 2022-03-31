@@ -6,5 +6,8 @@
 
 - I grew up ice fishing. / I grew up hearing Beyond's song. 
 
+- Where in the U.S. would you like to travel the next time you get a chance?
 
+- Where haven't you been? The U.S.
 
+- I'm really afraid of heights.
