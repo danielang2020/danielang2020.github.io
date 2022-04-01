@@ -11,3 +11,5 @@
 - Where haven't you been? The U.S.
 
 - I'm really afraid of heights.
+
+- 2021 went by in the blink of an eye.
