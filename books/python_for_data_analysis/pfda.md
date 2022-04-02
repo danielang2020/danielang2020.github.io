@@ -41,3 +41,5 @@
 
 ### Function
 > Each function can have positional arguments and keyword arguments. Keyword arguments are most commonly used to specify default values or optional arguments. The main restriction on function arguments is that the keyword arguments must follow the positional arguments(if any).  
+
+## CHAPTER 4: NumPy Basics: Arrays and Vectorized Computation
