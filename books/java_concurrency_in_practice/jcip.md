@@ -179,3 +179,8 @@ InterruptedException - if any thread interrupted the current thread before or wh
         return new FutureTask<T>(callable);
     }
 ```
+
+> For the purposes of the Java programming language memory model, a single write to a non-volatile long or double is treated as two separate writes: one to each 32-bit half. This can result in a situation where a thread sees the first 32 bits of a 64-bit value from one write, and the second 32 bits from another write.  
+> Write and reads of volatile long and double values are always atomic.  
+> Writes to and reads of references are always atomic, regardless of whether they are implemented as 32-bit or 64-bit values.  
+[Non-Atomic Treatment of double and long](https://docs.oracle.com/javase/specs/jls/se18/html/jls-17.html)
