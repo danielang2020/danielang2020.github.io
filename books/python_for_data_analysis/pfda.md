@@ -60,3 +60,13 @@
 
 > Calling astype always creates a new array(a copy of the data), even if the new dtype is the same as the old dtype.  
 
+> An important first distinction from Python's built-in lists is that array slices are views on the original array. This means that the data is not copied, and any modifications to the view will be reflected in the source array.  
+> If you want a copy of a slice of an ndarray instead of a view, you will need to explicitly copy the array(arr[5:8].copy()).  
+> ![](img/42td.png)
+
+> Selecting data from an array by boolean indexing always creates a copy of the data, even if the returned array is unchanged.  
+
+> Regardless of how many dimensions the array has, the result of fancy indexing is always one-dimensional.  
+
+> Keep in mind that fancy indexing, unlike slicing, always copies the data into a new array.  
+
