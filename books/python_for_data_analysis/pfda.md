@@ -43,3 +43,20 @@
 > Each function can have positional arguments and keyword arguments. Keyword arguments are most commonly used to specify default values or optional arguments. The main restriction on function arguments is that the keyword arguments must follow the positional arguments(if any).  
 
 ## CHAPTER 4: NumPy Basics: Arrays and Vectorized Computation
+[Array Dimensions](https://docs.microsoft.com/en-us/dotnet/visual-basic/programming-guide/language-features/arrays/array-dimensions)
+
+> The easy way to create an array is to use the array function. This accepts any sequence-like object(including other arrays) and produces a new NumPy array containing the passed data.
+> ![](img/nd1.png)
+
+> In addition to np.array, there are a number of other functions for creating new arrays. As examples, zeros and ones create arrays of 0s or 1s , respectively, with a given length or shape. empty creates an array without initializing its values to any particular value. To create a higher dimentional array with these methods, pass a tuple for the shape:
+> ![](img/nd2.png)
+> It's not safe to assume that np.empty will return an array of all zeros. In some cases, it may return uninitialized "garbage" values.  
+
+> Since NumPy is focused on numerical computing, the data type, if not specified, will in many cases be float64.  
+
+> ![](img/41.png)
+
+> ![](img/42.png)
+
+> Calling astype always creates a new array(a copy of the data), even if the new dtype is the same as the old dtype.  
+
