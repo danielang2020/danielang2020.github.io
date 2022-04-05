@@ -45,6 +45,12 @@
 ## CHAPTER 4: NumPy Basics: Arrays and Vectorized Computation
 [Array Dimensions](https://docs.microsoft.com/en-us/dotnet/visual-basic/programming-guide/language-features/arrays/array-dimensions)
 
+[What is vectorization](https://docs.microsoft.com/en-us/archive/blogs/nativeconcurrency/what-is-vectorization)
+
+[Single instruction, multiple data](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)
+
+[Vectorization](https://www.intel.com/content/www/us/en/developer/articles/technical/vectorization-a-key-tool-to-improve-performance-on-modern-cpus.html#:~:text=Vectorization%20is%20the%20process%20of,to%20multiple%20data%20(SIMD).)
+
 > The easy way to create an array is to use the array function. This accepts any sequence-like object(including other arrays) and produces a new NumPy array containing the passed data.
 > ![](img/nd1.png)
 
@@ -70,3 +76,12 @@
 
 > Keep in mind that fancy indexing, unlike slicing, always copies the data into a new array.  
 
+> A universal function, or ufunc, is a function that performs element-wise operations on data in ndarray. You can think of them as fast vectorized wrappers for simple functions that take one or more scalar values and produce one or more scalar results.
+
+[unary vs binary](https://overiq.com/python-101/operators-in-python/)
+
+> Using NumPy arrays enables you to express many kinds of data processing tasks as concise array expressions that might otherwise require writing loops. This practice of replacing explicit loops with array expressions is commonly referred to as vectorization.  
+
+[Array programming with NumPy](https://www.nature.com/articles/s41586-020-2649-2)
+
+## CHAPTER 5: Getting Started with pandas
