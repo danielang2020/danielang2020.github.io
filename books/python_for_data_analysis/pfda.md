@@ -51,6 +51,8 @@
 
 [Vectorization](https://www.intel.com/content/www/us/en/developer/articles/technical/vectorization-a-key-tool-to-improve-performance-on-modern-cpus.html#:~:text=Vectorization%20is%20the%20process%20of,to%20multiple%20data%20(SIMD).)
 
+[Numpy Axes, Explained](https://www.sharpsightlabs.com/blog/numpy-axes-explained/)
+
 > The easy way to create an array is to use the array function. This accepts any sequence-like object(including other arrays) and produces a new NumPy array containing the passed data.
 > ![](img/nd1.png)
 
@@ -85,3 +87,37 @@
 [Array programming with NumPy](https://www.nature.com/articles/s41586-020-2649-2)
 
 ## CHAPTER 5: Getting Started with pandas
+
+[Pandas Axis Explained](https://railsware.com/blog/python-for-machine-learning-pandas-axis-explained/)
+
+> The biggest different is that pandas is designed for working with tabular or heterogeneous data. NumPy, by contrast, is best suited for working with homogeneous numerical array data.  
+
+> A Series is one-dimensional array-like object containing a sequence of values and an associated array of data labels, called its index.
+
+> Should you have data contained in a Python dict, you can create a Series from it by passing the dict.  
+
+> A DataFrame represents a rectangular table of data and contains an ordered collection of columns, each of which can be a different value type(numeric, string, boolean, etc.). Two-dimensional, size-mutable, potentially heterogeneous tabular data. 
+
+> A column in a DataFrame can be retrived as a Series either by dict-like notation or by attribute.  
+
+> Rows can also be retrieved by position or name with the special loc attribute.  
+
+> Assigning a column that doesn't exist will create a new column. The del keyword will delete columns as with a dict.  
+
+> If the nested dict is passed to the DataFrame, pandas will interpret the outer dict keys as the columns and the inner keys as the row indices.  
+
+> pandas's Index Object are responsible for holding the axis labels and other metadata(like the axis name or names). Any array or other sequence of labels you use when constructing a Series or DataFrame is internally converted to an Index.  
+
+> Index objects are immutable and thus can't be modified by the user.  
+
+> Unlike Python sets, a pandas Index can contain duplicate labels.  
+
+> Many functions, like drop, which modify the size or shape of a Series or DataFrame, can manipulate an object in-place without returning a new object. Be careful with inplace, as it destroys any data that is dropped.  
+
+> By default, arithmetic between DataFrame and Series matches the index of the Series on the DataFrame's columns, broadcasting down the rows.  
+
+> If you prefer regular names instead of numbers with DataFrame, each axis has a string alias. "axis 0" has two aliases: 'index' and 'rows'. "axis 1" has only one: 'columns'.  
+
+> Any missing values are sorted to the end of the Series by default.  
+
+## CHAPTER 6: Data Loading, Storage, and File Formats
