@@ -1,1 +1,0 @@
-[Linux – What does TIME+ (cpu time, hundredth) in top mean](https://itectec.com/superuser/linux-what-does-time-cpu-time-hundredth-in-top-mean/)

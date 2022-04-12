@@ -34,12 +34,13 @@
 ## [TCP time_wait state](https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux)
 ## [best practices for a pragmatic restful api](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
 ## [The Clean Architecture](blogs/the_clean_arch.md)
-## [Linux – What does TIME+ (cpu time, hundredth) in top mean](blogs/timeplus.md)
-## [Linux Commands – top](blogs/top.md)
-## [Dissecting the free command: What the Linux sysadmin needs to know](blogs/free.md)
-## [Tcp Close](blogs/tcp_close.md)
-## [Separate updating logic from calculations](blogs/separate_updating_logic_from_calculations.md)
+## [Linux – What does TIME+ (cpu time, hundredth) in top mean](https://itectec.com/superuser/linux-what-does-time-cpu-time-hundredth-in-top-mean/)
+## [Linux Commands – top](https://www.baeldung.com/linux/top-command)
+## [Dissecting the free command: What the Linux sysadmin needs to know](https://www.redhat.com/sysadmin/dissecting-free-command)
+## [Separate updating logic from calculations](http://firstclassthoughts.co.uk/Articles/Readability/SeparateUpdatingLogicFromCalculationLogic.html)
 ## [Java Object Size](blogs/java_object_size.md)
+## [Putting your events on a diet](https://particular.net/blog/putting-your-events-on-a-diet)
+## [TCP CONNECTION TERMINATION](https://www.thedailyprogrammer.com/2016/09/tcp-connection-termination.html)
 
 # Practice
 

@@ -1,1 +1,0 @@
-[Dissecting the free command: What the Linux sysadmin needs to know](https://www.redhat.com/sysadmin/dissecting-free-command)
