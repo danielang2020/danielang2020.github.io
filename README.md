@@ -41,6 +41,8 @@
 ## [Java Object Size](blogs/java_object_size.md)
 ## [Putting your events on a diet](https://particular.net/blog/putting-your-events-on-a-diet)
 ## [TCP CONNECTION TERMINATION](https://www.thedailyprogrammer.com/2016/09/tcp-connection-termination.html)
+## [1,000,000 Concurrent Connections](https://josephmate.github.io/2022-04-14-max-connections/)
+## [Logging impact application performance](https://techblog.cisco.com/blog/logging-impact-on-application-performance)
 
 # Practice
 

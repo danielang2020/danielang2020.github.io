@@ -63,3 +63,21 @@ public class WeakRefDemo {
 	}
 }
 ```
+
+## Map get and put
+```
+V get(Object key); 
+V put(K key, V value);
+```
+if the key data type is not match, will return null. 
+
+```
+HashMap<Long, String> objectObjectHashMap = new HashMap<>();
+		objectObjectHashMap.put(1L, "1");
+		objectObjectHashMap.put(2L, "2");
+		objectObjectHashMap.put(3L, "3");
+
+		System.out.println(objectObjectHashMap.get(1L)); //yes long 
+		System.out.println(objectObjectHashMap.get(1)); //no   int
+		System.out.println(objectObjectHashMap.get("1")); //no string
+```
