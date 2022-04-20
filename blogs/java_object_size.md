@@ -1,1 +1,0 @@
-[java-object-size-estimation-measuring-verifying](https://dzone.com/articles/java-object-size-estimation-measuring-verifying)

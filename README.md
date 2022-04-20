@@ -43,6 +43,8 @@
 ## [TCP CONNECTION TERMINATION](https://www.thedailyprogrammer.com/2016/09/tcp-connection-termination.html)
 ## [1,000,000 Concurrent Connections](https://josephmate.github.io/2022-04-14-max-connections/)
 ## [Logging impact application performance](https://techblog.cisco.com/blog/logging-impact-on-application-performance)
+## [jvm memory](blogs/jvm_mem.md)
+## [java-object-size-estimation-measuring-verifying](https://dzone.com/articles/java-object-size-estimation-measuring-verifying)
 
 # Practice
 
