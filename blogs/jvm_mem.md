@@ -91,3 +91,11 @@ public class Foot {
 	}
 }
 ```
+
+```
+FROM openjdk:11
+COPY ./Foot.java /
+WORKDIR /
+RUN javac Foot.java
+ENTRYPOINT ["java", "Foot"]
+```
