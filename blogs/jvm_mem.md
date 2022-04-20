@@ -44,3 +44,50 @@ kernel: Out of memory: Killed process 15304 (java) total-vm:12671008kB, anon-rss
 [Difference between Resident Set Size (RSS) and Java total committed memory (NMT) for a JVM running in Docker container](https://stackoverflow.com/questions/38597965/difference-between-resident-set-size-rss-and-java-total-committed-memory-nmt)
 
 [Java Heap Space Memory with the Runtime API](https://www.baeldung.com/java-heap-memory-api)
+
+[How to configure the Java heap size in a Docker container](https://www.soughttech.com/front/article/4974/viewArticle)
+
+docker run --rm --name ft foot 100  
+docker run --rm --name ft -e JAVA_TOOL_OPTIONS="-Xmx128M"  foot 100  
+docker run --rm --name ft  --memory=128m foot 100  
+docker run --rm --name ft -e JAVA_TOOL_OPTIONS="-Xmx128M" --memory=128m  foot 100  
+docker run --rm --name ft -e JAVA_TOOL_OPTIONS="-Xmx128M" --memory=64m  foot 100  
+docker run --rm --name ft -e JAVA_TOOL_OPTIONS="-Xmx64M" --memory=128m  foot 100  
+
+linux memory = 965M
+|             | jvm xmx     | docker stats limit | oom
+| ----------- | ----------- | ----------- | ----------- |
+|     none                                       | 245M   | 965.5M    | no |
+| JAVA_TOOL_OPTIONS="-Xmx128M"                   | 129M   | 965.5M    | yes|
+| --memory=128m                                  |  64M   |   128M    | yes|
+| JAVA_TOOL_OPTIONS="-Xmx128M" --memory=128m     | 129M   |   128M    | no |
+| JAVA_TOOL_OPTIONS="-Xmx128M" --memory=64m      | 129M   |    64M    | no |
+| JAVA_TOOL_OPTIONS="-Xmx64M" --memory=128m      |  64M   |   128M    | yes|
+
+```
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class Foot {
+	public static void main(String[] args) throws Exception {
+		List<byte[]> ba = new ArrayList<>();
+		int unit = Integer.parseInt(args[0]);
+		int mb = 1000 * 1000;
+		for(int i = 0; i < unit; i++) {
+			MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+			long xmx = memoryBean.getHeapMemoryUsage().getMax() / mb;
+			long xms = memoryBean.getHeapMemoryUsage().getInit() / mb;
+			System.out.println("runtime free:" + Runtime.getRuntime().freeMemory() / mb + " total:"
+							   + Runtime.getRuntime().totalMemory() / mb + " max:"
+							   + Runtime.getRuntime().maxMemory() / mb + " xms: " + xms + " xmx: " + xmx);
+			byte[] bytes = new byte[mb];
+			ba.add(bytes);
+
+			TimeUnit.MILLISECONDS.sleep(500);
+		}
+	}
+}
+```
