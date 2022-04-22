@@ -55,14 +55,14 @@ docker run --rm --name ft -e JAVA_TOOL_OPTIONS="-Xmx128M" --memory=64m  foot 100
 docker run --rm --name ft -e JAVA_TOOL_OPTIONS="-Xmx64M" --memory=128m  foot 100  
 
 linux memory = 965M
-|             | jvm xmx     | docker stats limit | oom
-| ----------- | ----------- | ----------- | ----------- |
-|     none                                       | 245M   | 965.5M    | no |
-| JAVA_TOOL_OPTIONS="-Xmx128M"                   | 129M   | 965.5M    | yes|
-| --memory=128m                                  |  64M   |   128M    | yes|
-| JAVA_TOOL_OPTIONS="-Xmx128M" --memory=128m     | 129M   |   128M    | no |
-| JAVA_TOOL_OPTIONS="-Xmx128M" --memory=64m      | 129M   |    64M    | no |
-| JAVA_TOOL_OPTIONS="-Xmx64M" --memory=128m      |  64M   |   128M    | yes|
+|                                                | jvm xmx| docker stats limit | oom
+| ---------------------------------------------- | ------ | ------------------ | ---|
+|     none                                       | 245M   | 965.5M             | no |
+| JAVA_TOOL_OPTIONS="-Xmx128M"                   | 129M   | 965.5M             | yes|
+| --memory=128m                                  |  64M   |   128M             | yes|
+| JAVA_TOOL_OPTIONS="-Xmx128M" --memory=128m     | 129M   |   128M             | no |
+| JAVA_TOOL_OPTIONS="-Xmx128M" --memory=64m      | 129M   |    64M             | no |
+| JAVA_TOOL_OPTIONS="-Xmx64M" --memory=128m      |  64M   |   128M             | yes|
 
 ```
 import java.lang.management.ManagementFactory;

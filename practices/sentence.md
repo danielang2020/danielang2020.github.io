@@ -15,3 +15,11 @@
 - 2021 went by in the blink of an eye.
 
 - I want to know what makes you tick?
+
+> "Okay, so let's get two chocolate chips and one sugar."    
+> "Lindsay, make it three chocolate chips. You have no idea how amazing they are."  ---   Ordering  
+> "Okay, sounds great. Ohh no, we're going to miss the movie?"  
+> "No, we'll make it if we leave right after this."  --- Arriving on time  
+> "Ohh, you're right. It should be fine. I've been meaning to tell you, I can't make it to your game night Saturday."  ---  Accepting an invitation or not accepting an invitation  
+> "Ohh no."  
+
