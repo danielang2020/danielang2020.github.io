@@ -23,3 +23,7 @@
 > "Ohh, you're right. It should be fine. I've been meaning to tell you, I can't make it to your game night Saturday."  ---  Accepting an invitation or not accepting an invitation  
 > "Ohh no."  
 
+- When you get a chance, could you send over those numbers?  --- please
+- If you don't mind, I'd love to meet with you at noon to discuss this.  --- please
+- If you could finish that report by 3 p.m. that would be great.  --- please
+- I'd appreciate it if you could call some of our clients for feedback today. --- please
