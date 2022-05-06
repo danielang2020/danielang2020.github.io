@@ -27,3 +27,12 @@
 - If you don't mind, I'd love to meet with you at noon to discuss this.  --- please
 - If you could finish that report by 3 p.m. that would be great.  --- please
 - I'd appreciate it if you could call some of our clients for feedback today. --- please
+
+- It could be... --- I think
+- I wanna say... --- I think
+- It should be around... --- I think
+- I believe.. --- I think
+
+- Let's say... --- For example
+- Let me paint you a picture... --- For example
+- Imagine... --- For example
