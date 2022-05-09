@@ -36,3 +36,5 @@
 - Let's say... --- For example
 - Let me paint you a picture... --- For example
 - Imagine... --- For example
+
+- I skinned my knee when I fell down the steps.
