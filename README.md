@@ -46,7 +46,7 @@
 ## [jvm memory](blogs/jvm_mem.md)
 ## [java-object-size-estimation-measuring-verifying](https://dzone.com/articles/java-object-size-estimation-measuring-verifying)
 ## [python-process-thread-asyncio](blogs/py_process_thread_asyncio.md)
-
+## [asyncio](https://lonami.dev/blog/asyncio/)
 # Practice
 
 ## [Netty](practices/netty.md)
