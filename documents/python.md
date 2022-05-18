@@ -10,3 +10,6 @@
 >> def incr1(x,/):         -> incr1(3.8) / incr1(x=3.8)
 >> def incr2(x,/,y):       -> incr2(1,2),incr2(1,y=2)/ incr2(x=1,y=2)
 >> def incr3(x,/,*,y):     -> incr3(1,y=2) / incr3(1,2)
+
+> Threading and asyncio both run on a single processor and therefore only run one at a time.   
+> [python-concurrency](https://realpython.com/python-concurrency/)
