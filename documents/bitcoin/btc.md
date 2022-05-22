@@ -12,4 +12,5 @@
 [hashcash.py](hashcash.py)
 
 > If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes.
-
+[proof-of-work-explained-in-simple-terms](https://chainbulletin.com/proof-of-work-explained-in-simple-terms/)
+[target](https://learnmeabitcoin.com/technical/target)
