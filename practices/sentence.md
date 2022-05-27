@@ -38,3 +38,7 @@
 - Imagine... --- For example
 
 - I skinned my knee when I fell down the steps.
+
+- [I'm all set.](https://www.merriam-webster.com/words-at-play/usage-of-all-set-idiom)
+
+- Well, don't mind me. I'll just be browsing.   --- In a hand-crafted shop.
