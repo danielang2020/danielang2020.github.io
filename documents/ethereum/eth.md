@@ -20,3 +20,25 @@
 
 
 
+# [Ethereum Overview](https://ethereum.org/en/developers/docs/)
+## Foundational topics
+### Intro to Ether
+| Denomination| Value in ether | Common Usage
+| ----------- | -------------- | -----------
+| Wei         |     $10^{-18}$ | Technical implementations
+| Gwei        |      $10^{-9}$ | Human-readable gas fees
+
+
+### Web2 vs Web3
+> Web3 has some limiatations right now:
+>- Scalability 
+>- UX
+>- Accessibility
+
+[cryptocurrencies-vs-tokens](https://theface.com/life/cryptocurrencies-vs-tokens-the-difference-bitcoin-digital-money-finance)
+
+> ![](img/YZGxe.png)
+
+> ![](img/afWDt.jpeg)
+
+[understanding-the-ethereum-trie](https://easythereentropy.wordpress.com/2014/06/04/understanding-the-ethereum-trie/)
