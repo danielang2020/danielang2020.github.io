@@ -42,3 +42,7 @@
 > ![](img/afWDt.jpeg)
 
 [understanding-the-ethereum-trie](https://easythereentropy.wordpress.com/2014/06/04/understanding-the-ethereum-trie/)
+
+[HOW TO GET LIQUIDITY WITHOUT SELLING YOUR CRYPTO](https://www.ledger.com/academy/defi-borrowing-or-how-to-get-liquidity-without-selling-your-crypto)
+
+[how-does-aave-work](https://coinmarketcap.com/alexandria/article/how-does-aave-work)

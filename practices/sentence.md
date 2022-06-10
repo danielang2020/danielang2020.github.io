@@ -42,3 +42,6 @@
 - [I'm all set.](https://www.merriam-webster.com/words-at-play/usage-of-all-set-idiom)
 
 - Well, don't mind me. I'll just be browsing.   --- In a hand-crafted shop.
+
+- Amy is crying, it's just for show. She's fine. We're going home.
+
