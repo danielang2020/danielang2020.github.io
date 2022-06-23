@@ -1,5 +1,15 @@
 # EC2
 ## Instances
+
+### Instances
+#### Instance purchasing options
+##### Spot Instances
+###### Spot Instance interruptions
+> Spot Instance interruption notices
+>> A Spot Instance interruption notice is a warning that is issued two minutes before Amazon EC2 stops or terminates your Spot Instance. If you specify hibernation as the interruption behavior, you receive an interruption notice, but you do not receive a two-minute warning because the hiberation process begins immediately.  
+>> The best way for you to gracefully handle Spot Instance interruptions is to architect your application to be fault-tolerant. To accompolish this, you can take advantage of Spot Instance interrupt notices. We recommend that you check for these interruption notices every 5 seconds.  
+>> The interruption notices are made available as a CloudWatch event and as items in the instance metadata on the Spot Instance. Events are emitted on a best effort basis.   
+> [ECS Spot Instance Interruption](https://ec2spotworkshops.com/ecs-spot-capacity-providers/module-1/spot_inturruption_handling.html)
 ### Instance lifecycle
 > Notice that you can't stop and start an instance store-backed instance.
 > ![](img/il.png)
