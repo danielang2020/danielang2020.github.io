@@ -49,4 +49,4 @@
 - Have you ever locked yourself out of something?
 - I locked myself out of the Internet banking because I made some mistakes.
 
-
+- guillible <=> cynical

@@ -27,3 +27,12 @@
 ### Spot Fleet
 > A Spot Fleet is a set of Spot Instances and optionally On-Demand Instances that is launched based on criteria that you specify.
 
+## Storage
+### Amazon EBS
+#### EBS snapshots
+##### Create snapshots
+> You can take a snapshot of an attached volume that is use. However, snapshots only capture data that has been written to your Amazon EBS at the time the snapshot command is issued. This might exclude any data that has been cached by any applications or the operating system. If you can't pause all file writes to the volume, you should unmount the volume from within the instance, issue the snapshot command, and then remount the volume to ensure a consistent and complete snapshot. You can remount and use your volume while the snapshot status is pending.
+
+### Instance store
+> This storage is located on disks that are physically attached to the host computer. Instance store is ideal for temporary storage of information that changes frequently, such as buffers, caches, scratch data, and other temporary content, or for data that is replicated across a fleet of instances, such as a load-balanced pool of web servers.
+
