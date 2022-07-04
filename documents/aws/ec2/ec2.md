@@ -17,6 +17,12 @@
 > When you hibernate an instance, we signal the operating system to perform hibernation(suspend-to-disk), which saves the contents from the instance memory(RAM) to your Amazon EBS root volume.
 > When you hibernate your instance, it enters the stopping state, and then the stopped state. We don't charge usage for a hibernated instance when its is in the stopped state, but we do charge while it is in the stopping state, unlike when you stop an instance without hibernating it. We don't charge usage for data transfer fees, but we do charge for the storage for any Amazon EBS volumes, including storage for the RAM data.
 
+### Configure instances
+#### Instance metadata and user data
+> Instance metadata is data about your instance that you can use to configure or manage the running instance. Instance metadata is divided into categories.  
+> 169.254.169.254  
+> fd00:ec2::254
+
 ## Fleets
 ### EC2 Fleet
 #### Work with EC2 Fleets
