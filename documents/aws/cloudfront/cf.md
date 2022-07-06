@@ -8,3 +8,15 @@
 ### Getting started with a secure static website
 > You can get started with Amazon CloudFront by using the solution described in this topic to create a secure static website for your domain name. A static website uses only static files - like HTML, CSS, Javascript, images, and videos - and doesn't need servers or server-side processing.  
 
+## Configuring secure access and restricting access to content
+### Restricting content with signed URLs and signed cookies
+#### Choosing between signed URLs and signed cookies
+> CloudFront signed URLs and signed cookies provide the same basic functionality: they allow you to control who can access your content.
+
+### Restricting access to Amazon S3 content
+> To restrict access to content that you serve from Amazon S3 buckets, follow these steps:
+>1. Create a special CloudFront user called an origin access identity(OAI) and associate it with your distribution.
+>2. Configure your S3 bucket permissions so that CloudFront can use the OAI to access the files in your bucket and serve them to your users. Make sure that users can't use a direct URL to the S3 bucket to access a file there.  
+### Geographically restricting content
+> You can use geographic restrictions, sometimes known as geo blocking, to prevent users in specific geographic locations from accessing content that you're distributing through a CloudFront distribution.  
+
