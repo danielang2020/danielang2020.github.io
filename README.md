@@ -48,6 +48,8 @@
 ## [java-object-size-estimation-measuring-verifying](https://dzone.com/articles/java-object-size-estimation-measuring-verifying)
 ## [python-process-thread-asyncio](blogs/py_process_thread_asyncio.md)
 ## [asyncio](https://lonami.dev/blog/asyncio/)
+## [How TCP Works?](https://blog.devgenius.io/tcp-icp-deep-dive-d8497e774bc1)
+
 # Practice
 
 ## [Netty](practices/netty.md)

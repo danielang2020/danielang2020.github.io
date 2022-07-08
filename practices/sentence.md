@@ -50,3 +50,5 @@
 - I locked myself out of the Internet banking because I made some mistakes.
 
 - guillible <=> cynical
+
+- Some companies are so meeting heavy.
