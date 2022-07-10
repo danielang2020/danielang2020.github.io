@@ -20,3 +20,6 @@
 ### Geographically restricting content
 > You can use geographic restrictions, sometimes known as geo blocking, to prevent users in specific geographic locations from accessing content that you're distributing through a CloudFront distribution.  
 
+## Customizing with edge functions
+### Customizing with CloudFront Functions
+> With CloudFront Functions in Amazon CloudFront, you can write lightweight functions in Javascript for high-scale, latency-sensitive CDN customizations. Your functions can manipulate the requests and responses that flow through CloudFront, perform basic authentication and authorization, generate HTTP responses at the edge, and more.
