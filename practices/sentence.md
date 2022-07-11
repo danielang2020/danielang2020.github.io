@@ -52,3 +52,6 @@
 - guillible <=> cynical
 
 - Some companies are so meeting heavy.
+
+- What religion are you? Do you mind me asking?  
+- I'd rather not say. You know what they say, never discuss politics or religion.  
