@@ -14,7 +14,7 @@
 
 - 2021 went by in the blink of an eye.
 
-- I want to know what makes you tick?
+- I want to know what makes you tick? / the reason you behave as you do
 
 > "Okay, so let's get two chocolate chips and one sugar."    
 > "Lindsay, make it three chocolate chips. You have no idea how amazing they are."  ---   Ordering  
@@ -55,3 +55,9 @@
 
 - What religion are you? Do you mind me asking?  
 - I'd rather not say. You know what they say, never discuss politics or religion.  
+
+- Have you seen a pair of gloves?  
+- Have you seen this kid?
+
+- Can I leave you my phone number in case it turns up?
+

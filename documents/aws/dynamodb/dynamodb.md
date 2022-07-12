@@ -1,6 +1,9 @@
 # Amazon DynamoDB
 ## What is Amazon DynamoDB?
 ### How it works
+#### Read consistency
+> DynamoDB supports eventually consistent and strongly consistent reads.  
+> When you request a strongly consistent read, DynamoDB returns a response with the most up-to-date data, reflecting the updates from all prior write operations that were successful. However, this consistency comes with some disadvantages.
 #### Table classes
 > DynamoDB offers two table classes designed to help you optimize for cost. The DyanmoDB Standard table class is the default, and is recommended for the vast majority of workloads. The DynamoDB Standard-Infrequent Access(DynamoDB Standard-IA) table class is optimized for tables where storage is the dominant cost.
 
