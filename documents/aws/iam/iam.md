@@ -18,3 +18,4 @@
 
 > An implicit denial occurs when there is no applicable Deny statement but also no applicable Allow statement. Because an IAM principal is denied access by default, they must be explicitly allowed to perform an action. Otherwise, they are implicitly deniel access.
 
+> ![](img/flow.png)
