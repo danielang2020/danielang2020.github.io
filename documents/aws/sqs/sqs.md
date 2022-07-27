@@ -8,6 +8,10 @@
 ### Dead-letter queues
 > The redrive policy specifies the source queue, the dead-letter queue, and the conditions under which Amazon SQS moves messages from the former to latter if the consumer of the source queue fails to process a message a specified number of times.
 
+> Do use dead-letter queues to decrease the number of messages and to reduce the possibility of exposing your system to poison-pill messages.  
+> Don't use a dead-letter queue with standard queues when you want to be able to keep retrying the transmission of a message indefinitely.  
+> Don't use a dead-letter queue with a FIFO queue if you don't want to break the exact order of messages or operators.  
+
 ### Visibility timeout
 > When a consumer receives and processes a message from a queue, the message remains in the queue. Amazon SQS doesn't automatically delete the message. Because Amazon SQS is a distributed system, there's no guarantee that the consumer actually receives the message. Thus, the consumer must delete the message fromt he queue after receiving and processing it.  
 > Immediately after a message is received, it remains in the queue. To prevent other consumers from processing the message again, Amazon SQS sets a visibility timeout, a period of time during which Amazon SQS prevents other consumers from receiving and processing the message.

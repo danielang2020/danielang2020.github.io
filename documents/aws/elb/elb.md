@@ -1,5 +1,6 @@
 # Elastic Load Balancing
 
+> Network Load Balancers do not have associated security groups. 
 ## Load balancers
 > If you need flexible application management, we recommend that you use an Application Load Balancer. If extreme performance and static IP is needed for your application, we recommend that you use a Network Load Balancer. If you have an existing application that was built within the EC2-Classic network, then you should use a Classic Load Balancers.  
 [Product comparisons](https://aws.amazon.com/elasticloadbalancing/features/)
