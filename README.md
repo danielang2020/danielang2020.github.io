@@ -52,6 +52,7 @@
 ## [Control Planes vs Data Planes](https://brooker.co.za/blog/2019/03/17/control.html)
 ## [ID Token and Access Token: What's the Difference?](https://auth0.com/blog/id-token-access-token-what-is-the-difference/)
 ## [PKCE](https://advancedweb.hu/how-to-secure-the-cognito-login-flow-with-a-state-nonce-and-pkce/)
+## [pkce generator](https://example-app.com/pkce)
 
 # Practice
 

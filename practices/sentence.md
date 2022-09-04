@@ -65,5 +65,16 @@
 
 - I'm not asking what it is but I'm curious, have you decided on a name yet?
 
+- I need to not call people skinny.
+
+- I have a friend who always vents about their partner to me.
+- I have a friend who always vents frustration on me.
+
+- Just don't comment on someone's physical appearance ever.
+
+- I stopped drinking coffee = I'm off coffee.(I've been off coffee for seven days.)
+
+- I've been smoking for 20 years. I just had to quit cold turkey.  
+
 
 

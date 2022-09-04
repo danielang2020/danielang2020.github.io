@@ -5,6 +5,8 @@
 ##### Use Lambda authorizers
 > A Lambda authorizer is useful if you want to implement a custom authorization schema that uses a bearer token authentication strategy such as OAuth or SAML, or that uses request parameters to determine the caller's identity.
 
+##### Use Amazon Congito user pool as authorizer for a REST API
+> To use an Amazon Cognito user pool with your API, you must first create an authorizer of the CONGITO_USER_POOLS type and then configure an API method to use that authorizer. After the API is deployed, the client must first sign the user in to the user pool, obtain an identity or access token for the user, and then call the API method with one of the tokens, which are typically set to the request's Authorization header.
 ### Publish
 #### Deploying a REST API
 > Every time you upate an API, you must redeploy the API to an existing stage or to a new stage. Updating an API includes modifying routes, methods, integrations, authorizers, and anything else other than stage settings.  
