@@ -3,6 +3,12 @@
 
 ## CHAPTER 1 Reliable, Scalable, and Maintainable Applications
 > When building an application, we still need to figure out which tools and which approaches are the most appropriate for the task at hand.
+### Scalability
+#### Describing Performance
+> If you take your list of response times and sort it from fastest to slowest, then the median is the halfway point: for example, if your median response time is 200ms, that means half your requests return in less than 200ms, and half your request take longer than that. The median is also known as the 50th percentile(p50).  
+> In order to figure out how bad your outliers are, you can look at higher percentiles: the 95th, 99th, and 99.9th percentiles are common.  
+> High percentiles of response times, also known as tail latencies, are important because they directly affect users' experience of the service. For example, Amazon describes response time requirements for internal servicesin terms of the 99.9th percentile, even though it only affects 1 in 1000 requests. This is because the customers with the slowest requests are often those who have the most data on their accounts because they have made many purchases—that is, they’re the most valuable customers. It’s important to keep those customers happy by ensuring the website is fast for them.  
+
 
 ## CHAPTER 2 Data Models and Query Languages
 ### Relational Versus Document Database Today
@@ -117,6 +123,9 @@
 
 #### Comparing B-Trees and LSM-Trees
 > LSM-trees are typically faster for writes, whereas B-trees are though to be faster for reads. Reads are typically slower on LSM-trees because they have to check several different data structures and SSTables at different stages fo compaction.
+
+#### Other Indexing Structures
+> In some situations, the extra hop from the index to the heap file is too much of a performance penalty for reads, so it can be desirable to store the indexed row directly within an index. This is known as a clustered index. For example, in MySQL's InnoDB storage engine, the primary key of a table is always a clustered index, and secondary indexes refer to the primary key(rather than a heap file location).  
 
 ### Transaction Processing or Analytics?
 > An application typically looks up a small number of records by some key, using an index. Records are inserted or updated based on the user's input. Because these applications are interactive, the access pattern became known as online transaction processing(OLTP).

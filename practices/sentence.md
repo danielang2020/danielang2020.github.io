@@ -76,5 +76,7 @@
 
 - I've been smoking for 20 years. I just had to quit cold turkey.  
 
+- Can you please speak to the effects of pollutants on the environment? => Can you provide evidence about the effects of pollutants?
 
+- in the first week of the month.
 
