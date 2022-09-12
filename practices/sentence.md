@@ -78,5 +78,12 @@
 
 - Can you please speak to the effects of pollutants on the environment? => Can you provide evidence about the effects of pollutants?
 
-- in the first week of the month.
+- in the first week of the month.  
+
+- I think I can get away with not studying for this test.  
+- I can't believe she gets away with being late to every meeting.  
+- She was lucky to get away with just a fine.  
+- The thieves got away with $3000 worth of equipment.  
+
+
 

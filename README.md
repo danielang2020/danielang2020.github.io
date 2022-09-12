@@ -53,7 +53,7 @@
 ## [ID Token and Access Token: What's the Difference?](https://auth0.com/blog/id-token-access-token-what-is-the-difference/)
 ## [PKCE](https://advancedweb.hu/how-to-secure-the-cognito-login-flow-with-a-state-nonce-and-pkce/)
 ## [pkce generator](https://example-app.com/pkce)
-
+## [MySQL index](blogs/mysql_index.md)
 # Practice
 
 ## [Netty](practices/netty.md)
