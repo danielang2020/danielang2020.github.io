@@ -54,6 +54,7 @@
 ## [PKCE](https://advancedweb.hu/how-to-secure-the-cognito-login-flow-with-a-state-nonce-and-pkce/)
 ## [pkce generator](https://example-app.com/pkce)
 ## [MySQL index](blogs/mysql_index.md)
+## [A Set of Unit Testing Rules](https://www.artima.com/weblogs/viewpost.jsp?thread=126923)
 # Practice
 
 ## [Netty](practices/netty.md)
