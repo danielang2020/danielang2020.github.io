@@ -85,5 +85,9 @@
 - She was lucky to get away with just a fine.  
 - The thieves got away with $3000 worth of equipment.  
 
+- Can you try and clarify what you mean by that? ---- speaking    
+- Can you try to clarify what you mean by that? ---- writing    
 
+- Go and get your mom / Come and see my car.  
 
+- For what it's worth, I think he may be right.   
