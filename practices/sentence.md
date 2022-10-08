@@ -4,7 +4,7 @@
 
 - Something seems/feels off. /  you seem off. = things aren't right.
 
-- I grew up ice fishing. / I grew up hearing Beyond's song. 
+- I grew up ice fishing. / I grew up listening Beyond's song. 
 
 - Where in the U.S. would you like to travel the next time you get a chance?
 
@@ -91,3 +91,14 @@
 - Go and get your mom / Come and see my car.  
 
 - For what it's worth, I think he may be right.   
+
+- I'm a maybe. => I might be there but it's not for sure.   
+
+- I may be bad at this game but at least I'm having fun.   
+
+- What would you say to your younger self?   
+
+- I was in awe of your style of presentation there. You did a great job.   
+
+- Do you want me to come to your house? (if someone is at their house)     
+- Do you want me to go to your house? (if someone isn't at their house)    

@@ -51,7 +51,9 @@
 >```
 
 ### Services
-> They have no state of their own nor any meaning in the domain beyond the operation they host. Still, at least this solution gives these distinct behaviors a home without messing up a real model object.  
+> They have no state of their own nor any meaning in the domain beyond the operation they host. Still, at least this solution gives these distinct behaviors a home without messing up a real model object.    
+
+> A SERVICE is an operation offered as an interface that stands alone in the model, without encapsulating state, as ENTITIES and VALUE OBJECTS do.   
 
 ### Modules(a.k.a. Package)
 > Modules can look at detail within a MODULE without being overwhelmed by the whole, or they can look at relationships between MODULES in views that exclude interior detail.   
@@ -80,6 +82,15 @@
 
 ### Designing Objects for Relational Databases
 > Technically, the relational table design does not have to reflect the domain model.  
+
+## Chapter Seven. Using the Language: An Extended Example
+> VALUE OBJECTS usually shouldn't reference their owners.  
+
+## Chapter Fourteen. Maintaining Model Integrity  
+> A model is meaningless unless it is logically consistent. In an ideal world, we would have a single model spanning the whole domain of the enterprise. This model would be unified, without any contradictory or overlapping definitions of terms. Every logical statement about the domain would be consistent.  
+
+### Bounded Context
+> Explicitly define the context within which a model applies. Explicitly set boundaries in terms of team organization, usage within specific parts of the appliction, and physical manifestions such as code bases and database schemas. Keep the model strictly consistent within these bounds, but don't be distracted or confused by issues outside.  
 
 
 
