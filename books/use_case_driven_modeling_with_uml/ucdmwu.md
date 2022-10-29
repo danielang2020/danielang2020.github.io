@@ -3,7 +3,7 @@
 2. 开发负责梳理故事中的名词和动词，汇总去重。
 3. 产品和开发确认汇总去重后的词库，保证理解一致。
 4. 产品和开发确认词库中每一个词语对应的英文，保证理解一致。（gloosary）
-5. 开发根据词库中的名词，不包含具体属性及方法，结合多态is-a和聚合has-a关系编写静态域模型。（model domain）   
+5. 开发根据词库中的名词，不包含具体属性及方法，首先罗列聚合（has-a）关系，然后再梳理多态（is-a）关系，两个形成静态域模型。（model domain）   
     a. Focus on real-world (problem domain) objects.  
     b. Use generalization (is-a) and aggregation (has-a) relationships to show how the objects relate to each other.   
     c. Limit your initial domain modeling efforts to a couple of hours.  
