@@ -106,3 +106,8 @@
 - Can I interest you in a dinner and a movie night at my house and cookie baking? Yes. Sign me up.
 
 - You are way off here. = You are totally wrong.
+
+- I need this problem to go away.  
+
+- We need to leave here at 4 if we wanna get there on time.  Understood/Noted.
+- (Task) Can you pick up those packages later? Consider it done./ Done.
