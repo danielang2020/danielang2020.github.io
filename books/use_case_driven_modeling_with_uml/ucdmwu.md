@@ -14,7 +14,7 @@
     h. Do your initial domain model before you write your use cases, to avoid name ambiguity.   
     i. Don’t expect your final class diagrams to precisely match your domain model, but there should be some resemblance between them.   
     j. Don’t put screens and other GUI-specific classes on your domain model.   
-6. 产品和开发根据词库（名词 -> 动词 -> 名词）编写动态使用用例，包括：成功场景、失败场景及对应处理方法。（text）   
+6. 产品和开发根据词库（名词 -> 动词 -> 名词）编写动态使用用例，包括：成功场景、失败场景及失败对应处理方法。（text）   
     a. Follow the two-paragraph rule.  
     b. Organize your use cases with actors and use case diagrams.  
     c. Write your use cases in active voice.   
@@ -47,7 +47,7 @@
 8. 与产品确认使用用例，保证理解一致。   
 <------ what ------>   
 <------ how ------>   
-9. 开发根据使用用例（名词 -> 动词 -> 名词）和域模型编写鲁棒图。（Robustness diagram）   
+9. 开发根据使用用例（名词 -> 动词 -> 名词）和域模型编写鲁棒图。（Robustness diagram[a robustness diagram is an object picture of a use case.]）   
     a. Paste the use case text directly onto your robustness diagram.   
     b. Take your entity classes from the domain model, and add any that are missing.   
     c. Expect to rewrite (disambiguate) your use case while drawing the robustness diagram.   

@@ -111,3 +111,13 @@
 
 - We need to leave here at 4 if we wanna get there on time.  Understood/Noted.
 - (Task) Can you pick up those packages later? Consider it done./ Done.
+
+- What are you up to this weekend?  There is a lot going on.
+
+- What is something you need to get done today?
+
+- All I want/need is to pass the exam.
+- The doctor said what I want is to exercise every day.  - it's not necessarily something you really want.
+- What I want/need is a hot shower.
+
+- I'm not in on the joke.
