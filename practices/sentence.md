@@ -121,3 +121,5 @@
 - What I want/need is a hot shower.
 
 - I'm not in on the joke.
+
+- I've never liked ice cream. That being said(nevertheless), I definitely want to try the new ice cream parlor in town.
