@@ -123,3 +123,6 @@
 - I'm not in on the joke.
 
 - I've never liked ice cream. That being said(nevertheless), I definitely want to try the new ice cream parlor in town.
+
+- I'll be in your area at 6, can I pick up the book then?  
+
