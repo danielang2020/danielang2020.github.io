@@ -190,4 +190,26 @@
 
 > For these reason it's generally a bad idea to use your language's built-in encoding for anything other than very transient purposes.
 
-## CHAPTER 5 Replication
+## CHAPTER 7 Transactions
+### The Slippery Concept of a Transaction
+#### Single-Object and Multi-Object Operations
+> To recap, in ACID, atomicity and isolation describe what the database should do if a client makes several writes within the same transaction.
+
+> Atomicity and isolation also apply when a single object is being changed. For example, imagine you are writing a 20KB JSON document to a database.
+
+### Weak Isolation Levels
+#### Read Committed
+> For every object that is written, the database remembers both the old committed value and the new value set by the transaction that currently holds the write lock. While the transaction is ongoing, any other transactions that read the object are simply given the old value. Only when the new value is committed do transactions switch over to reading the new value.  
+
+#### Snapshot Isolation and Repeatable Read
+> Some situations cannot tolerate such temporary inconsistency: Backups and Analytic queries and integrity checks.  
+
+> By carefully defining visibility rules, the database can present a consistent snapshot of the database to the application. This works as follows:
+>1. At the start of each transaction, the database makes a list of all the other transactions that are in progress(not yet committed or aborted) at that time. Any writes that those transactions have made are ignored, even if the transactions subquently commit.  
+>2. Any writes made by aborted transactions are ignored.  
+>3. Any writes made by transactions with a later transaction ID(i.e., which started after the current transaction started) are ignored, regardless of whether those transactions have committed.  
+>4. All other writes are visible to the application's queries.    
+
+> An object is visible if both of the following condition are true:
+>1. At the time when the reader's transaction started, the transaction that created the object had already committed.  
+>2. The object is not marked for deletion, or if it is, the transaction that requested deletion had not yet committed at the time when the reader's transaction started.

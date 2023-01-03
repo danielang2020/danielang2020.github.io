@@ -126,3 +126,5 @@
 
 - I'll be in your area at 6, can I pick up the book then?  
 
+- I'm on episode three of Breaking Bad.  
+

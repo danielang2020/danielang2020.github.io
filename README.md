@@ -57,6 +57,8 @@
 ## [SSH Tunnel](blogs/ssh_tunnel.md)
 ## [A Set of Unit Testing Rules](https://www.artima.com/weblogs/viewpost.jsp?thread=126923)
 ## [Association, Aggregation, Composition, Abstraction, Generalization, Realization, Dependency](https://javapapers.com/oops/association-aggregation-composition-abstraction-generalization-realization-dependency/)
+## [Differences between user-defined bridges and the default bridge](https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge)
+## [repeatable read](blogs/repeatable_read.md)
 # Practice
 
 ## [Netty](practices/netty.md)
