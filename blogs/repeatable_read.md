@@ -6,8 +6,8 @@ create table repeatable_read (id integer primary key,text varchar(200));
 insert into repeatable_read values(1,'first');
 
 4. mysql 
-    | session one                                              | session two                                            |
-    | :---                                                     | :---                                                   |
+    | session 1 | session 2 |
+    | --- | --- |
     | insert into repeatable_read values(1,'first');           |                                                        |
     |                                                          | select * from repeatable_read; result:(1,'first')      |
     | start transaction;                                       |                                                        |
@@ -21,8 +21,8 @@ insert into repeatable_read values(1,'first');
     | select * from repeatable_read; result:(1,'third')        | select * from repeatable_read; result:(1,'third')      |
 
 5. postgresql
-    | session one                                              | session two                                            |
-    | :---                                                     | :---                                                   |
+    | session 1 | session 2 |
+    | --- | --- |
     | insert into repeatable_read values(1,'first');           |                                                        |
     |                                                          | select * from repeatable_read; result:(1,'first')      |
     | begin;                                                   |                                                        |
