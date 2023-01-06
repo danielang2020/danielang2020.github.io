@@ -59,6 +59,7 @@
 ## [Association, Aggregation, Composition, Abstraction, Generalization, Realization, Dependency](https://javapapers.com/oops/association-aggregation-composition-abstraction-generalization-realization-dependency/)
 ## [Differences between user-defined bridges and the default bridge](https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge)
 ## [Repeatable Read](blogs/repeatable_read.md)
+## [Docker startup order](https://docs.docker.com/compose/startup-order/)
 # Practice
 
 ## [Netty](practices/netty.md)
