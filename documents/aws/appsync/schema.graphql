@@ -1,0 +1,28 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type IndicatorInfo {
+  category: String!
+  indicator: ID!
+  strategyOrderAction: String!
+  strategyOrderComment: String!
+  strategyOrderContracts: String!
+  strategyOrderPositionSize: String!
+  ticker: String!
+  time: String!
+}
+
+type Mutation {
+  addIndicatorInfo(category: String!, indicator: ID!, strategyOrderAction: String!, strategyOrderComment: String!, strategyOrderContracts: String!, strategyOrderPositionSize: String!, ticker: String!, time: String!): IndicatorInfo!
+}
+
+type Query {
+  getIndicatorInfo(indicator: String!): [IndicatorInfo]
+}
+
+type Subscription {
+  addedIndicatorInfo: IndicatorInfo @aws_subscribe(mutations : ["addIndicatorInfo"])
+}
