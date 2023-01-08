@@ -20,7 +20,7 @@
 5. send mutation to graphql endpoint
    - example: 
 > ```
->   curl --location --request POST 'https://byrui3dndbbzngtql4wkmft3bq.appsync-api.us-east-1.amazonaws.com/graphql' \
+>   curl --location --request POST 'https://xxxxxxx.appsync-api.us-east-1.amazonaws.com/graphql' \
 > --header 'x-api-key: xxxxxxx' \
 > --header 'Content-Type: application/json' \
 > --data-raw '{"query":"mutation RTIndicator {\n\taddIndicatorInfo(indicator: \"VOL\", category: \"FX\",ticker:\"EURUSD\",strategyOrderAction:\"sell\",strategyOrderContracts:\"2\",strategyOrderPositionSize:\"-1\",strategyOrderComment:\"MA2CrossSE\",time:\"2019-08-27T09:56:00Z\") {\n\t\tindicator\n\t\tcategory\n\t\tticker\n\t\tstrategyOrderAction\n        strategyOrderContracts\n        strategyOrderPositionSize\n        strategyOrderComment\n        time\n\t}\n}","variables":{}}'
