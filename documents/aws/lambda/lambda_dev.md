@@ -22,3 +22,7 @@
 
 ## Lambda Quotas
 > Function timeout is 900 seconds(15 Minutes)
+
+
+
+[AWS Lambda Execution context in Java demystified](https://blog.ippon.tech/lambda-execution-context-demystified/)
