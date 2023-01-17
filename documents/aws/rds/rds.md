@@ -17,6 +17,10 @@
 ### Working with read replicas
 > You can use read replica promotion as a data recovery schema if the primary DB instance fails.
 
+## Using RDS Proxy
+### Planning where to use RDS Proxy
+> AWS Lambda functions can also be good candidates for using a proxy. These functions make frequent short database connections that benefit from connection pooling offered by RDS Proxy.  
+
 ## Microsoft SQL Server on Amazon RDS
 ### Options for SQL Server
 #### Transparent Data Encryption
