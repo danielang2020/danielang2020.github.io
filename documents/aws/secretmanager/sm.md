@@ -1,0 +1,4 @@
+# AWS Secret Manager
+## Retrieve secrets
+### Connect to a SQL database
+> In Java applications, you can use the Secrets Manager SQL Connection drivers to connect to MYSQL, PostgreSQL, Oracle, and MSSQLServer database using credientials stored in Secrets Manager. Each driver wraps the base JDBC driver, so you can use JDBC calls to access your database. However, instead of passing a username and password for the connection, you provide the ID of a secret. The driver calls Secrets Manager to retrieve the secret value, and then uses the credientials in the secret to connect to the database. The driver also caches the credientials using the Java client-side caching library, so future connections don't require a call to Secret Manager. By default, the cache refreshes every hour and also when the secret is rotated.  

@@ -60,6 +60,7 @@
 ## [Differences between user-defined bridges and the default bridge](https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge)
 ## [Repeatable Read](blogs/repeatable_read.md)
 ## [Docker startup order](https://docs.docker.com/compose/startup-order/)
+## [DIFFERENT WAYS TO BE AUTHENTICATED IN AN RDS DATABASE](https://blog.spikeseed.cloud/rds-authentication/)
 # Practice
 
 ## [Netty](practices/netty.md)
