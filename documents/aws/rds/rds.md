@@ -31,5 +31,9 @@
 #### Transparent Data Encryption
 > Amazon RDS supports Oracle Transparent Data Encryption(TED), a feature of the Oracle Advanced Security option available in Oracle Enterprise Edition. This feature automatically encrypts data before it is writted to storage and automatically decrypts data when the data is read from storage.
 
-
+## Security
+### Identity and access management
+#### IAM database authentication
+> Use IAM database authentication when your application requires fewer than 200 new IAM database authentication connections per second.  
+> The database engines that work with Amazon RDS don't impose any limits on authentication attempts per second. However, when you use IAM database authentication, your application must generate an authentication token. Your application then use that token to connection to the DB instance. If you exceed the limit of maximum new connections per second, then the extra overhead of IAM database authentication can cause connection throttling.  
 
