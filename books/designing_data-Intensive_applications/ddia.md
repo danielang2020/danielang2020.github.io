@@ -193,16 +193,26 @@
 ## CHAPTER 7 Transactions
 ### The Slippery Concept of a Transaction
 #### Single-Object and Multi-Object Operations
+> Atomicity, isolation, and durability are properties of the database, whereas consistency(in the ACID sense) is a property of the application. The application may rely on the database's atomicity and isolation properties in order to achieve consistency, but it's not up to the database alone.  
+
 > To recap, in ACID, atomicity and isolation describe what the database should do if a client makes several writes within the same transaction.
 
 > Atomicity and isolation also apply when a single object is being changed. For example, imagine you are writing a 20KB JSON document to a database.
 
+> It's only worth retrying after transient errors(for example)
 ### Weak Isolation Levels
+> If two transactions don't touch the same data, they can safely be run in parallel, because neither depends on the other. Concurrency issue(race conditions) only come into play when one transaction reads data that is concurrently modified by another transaction, or when two transactions try to simulatneously modify the same data.  
 #### Read Committed
 > For every object that is written, the database remembers both the old committed value and the new value set by the transaction that currently holds the write lock. While the transaction is ongoing, any other transactions that read the object are simply given the old value. Only when the new value is committed do transactions switch over to reading the new value.  
 
 #### Snapshot Isolation and Repeatable Read
+> Most commonly, database prevent dirty writes by using row-level locks: when a transaction wants to modify a particular object(row or document), it must first acquire a lock on that object. It must then hold that lock until the transaction is commited or aborted.
+
+> For every object that is written, the database remembers both the old committed value and the new value set by the transaction that currently holds the write lock. While the transaction is ongoing, any other transactions that read the object are simply given the old value. Only when the new value is committed do transactions switch over to reading the new value.  
+
 > Some situations cannot tolerate such temporary inconsistency: Backups and Analytic queries and integrity checks.  
+
+> To implement snapshot isolation, database use a generalization of the mechanism we saw for preventing dirty reads. The database must potentially keep serveral different committed versions of an object, because various in-progress transactions may need to see the state of the database at different points in time.
 
 > By carefully defining visibility rules, the database can present a consistent snapshot of the database to the application. This works as follows:
 >1. At the start of each transaction, the database makes a list of all the other transactions that are in progress(not yet committed or aborted) at that time. Any writes that those transactions have made are ignored, even if the transactions subquently commit.  
@@ -213,3 +223,27 @@
 > An object is visible if both of the following condition are true:
 >1. At the time when the reader's transaction started, the transaction that created the object had already committed.  
 >2. The object is not marked for deletion, or if it is, the transaction that requested deletion had not yet committed at the time when the reader's transaction started.
+
+#### Preventing Lost Updates
+> PostgreSQL's repeatable read, Oracle's serializable, and SQL Server's snapshot isolation levels automatically detect when a lost update has occurred and abort the offending transaction. However, MYSQL/InnoDB's repeatable read does not detect lost updates.  
+
+> Locks and compare-and-set operations assume that there is a single up-to-date copy of the data. However, databases with multi-leader or leaderless replication usually allow serveral writes to happen concurrently and replicate them asynchronously, so they cannot guarantee that there is a single up-to-date copy of the data. Thus, techniques based on locks or compare-and-set do not apply in this context.  
+
+#### Write Skew and Phantoms
+> Write skew can occur if two transactions read the same objects, and then update some of those objects(different transactions may update different objects).  
+
+> Automatically preventing write skew requires true serializable isolation.  
+
+> If you can't use a serializable isolation level, the second-best option in this case is probably to explicitly lock the rows that the transaction depends on. FOR UPDATE tells the database to lock all rows returned by this query. 
+
+> Phantoms causing write skew follow a similar pattern:
+>1. A SELECT query checks whether some requirement is satisfied by searching for rows that match some search condition.
+>2. Depending on the result of the first query, the application code decide how to continue.
+>3. If the application decides to go ahead, it makes a write to the database and commits the transaction. 
+
+> This effect, where a write in one transaction changes the result of a search query in another transaction, is called a phantom. Snapshot isolation avoids phantoms in read-only queries, but in read-write transactions, phantoms can lead to particularly tricky cases of write skew.  
+
+### Summary
+> An application with very simple access patterns, such as reading and writing only a single record, can probably manage without transactions. However, for more complex access patterns, transactions can hugely reduce the number of potential error cases you need to think about.   
+> Without transactions, various error scenarios (processes crashing, network interruptions, power outages, disk full, unexpected concurrency, etc.) mean that data can become inconsistent in various ways. 
+

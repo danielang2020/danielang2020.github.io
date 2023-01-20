@@ -60,7 +60,9 @@
 ## [Differences between user-defined bridges and the default bridge](https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge)
 ## [Repeatable Read](blogs/repeatable_read.md)
 ## [Docker startup order](https://docs.docker.com/compose/startup-order/)
-## [DIFFERENT WAYS TO BE AUTHENTICATED IN AN RDS DATABASE](https://blog.spikeseed.cloud/rds-authentication/)
+## [MySQL InnoDB row lock](blogs/mysql_innodb_row_lock.md)
+## [MySQL Update Lost](blogs/mysql_pessimistic_lock_update_lost.md)
+## [MySQL Insert Exist](blogs/mysql_innodb_insert_exist.md)
 # Practice
 
 ## [Netty](practices/netty.md)

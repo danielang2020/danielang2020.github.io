@@ -21,6 +21,14 @@
 ### Planning where to use RDS Proxy
 > AWS Lambda functions can also be good candidates for using a proxy. These functions make frequent short database connections that benefit from connection pooling offered by RDS Proxy.  
 
+### RDS Proxy concepts and terminology
+> You store the database credientials used by RDS Proxy in AWS Secret Manager. Each database user for the RDS DB instance or Aurora DB cluster accessed by a proxy must have a corresponding secret in Secrets Manager. You can also set up IAM authentication for users of RDS Proxy. By doing so, you can enforce IAM authentication for database access even if the database use native password authentication. We recommend using these security features instead of embedding database credientials in your application code.  
+
+### Getting started with RDS Proxy
+> For each proxy that you create, you first use the Secret Manager service to store sets of user name and password credentials. You create a separate Secret Manager secret for each database user account that the proxy connects to on the RDS instance or Aurora DB cluster.  
+
+[Connecting to a database from AWS Lambda function](https://ahmedahamid.com/connecting-to-a-database-from-aws/)  
+
 ## Microsoft SQL Server on Amazon RDS
 ### Options for SQL Server
 #### Transparent Data Encryption
@@ -36,4 +44,18 @@
 #### IAM database authentication
 > Use IAM database authentication when your application requires fewer than 200 new IAM database authentication connections per second.  
 > The database engines that work with Amazon RDS don't impose any limits on authentication attempts per second. However, when you use IAM database authentication, your application must generate an authentication token. Your application then use that token to connection to the DB instance. If you exceed the limit of maximum new connections per second, then the extra overhead of IAM database authentication can cause connection throttling.  
-
+[Create an authentication token java demo](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/java_rds_code_examples.html)  
+[DIFFERENT WAYS TO BE AUTHENTICATED IN AN RDS DATABASE](https://blog.spikeseed.cloud/rds-authentication/)
+>```json
+>{
+>   "Sid": "VisualEditor1",
+>   "Effect": "Allow",
+>   "Action": "rds-db:connect",
+>   "Resource": "arn:aws:rds-db:us-east-1:839823279171:dbuser:prx-0879811c832dabd07/admin"
+>}
+>```
+> arn:aws:rds-db:{region}:{account-id}:dbuser:{DbiResourceId}/{db-user-name}
+> region = us-east-1  
+> account-id = 839823279171   
+> DbiResourceId(rds proxy arn suffix) = prx-0879811c832dabd07  
+> db-user-name(database username) = admin  

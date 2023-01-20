@@ -2,6 +2,17 @@
 ## Lambda foundations
 ### Concepts
 > An event is a JSON-formatted document that contains data for a Lambda function to process.
+
+## Configuring functions
+### Versions
+> A function version includes the following information:
+>- The function code and all associated dependencies.
+>- The lambda runtime that invokes the functions.
+>- All the function settings, including the environment variables.
+>- A unique Amazon Resource Name(ARN) to identify the specific version of the function.  
+
+> You can change the function code and settings only on the unpublished version of a function. When you publish a version, Lambda locks the code and most of the settings to maintain a consistent experience for users of that version.  
+
 ## Invoking functions
 ### Synchronous invocation
 > When you invoke a function synchronously, Lambda runs the function and waits for a response. When the function completes, Lambda returns the response from the function's code with additional data, such as the version of the function that was invoked.
