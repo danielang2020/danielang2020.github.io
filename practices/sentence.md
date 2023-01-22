@@ -130,5 +130,5 @@
 
 - I'll wake up at 4:00 and can't fall back to sleep.
 
-
+- I say we aim for 60 new clients by the end of the year. = Let's aim for 60 new clients by the end of the year.  
 

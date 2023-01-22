@@ -247,3 +247,21 @@
 > An application with very simple access patterns, such as reading and writing only a single record, can probably manage without transactions. However, for more complex access patterns, transactions can hugely reduce the number of potential error cases you need to think about.   
 > Without transactions, various error scenarios (processes crashing, network interruptions, power outages, disk full, unexpected concurrency, etc.) mean that data can become inconsistent in various ways. 
 
+## CHAPTER 8 The Trouble with Distributed Systems
+### Unreliable Clocks
+#### Monotonic Versus Time-of-Day Clocks
+> A time-of-day clock does what you intuitively expect of a clock: it returns the current date and time according to some calendar(System.currentTimeMillis() in java) which according to the Gregorian calendar, not counting leap seconds.    
+> Time-of-day clocks unsuitable for measuring elapsed time.  
+
+> A monotonic clock is suitable for measuring a duration(time interval, System.nanoTime() in java).   
+> You can check the value of the monotonic clock at one point in time, do something, and then check the clock again at a later time. The difference between the two values tells you  how much time elapsed between the two checks. However, the absolute value of the clock is meaningless: it might be the number of nanoseconds since the computer was started, or something similarly arbitrary. In particular, it makes no sense to compare monotonic clock values from two different computers, because they don't mean the same thing.  
+
+> NTP cann't cause the monotonic clock to jump forward or backward.  
+
+> In a distributed system, using a monotonic clock for measuring elapsed time (e.g., timeouts) is usually fine, because it doesn’t assume any synchronization between different nodes’ clocks and is not sensitive to slight inaccuracies of measurement.
+
+#### Relying on Synchronized Clocks
+> Logical clocks are based on incrementing counters rather than an oscillating quartz crystal, are a safer alternative for ordering events.  Logical clocks do not measuring the time of day or the number of seconds elapsed, only the relative ordering of events.  
+
+
+
