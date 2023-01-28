@@ -132,3 +132,7 @@
 
 - I say we aim for 60 new clients by the end of the year. = Let's aim for 60 new clients by the end of the year.  
 
+- By the time I get there, you guys may have finished eating. Should I bother coming?  
+
+
+

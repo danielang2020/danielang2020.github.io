@@ -22,6 +22,9 @@
 ###### Expiring Items with Time to Live
 > Amazon DynamoDB Time to Live(TTL) allows you to define a per-item timestamp to determine when an item is no longer needed. Shortly after the date and time of the specified timestamp, DynamoDB deletes the item from your table without consuming any write throughput. TTL is provided at no extra cost as a means to reduce stored data volumes by retaining only the items that remain current for your workload's needs.
 
+#### PartiQL query language
+> To ensure that a SELECT statement does not result in a full table scan, the WHERE clause condition must specific a partition key. Use the equality or IN operator.  
+
 ### Working with transactions
 > Amazon DynamoDB transactions simplify the developer experience of making coordinated, all-or-nothing changes to mulitple items both within and across tables. Transactions provide atomicity, consistency, isolation, and durability(ACID) in DynamoDB, helping you to maintain data correctness in your applications.  
 
