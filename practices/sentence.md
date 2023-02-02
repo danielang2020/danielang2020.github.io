@@ -132,7 +132,15 @@
 
 - I say we aim for 60 new clients by the end of the year. = Let's aim for 60 new clients by the end of the year.  
 
-- By the time I get there, you guys may have finished eating. Should I bother coming?  
+- By the time I get there, you guys may have finished eating. Should I bother coming? / By the time You get there, I will have finished eating. 
 
+- I'm 45 minutes out. = I'm 45 minutes away. = I still have 45 minutes to drive.  
 
+- The kids are in the street, get them out of the street.  
+
+- The ball is on the grass.(open space)/ The ball is in the yard.(enclosed space)
+
+- What's on your schedule today? 
+
+- They throw the ball together./They throw the ball at each other.  
 
