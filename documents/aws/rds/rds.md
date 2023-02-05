@@ -63,8 +63,8 @@
 
 ### Using Amazon RDS with Amazon VPC
 #### Working with a DB instance in a VPC
+> For multi-AZ deployments, defining a subnet for two or more Availability Zones in an AWS Region allows Amazon RDS to create a new standby in another Availability Zone as needed. Make sure to do this even for Single-AZ deployments, just in case you want to convert them to multi-AZ deployments at some point.  
+
 > A DB subnet group is a collection of subnets(typically private) that you create in a VPC and that you then designate for your DB instances.   
 
 > Each DB subnet group should have subnets in at least two Availability Zones in a given AWS Regions.  
-
-
