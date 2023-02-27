@@ -263,5 +263,10 @@
 #### Relying on Synchronized Clocks
 > Logical clocks are based on incrementing counters rather than an oscillating quartz crystal, are a safer alternative for ordering events.  Logical clocks do not measuring the time of day or the number of seconds elapsed, only the relative ordering of events.  
 
+## CHAPTER 9 Consistency and Consensus
+### Ordering Guarantees
+#### Sequence Number Ordering
+> The key idea about Lamport timestamps, which makes them consistent with causality, is the following: every node and every client keeps track of the maximum counter value it has seen so far, and includes that maximum on every request. When a node receives a request or response with a maximum counter value greater than it own counter value, it immediately incrases its own counter to that maximum.  
+
 
 
