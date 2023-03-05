@@ -64,6 +64,7 @@
 ## [MySQL Update Lost](blogs/mysql_pessimistic_lock_update_lost.md)
 ## [MySQL Insert Exist](blogs/mysql_innodb_insert_exist.md)
 ## [Refresh Token](https://stateful.com/blog/refresh-tokens-security)
+## [Image Tag](https://blog.container-solutions.com/tagging-docker-images-the-right-way)
 # Practice
 
 ## [Netty](practices/netty.md)
