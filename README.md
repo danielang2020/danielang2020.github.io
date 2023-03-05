@@ -63,6 +63,7 @@
 ## [MySQL InnoDB row lock](blogs/mysql_innodb_row_lock.md)
 ## [MySQL Update Lost](blogs/mysql_pessimistic_lock_update_lost.md)
 ## [MySQL Insert Exist](blogs/mysql_innodb_insert_exist.md)
+## [Refresh Token](https://stateful.com/blog/refresh-tokens-security)
 # Practice
 
 ## [Netty](practices/netty.md)
