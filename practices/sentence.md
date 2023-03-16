@@ -150,4 +150,6 @@
 
 - How do you want your eggs?/How do you like your eggs?
 
+- I'll have the usual/the regular.(The thing I normally order.)
+
 
