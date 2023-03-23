@@ -65,8 +65,9 @@
 ## [MySQL Insert Exist](blogs/mysql_innodb_insert_exist.md)
 ## [Refresh Token](https://stateful.com/blog/refresh-tokens-security)
 ## [Image Tag](https://blog.container-solutions.com/tagging-docker-images-the-right-way)
-# Practice
+## [Telegram Bot start with parameters](https://help.just-ai.com/docs/en/channels/telegram/parameters_transfer/)
 
+# Practice
 ## [Netty](practices/netty.md)
 ## [English](practices/english.md)
 
