@@ -20,6 +20,10 @@
 ### Asynchronous invocation
 > Several AWS services, such as Amazon Simple Storage Service(Amazon S3) and Amazon Simple Notification Service, invoke functions asynchronously to process events. When you invoke a function asynchronously, you don't wait for a response from the function code. 
 
+### Event source mapping
+> The following diagram illustrates these three conditions. Suppose a batching window begins at t = 7 seconds. In the first scenario, the batching window reaches its 40 second maximum at t = 47 seconds after accumulating 5 records. In the second scenario, the batch size reaches 10 before the batching window expires, so the batching window ends early. In the third scenario, the maximum payload size is reached before the batch size or the batching window expires, so the batch ends early.
+> ![](img/bw.png)
+
 > As an alternative to an on-failure destination, you can configure your function with a dead-letter queue to save discard events for further processing.  
 ## Working with other services
 ### API Gateway
@@ -34,6 +38,9 @@
 ## Lambda Quotas
 > Function timeout is 900 seconds(15 Minutes)
 
-
+## API reference
+### Actions
+#### CreateEventSourceMapping
+> Note that because you can only change MaximumBatchingWindowInSeconds in increments of seconds, you cannot revert back to the 500 ms default batching window after you have changed it. To restore the default batching window, you must create a new event source mapping.
 
 [AWS Lambda Execution context in Java demystified](https://blog.ippon.tech/lambda-execution-context-demystified/)
