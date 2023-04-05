@@ -35,6 +35,9 @@
 >3. After CloudFront receives the response from the origin(origin response)
 >4. Before CloudFront forwards the response to the viewer(viewer response)
 
+### SQS
+> If you're using a batch window greater than 0 seconds, you must account for the increased processing time in your queue's visibility timeout. We recommend setting your queue's visibility timeout to six times your function timeout, plus the value of MaximumBatchingWindowInSeconds. This allow time for your lambda function to process the batch of events and to retry i nthe event of a throttling error.
+
 ## Lambda Quotas
 > Function timeout is 900 seconds(15 Minutes)
 
