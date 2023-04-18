@@ -153,3 +153,5 @@
 - I'll have the usual/the regular.(The thing I normally order.)
 
 - I'll keep my fingers crossed for you.
+
+- I'm down for getting a coffee. = I'm up for getting a coffee. = I'm willing to get a coffee.
