@@ -66,6 +66,7 @@
 ## [Refresh Token](https://stateful.com/blog/refresh-tokens-security)
 ## [Image Tag](https://blog.container-solutions.com/tagging-docker-images-the-right-way)
 ## [Telegram Bot start with parameters](https://help.just-ai.com/docs/en/channels/telegram/parameters_transfer/)
+## [GC progress from JDK8 to JDK17](https://kstefanj.github.io/2021/11/24/gc-progress-8-17.html)
 
 # Practice
 ## [Netty](practices/netty.md)
