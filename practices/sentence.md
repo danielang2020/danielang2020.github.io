@@ -155,3 +155,5 @@
 - I'll keep my fingers crossed for you.
 
 - I'm down for getting a coffee. = I'm up for getting a coffee. = I'm willing to get a coffee.
+
+- I have solidarity with you. = You have something in common with someone and you have empathy for them, you understand where they're coming from.
