@@ -4,4 +4,6 @@
 
 # [ZGC - The Future of Low-Latency Garbage Collection Is Here](https://malloc.se/blog/zgc-jdk17)
 
+# [ZGC](https://wiki.openjdk.org/display/zgc/Main)
+
 > ![](img/gc.png) 
