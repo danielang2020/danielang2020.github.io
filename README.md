@@ -80,6 +80,7 @@
 ## AWS
 ### [AWS cryptographic services and tools](documents/aws/cryptographic/cryptographic.md)
 ### [High Performance Computing Lens - AWS Well-Architected Framework](documents/aws/hpcl/high_performance_compute_lens.md)
+### [DynamoDB balance update](blogs/dynamodb_balance.md)
 
 ## Azure
 ### [Architecture](documents/azure/architecture.md)
