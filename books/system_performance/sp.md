@@ -1,0 +1,39 @@
+# System Performance
+## Chapter 2: Methodologies
+### 2.4 Perspectives
+#### 2.4.1 Resource Analysis
+> Metrics best suited for resource analysis include:
+> 1. IOPS 
+> 2. Throughput
+> 3. Utilization
+> 4. Saturation
+
+#### 2.4.2 Workload Analysis
+> Metrics best suited for workload analysis include:
+> 1. Throughput(transactions per second)
+> 2. Latency
+
+### 2.5 Methodology
+#### 2.5.9 The USE Method
+> For every resource, check utilization, saturation, and errors.
+
+> These terms are defined as follows:
+> 1. Resources: All physical server functional components(CPU,buses,...). Some software resources can also be examined, provided that the metrics make sense. 
+> 2. Utilization: For a set time interval, the percentage of time that the resource was busy servering work. While busy, the resource may still be able to accept more work; the degree to which it cannot do so is identified by saturation. 
+> 3. Saturation: The degree to which the resource has extra work that it can't service, often waiting on a queue. Another term for this is pressure.
+> 4. Errors: The count of error events.
+
+#### 2.5.10 The RED Method
+> For every service, check the request rate, errors, and duration.
+
+> The metrics are:
+> 1. Request rate: The number of service requests per second.
+> 2. Errors: The number of requests that failed.
+> 3. Duration: The time for requests to complete(consider distribution statistics such as percentile in addition to the average).
+
+#### 2.5.15 Event Tracing
+> When performing event tracing, look for the following information:
+>- Input: All attributes of an event request: type, direction, size, and so on.
+>- Times: Start time, end time, latency(difference)
+>- Result: Error status, result of event(e.g., successful transfer size)
+
