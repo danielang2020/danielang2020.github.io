@@ -60,3 +60,13 @@
 
 > In container environments, it may be desirable to create a privileged debugging container that has full access to the system and all tools installed. The image for this container can be installed on container hosts and deployed when needed.
 
+## Chapter 5: Applications
+### 5.1 Application Basics
+#### 5.1.2 Optimize the Common Case
+> One way to efficiently improve application performance is to find the most common code path for the production workload and begin by improving that. If the application is CPU-bound, that may ean the code paths that are frequently on-CPU. If the application is I/O-bound, you should be looking at the code paths that are frequently lead to I/O.
+
+### 5.2 Application Performance Techniques
+#### 5.2.1 Selection an I/O Size
+> For efficiency, the more data transferred by each I/O, the better.
+
+> There's a downside when the application doesn't need larger I/O sizes. A database performing 8 Kbyte random reads may run more slowly with a 128 Kbyte disk I/O size, as 120 Kbytes of data transfer is wasted. This introduces I/o latency, which can be lowered by selecting a small er I/o size that more closely matches what the application is requesting. Unnecessarily larger I/O sizes can also wate cahce space.
