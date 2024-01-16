@@ -67,6 +67,7 @@
 ## [Image Tag](https://blog.container-solutions.com/tagging-docker-images-the-right-way)
 ## [Telegram Bot start with parameters](https://help.just-ai.com/docs/en/channels/telegram/parameters_transfer/)
 ## [JDK ZGC](blogs/zgc.md)
+## [Swap Space in Linux](https://phoenixnap.com/kb/swap-space)
 
 # Practice
 ## [Netty](practices/netty.md)
