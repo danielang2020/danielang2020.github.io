@@ -5,6 +5,11 @@
 ```bash
 aws eks update-kubeconfig --region region-code --name my-cluster
 ```
+
+## Clusters
+### Configuring endpoint access
+> You can enable private access to the Kubernetes API server so that all communication between your nodes and the API server stays within your VPC. You can limit the IP addresses that can access your API server from the internet, or completely disable internet access to the API server. 
+
 ## Nodes
 ### Managed Node Groups
 > Amazon EKS Managed node groups automate the provisioning and lifecycle management of nodes(Amazon EC2 instances) for Amazon EKS Kubernetes clusters.
