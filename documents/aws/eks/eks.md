@@ -19,3 +19,17 @@ aws eks update-kubeconfig --region region-code --name my-cluster
 > Every managed node is provisioned as part of an Amazon EC2 Auto Scaling group that's managed for you by Amazon EKS. Every resource including the instances and Auto Scaling groups runs within your AWS account. Each node group runs across multiple Availability Zones that you define.
 
 > Cluster -> Node Group -> Node -> Pod -> Container
+
+### Instance types
+>- **Number of instances in a node group**
+> In general, fewer, larger instances are better, especially if you have a lot of Daemonsets. Each instance requires API calls to the API server, so the more instance you have, the more load on the API server.
+>- **Maximum number of Pods**
+> Since each Pod is assigned its own IP address, the number of IP addresses supported by an instance type is a factor in determining the number of Pods that can run on the instance.
+
+## Storage
+### Amazon EBS CSI driver
+> THe Amazon EBS CSI driver isn't installed when you first create a cluster. To use the driver, you must add it as an Amazon EKS add-on or as a self-managed add-on.
+
+## Networking
+### VPC and subnet requirements
+> Load balancers can load balance to Pods in private or public subnets. We recommend deploying your nodes to private subnets, if possible.
