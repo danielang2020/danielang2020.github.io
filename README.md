@@ -69,6 +69,7 @@
 ## [JDK ZGC](blogs/zgc.md)
 ## [Swap Space in Linux](https://phoenixnap.com/kb/swap-space)
 ## [20 Examples of Using Java's CompletableFuture](https://dzone.com/articles/20-examples-of-using-javas-completablefuture)
+## [Demystifying Kubernetes CPU Limits](https://wbhegedus.me/understanding-kubernetes-cpu-limits/)
 
 # Practice
 ## [Netty](practices/netty.md)
