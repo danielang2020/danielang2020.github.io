@@ -68,6 +68,7 @@
 ## [Telegram Bot start with parameters](https://help.just-ai.com/docs/en/channels/telegram/parameters_transfer/)
 ## [JDK ZGC](blogs/zgc.md)
 ## [Swap Space in Linux](https://phoenixnap.com/kb/swap-space)
+## [20 Examples of Using Java's CompletableFuture](https://dzone.com/articles/20-examples-of-using-javas-completablefuture)
 
 # Practice
 ## [Netty](practices/netty.md)
