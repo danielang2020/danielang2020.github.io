@@ -1,4 +1,10 @@
 # service, pod and DNS
+
+## debug pod
+```shell
+kubectl run tmp01 --rm -it --image=tutum/dnsutils -- /bin/bash
+```
+
 ## Deployment with regular service and headless service
 ```yaml
 apiVersion: apps/v1
