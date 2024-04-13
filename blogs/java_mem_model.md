@@ -93,11 +93,17 @@ class UnsafePublication{
 > An application context stores beans in a volatile field after their full construction, then guarantees that beans are only exposed via reading from this field to induce a retriction.
 
 ## Synchronzie a new object
-> It force the JVM to flush memory to synchronize code. This maybe stop in the future JDK version.
+> It force the JVM to flush memory to synchronize code. This maybe doesn't work in the future JDK version.
 Always code against the specification, not the implementation!
 ```java
 synchronized (new Object()) { /* empty */}
 ```
 
+## [stackoverflow](https://stackoverflow.com/questions/3519664/difference-between-volatile-and-synchronized-in-java)
+> There are 3 main issues with multithreading:
+>1. Race conditions
+>2. Caching/stale memory
+>3. Compiler and CPU optimisations
+> volatile can solve 2 & 3, but can't solve 1. synchronized/explicit locks can solve 1,2 & 3.
 
-[The Java memory model explained](https://www.youtube.com/watch?v=qADk_tj4wY8)
+video:[The Java memory model explained](https://www.youtube.com/watch?v=qADk_tj4wY8)
