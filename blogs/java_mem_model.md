@@ -106,4 +106,6 @@ synchronized (new Object()) { /* empty */}
 >3. Compiler and CPU optimisations
 > volatile can solve 2 & 3, but can't solve 1. synchronized/explicit locks can solve 1,2 & 3.
 
-video:[The Java memory model explained](https://www.youtube.com/watch?v=qADk_tj4wY8)
+[The Java memory model explained](https://www.youtube.com/watch?v=qADk_tj4wY8)
+
+[Using JDK 9 Memory Order Modes](https://gee.cs.oswego.edu/dl/html/j9mm.html)
