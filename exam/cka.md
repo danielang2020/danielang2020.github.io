@@ -131,7 +131,7 @@
     kubectl get pods
     will return success.
     ```
-3. ServiceAccount  (RoleBinding is ServiceAccount kind)
+3. ServiceAccount  (RoleBinding is ServiceAccount kind) [Kubernetes Role Based Access Control with Service Account](https://medium.com/rahasak/kubernetes-role-base-access-control-with-service-account-e4c65e3f25cc)
     3.1 Create namespace
     ```shell
     kubectl create namespace dev
