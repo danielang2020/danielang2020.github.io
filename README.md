@@ -91,3 +91,6 @@
 
 ## Azure
 ### [Architecture](documents/azure/architecture.md)
+
+## Examination
+### [CKA](exam/cka.md)
