@@ -241,3 +241,6 @@
 ### Use ConfigMaps and Secrets to configure applications
 - [ConfigMaps and Pods](https://kubernetes.io/docs/concepts/configuration/configmap/#configmaps-and-pods)
 - [Uses for Secret](https://kubernetes.io/docs/concepts/configuration/secret/#use-case-dotfiles-in-a-secret-volume)
+
+### Know how to scale applications
+- [Scaling your application](https://kubernetes.io/docs/concepts/workloads/management/#scaling-your-application)

@@ -74,6 +74,7 @@
 ## [Deep Dive kube-proxy with iptables mode](https://serenafeng.github.io/2020/03/26/kube-proxy-in-iptables-mode/)
 ## [Kubernetes Network 101](https://github.com/RX-M/kubecon-eu-2022/blob/main/rx-m-net-101-kubecon-eu-2022.md)
 ## [Java Memory Model](blogs/java_mem_model.md)
+## [Java @Retention Annotations](https://www.geeksforgeeks.org/java-retention-annotations/)
 
 # Practice
 ## [Netty](practices/netty.md)
