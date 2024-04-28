@@ -75,7 +75,7 @@
 ## [Kubernetes Network 101](https://github.com/RX-M/kubecon-eu-2022/blob/main/rx-m-net-101-kubecon-eu-2022.md)
 ## [Java Memory Model](blogs/java_mem_model.md)
 ## [Java @Retention Annotations](https://www.geeksforgeeks.org/java-retention-annotations/)
-## [Metrics,tracing, and loggin](https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html)
+## [Metrics,tracing, and logging](https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html)
 # Practice
 ## [Netty](practices/netty.md)
 ## [English](practices/english.md)
