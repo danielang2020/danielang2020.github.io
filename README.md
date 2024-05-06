@@ -78,6 +78,7 @@
 ## [Metrics,tracing, and logging](https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html)
 ## [A Handy Guide to Optimizing Your Java Applications
 ](https://www.alibabacloud.com/blog/a-handy-guide-to-optimizing-your-java-applications_595958)
+## [10 Tips for MySQL Performance Tuning](https://www.youtube.com/watch?v=LZTXuR0xS40)
 
 # Practice
 ## [Netty](practices/netty.md)
