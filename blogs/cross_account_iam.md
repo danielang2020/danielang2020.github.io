@@ -38,7 +38,11 @@
 > 621523765256是跨账号
 >```
 >{
->            "Sid": "Stmt1676032956666",
+>    "Version": "2012-10-17",
+>    "Id": "S3AccessPolicy",
+>    "Statement": [
+>        {
+>            "Sid": "GiveAccess",
 >            "Effect": "Allow",
 >            "Principal": {
 >                "AWS": "arn:aws:iam::621523765256:root"
@@ -48,10 +52,12 @@
 >                "s3:ListBucket"
 >            ],
 >            "Resource": [
->                "arn:aws:s3:::quotap-cloudformation-template",
->                "arn:aws:s3:::quotap-cloudformation-template/*"
+>                "arn:aws:s3:::quotap-cloudformation-template-chixi88",
+>                "arn:aws:s3:::quotap-cloudformation-template-chixi88/*"
 >            ]
 >        }
+>    ]
+>}
 >```
 
 - CodeBuild ECR IAM Policy
