@@ -1,4 +1,7 @@
 # Amazon EKS
+## What is Amazon EKS?
+### Architecture
+> The control plane positions at least two API server instances and three etcd instances across three AWS AZ within an AWS Region.
 ## Setting up
 ### Installing kubectl
 > When first installing kubectl, it isn't yet configured to communicate with any server. We will cover this configuration as needed in other procedures. If you ever need to update the configuration to communicate with a particular cluster, you can run the following command. 
