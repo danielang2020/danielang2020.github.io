@@ -30,3 +30,5 @@ spec:
       nodeSelector:
           type: karpenter
 ```
+
+3. [install load balancer controller](https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html)
