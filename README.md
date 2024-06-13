@@ -79,6 +79,7 @@
 ## [A Handy Guide to Optimizing Your Java Applications
 ](https://www.alibabacloud.com/blog/a-handy-guide-to-optimizing-your-java-applications_595958)
 ## [10 Tips for MySQL Performance Tuning](https://www.youtube.com/watch?v=LZTXuR0xS40)
+## [Fargate with Load Balancer](https://repost.aws/knowledge-center/eks-alb-ingress-controller-fargate)
 
 # Practice
 ## [Netty](practices/netty.md)
