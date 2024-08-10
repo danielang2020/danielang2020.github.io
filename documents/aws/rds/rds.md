@@ -68,3 +68,7 @@
 > A DB subnet group is a collection of subnets(typically private) that you create in a VPC and that you then designate for your DB instances.   
 
 > Each DB subnet group should have subnets in at least two Availability Zones in a given AWS Regions.  
+
+
+[RDS JDBC driver](https://github.com/aws/aws-advanced-jdbc-wrapper/blob/main/docs/using-the-jdbc-driver/using-plugins/UsingTheFailoverPlugin.md)
+[RDS JDBC driver example](https://aws.amazon.com/blogs/database/achieve-one-second-or-less-downtime-with-the-advanced-jdbc-wrapper-driver-when-upgrading-amazon-rds-multi-az-db-clusters/)
