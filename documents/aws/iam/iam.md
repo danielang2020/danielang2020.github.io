@@ -7,7 +7,7 @@
 #### Identity vs resource
 > Identity-based policies are attached to an IAM user, group, or role. These policies let you specify what that identity can do(its permissions)  
 
-> Resource-based policies are attached to resource.
+> Resource-based policies are attached to resource. e.g. S3 bucket policy.
 
 ## Reference
 ### Policy reference
