@@ -7,3 +7,13 @@
 # [ZGC](https://wiki.openjdk.org/display/zgc/Main)
 
 > ![](img/gc.png) 
+
+> ![](img/Serial.png) 
+
+> ![](img/Parallel.png) 
+
+> ![](img/G1.png) 
+
+> ![](img/ZGC.png) 
+
+> ![](img/GC_Summary.png) 
