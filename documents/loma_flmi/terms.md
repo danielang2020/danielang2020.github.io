@@ -1,4 +1,4 @@
-# Insurance words
+# Insurance Terms
 1. Grace Period: An insurance grace period is a defined amount of time after the premium is due in which a policyholder can make a premium payment without coverage lapsing.
 
 2. APL: An automatic premium loan is an insurance policy provision that lets an insurer deduct an outstanding premium from the cash value of a policy.
