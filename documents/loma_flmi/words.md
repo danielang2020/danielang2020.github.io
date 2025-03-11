@@ -21,3 +21,16 @@
 
 11. Non-Lapse Guarantee period: a feature in certain life insurance policies that prevents the policy from lapsing due to insufficient cash value, as long as the minimum payments are made.
 
+12. Survival Benefit: survival benefit is the payout given to the policyholder if they survive a certain period during the policy term.
+
+13. Reversionary Bonus: a type of bonus declared annually by the insurer on participating life insurance policies. Once declared, it is added to the total payout, but whether it directly increases the sum assured or is added separately depends on the policy.
+
+14. Top Up: a top-up refers to an additional premium payment made by the policyholder to increase investment or coverage in their existing policy.
+
+15. ETA: extended term assurance is a non-forfeiture option available in whole life or endowment policies. If a policyholder stops paying premiums, the policy is converted into a term insurance policy with the same sum assured but for a shorter duration.
+
+16. LAAR: A living assurance accelerated rider is a life insurance rider that  allows the policyholder to access a portion of the death benefit while they are still alive, in the event of being diagnosed with a critical illness or terminal illness.
+
+16. Indexation: Indexation in insurance refers to the process of adjusting the coverage or benefits of an insurance policy in line with a particular economic index.
+
+
