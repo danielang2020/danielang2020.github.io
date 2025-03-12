@@ -33,4 +33,5 @@
 
 16. Indexation: Indexation in insurance refers to the process of adjusting the coverage or benefits of an insurance policy in line with a particular economic index.
 
+17. Par/Non-Par: A participating policy allows the policyholder to receive a share of the insurer's profits in the form of bonuses or dividends. A non-participating policy does not allow the policyholder to receive insurer bonuses or dividends, the benefits are fixed and guaranteed.
 
