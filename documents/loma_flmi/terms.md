@@ -35,3 +35,6 @@
 
 17. Par/Non-Par: A participating policy allows the policyholder to receive a share of the insurer's profits in the form of bonuses or dividends. A non-participating policy does not allow the policyholder to receive insurer bonuses or dividends, the benefits are fixed and guaranteed.
 
+18. Endowment: An endowment policy is a life insurance contract designed to pay a lump sum after a specific term ( on its maturity) or on death.
+
+
