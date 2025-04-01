@@ -37,4 +37,4 @@
 
 18. Endowment: An endowment policy is a life insurance contract designed to pay a lump sum after a specific term ( on its maturity) or on death.
 
-
+19. Loading: In some cases, an insurer may impose an extra charge to a standard premium to reflect any additional risk assumed. This is referred to as a 'loading'.
