@@ -38,3 +38,7 @@
 18. Endowment: An endowment policy is a life insurance contract designed to pay a lump sum after a specific term ( on its maturity) or on death.
 
 19. Loading: In some cases, an insurer may impose an extra charge to a standard premium to reflect any additional risk assumed. This is referred to as a 'loading'.
+
+20. Attained Age: Attained age is the age of an individual at a specific point in time, usually the current age. In insurance terms, it refers to the age of the policyholder at the time the policy is issued or renewed.
+
+21. Loading: It is an additional expense applied to the premiums for some risky individuals.
