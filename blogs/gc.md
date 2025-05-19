@@ -17,3 +17,5 @@
 > ![](img/ZGC.png) 
 
 > ![](img/GC_Summary.png) 
+
+# [video](https://www.youtube.com/watch?v=0IuYYbXD-Hw&list=WL&index=1)

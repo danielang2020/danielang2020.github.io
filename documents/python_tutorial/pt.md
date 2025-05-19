@@ -7,7 +7,7 @@
 17 // 3 # = 5
 ```
 
-> With python, it is possible to use the ** operator to caculate powers:
+> With python, it is possible to use the ** operator to calculate powers:
 ```python
 5 ** 2 # = 25
 ```
