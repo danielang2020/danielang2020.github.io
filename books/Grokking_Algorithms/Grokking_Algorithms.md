@@ -1,9 +1,10 @@
 # Grokking Algorithms
 ## 1. Introduction to Algorithms
 ### Binary Search
-> the high performance method to get the middle value between low and high is to use **(low + high) >>> 1** instead of (low + high) / 2, because the former is faster and doesn't cause overflow.
+> the high performance method to get the middle value between low and high is to use **(low + high) >>> 1 in java** or **(low + high) >> 1 in python** instead of (low + high) / 2.
 
 > In general, for any list of n, binary search will take **$\log_2 n$** steps to run in the worst case, whereas simple search will take n steps.
+> $\log_2 n$ = number of times you can halve n until you get to 1.
 
 > Binary search only works on when your list is sorted.
 
@@ -16,10 +17,17 @@ Collections.binarySearch(list, item);
 bisect.bisect_left(list, item);
 ```
 
+#### Running Time
+> The maximum number fo guesses is the same as the size of the list. This is called linear time. Binary Search runs in logarithm time.
+
 ### Big O Notation
 > Big O notation is special notation that tells you how fast an algorithm is.
 
 > Big O notation is about the worst-case scenario.
+
+### Exercise
+> 1.1 Suppose you have a sorted list of 128 names, and you’re searching through it using binary search. What’s the maximum number of steps it would take?
+> $\log_2 128$ = 7 
 
 ## 2. Selection Sort
 > O(n) time means you touch every element in a list once.
